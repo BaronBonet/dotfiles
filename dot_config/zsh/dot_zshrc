@@ -7,6 +7,7 @@ fi
 
 export PATH=/opt/homebrew/bin:$PATH
 
+source ~/powerlevel10k/powerlevel10k.zsh-theme
 source ~/.config/.aliases
 
 # ------------------------------------------------------------------
