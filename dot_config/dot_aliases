@@ -1,0 +1,9 @@
+alias ez="vim ~/.config/zsh/.zshrc"
+alias ea="vim ~/.config/.aliases"
+
+alias sz="echo Applying new zshrc configs; source ~/.config/zsh/.zshrc"
+
+alias g="git"
+
+# https://github.com/Peltoche/lsd
+alias l="lsd -la"
