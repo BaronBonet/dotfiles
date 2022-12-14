@@ -7,58 +7,38 @@ fi
 
 export PATH=/opt/homebrew/bin:$PATH
 
+source "$XDG_CONFIG_HOME/.aliases"
 source ~/powerlevel10k/powerlevel10k.zsh-theme
-source ~/.config/.aliases
 
-# ------------------------------------------------------------------
-# Vi mode
-# ------------------------------------------------------------------
-bindkey -v
-export KEYTIMEOUT=1
+## ZSH complete
+#autoload -U compinit; compinit
+## https://github.com/zsh-users/zsh-completions
+#fpath=($ZDOTDIR/plugins/zsh-completions/src $fpath)
 
-# Cursor mode
-cursor_mode() {
-    # See https://ttssh2.osdn.jp/manual/4/en/usage/tips/vim.html for cursor shapes
-    cursor_block='\e[2 q'
-    cursor_beam='\e[6 q'
+# VIM mode
+source "$ZDOTDIR/plugins/vim_mode"
 
-    function zle-keymap-select {
-        if [[ ${KEYMAP} == vicmd ]] ||
-            [[ $1 = 'block' ]]; then
-            echo -ne $cursor_block
-        elif [[ ${KEYMAP} == main ]] ||
-            [[ ${KEYMAP} == viins ]] ||
-            [[ ${KEYMAP} = '' ]] ||
-            [[ $1 = 'beam' ]]; then
-            echo -ne $cursor_beam
-        fi
-    }
+# Change curser
+source "$ZDOTDIR/plugins/curser_mode"
 
-    zle-line-init() {
-        echo -ne $cursor_beam
-    }
+# Auto suggestions while typing
+source "$ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
-    zle -N zle-keymap-select
-    zle -N zle-line-init
-}
+# Syntax highliting in the shell
+source "$ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
-cursor_mode
-
-# Text object (so we can do things like ci" )
-autoload -Uz select-bracketed select-quoted
-zle -N select-quoted
-zle -N select-bracketed
-for km in viopp visual; do
-  bindkey -M $km -- '-' vi-up-line-or-history
-  for c in {a,i}${(s..)^:-\'\"\`\|,./:;=+@}; do
-    bindkey -M $km $c select-quoted
-  done
-  for c in {a,i}${(s..)^:-'()[]{}<>bB'}; do
-    bindkey -M $km $c select-bracketed
-  done
-done
-
+# Python
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+export PATH="$PATH:$HOME/.local/bin"
+export PATH="$HOME/.poetry/bin:$PATH"
+# Allows pre commit to run using zsh
+[[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
 
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
+
+[ -f ~/.fzf.zsh ] && source ~/.config/fzf/.fzf.zsh
+
 
