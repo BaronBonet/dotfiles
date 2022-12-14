@@ -24,7 +24,6 @@
   #TERM: alacritty
 
 window:
-  decorations: None
   # Window dimensions (changes require restart)
   #
   # Number of lines/columns (not pixels) in the terminal. Both lines and columns

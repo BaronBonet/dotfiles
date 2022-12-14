@@ -1,0 +1,23 @@
+[branch "master"]
+	rebase = true
+[branch "develop"]
+	rebase = true
+[branch "main"]
+	rebase = true
+[branch]
+	autosetuprebase = always
+[user]
+	name = ericcbonet
+	email = ericcbonet@gmail.com
+
+[includeIf "gitdir:~/source_software/"]
+    path = ~/source_software/.gitconfig
+[init]
+	defaultBranch = main
+[core]
+	pager = diff-so-fancy | less --tabs=4 -RFX
+[interactive]
+	diffFilter = diff-so-fancy --patch
+
+[url "ssh://git@github.com/"]
+    insteadOf = https://github.com/

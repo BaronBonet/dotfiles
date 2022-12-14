@@ -1,0 +1,89 @@
+# Git
+alias gs='git status'
+alias ga='git add'
+alias gp='git push'
+alias gc='git commit'
+alias gd='git diff'
+alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>    %Creset' --abbrev-commit"
+
+
+# Pretty print directory with lsd a rust plugin
+alias l='lsd -la'
+alias lt='lsd --tree'
+
+
+# Delete all Non named tmux panes
+alias tmux-kill="tmux ls -F'#{session_name}'|egrep '^[0-9]+$'|xargs -I% tmux kill-session -t '=%'"
+
+# ZSH
+alias szsh="source ~/.config/zsh/.zshrc"
+alias cl="clear"
+
+# Source stuff
+alias connect-to-dev-db="export AWS_PROFILE=development-admin && aws sso login --profile development-admin && cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel development source_db primary"
+alias connect-to-stagin-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel staging source_db primary"
+alias connect-to-prod-db="export AWS_PROFILE=prod-admin && aws sso login --profile prod-admin && cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel production source_db primary"
+alias connect-to-terra-dev-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel development source_terra_db"
+alias connect-to-terra-prod-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel production source_terra_db"
+alias connect-to-dev-kpi-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel development track_metrics_db"
+alias connect-to-prod-kpi-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel production track_kpi_db"
+alias nzsh="vim ~/.config/zsh/.zshrc"
+
+# set codeartifact token for poetry install/update etc
+function codeartifact() {
+AWS_PROFILE=infra-read-only export CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain source-ag --query authorizationToken --output text)
+poetry config http-basic.source-python-packages aws $CODEARTIFACT_AUTH_TOKEN
+}
+
+# Extract archives - use: extract <file>
+ # Credits to http://dotfiles.org/~pseup/.bashrc
+ function extract() {
+   if [ -f $1 ] ; then
+     case $1 in
+       *.tar.bz2) tar xjf $1 ;;
+       *.tar.gz) tar xzf $1 ;;
+       *.bz2) bunzip2 $1 ;;
+       *.rar) rar x $1 ;;
+       *.gz) gunzip $1 ;;
+       *.tar) tar xf $1 ;;
+       *.tbz2) tar xjf $1 ;;
+       *.tgz) tar xzf $1 ;;
+       *.zip) unzip $1 ;;
+       *.Z) uncompress $1 ;;
+       *.7z) 7z x $1 ;;
+       *) echo "'$1' cannot be extracted via extract()" ;;
+     esac
+   else
+     echo "'$1' is not a valid file"
+   fi
+ }
+
+# Cat syntax highlighting
+alias c='bat'
+
+# Docker
+# stop all running containers
+function docker-stop-all() {docker stop "$(docker ps -a -q)"}
+	
+# hack to remember logging into to aws ecr
+alias docker-aws="aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 084973803638.dkr.ecr.eu-central-1.amazonaws.com"
+
+# Go to project root
+alias groot='[ ! -z `git rev-parse --show-cdup` ] && cd `git rev-parse --show-cdup || pwd`'
+
+# For deailing with aws logs
+# https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SearchDataFilterPattern.html
+
+alias connect-to-terra-prod-service="ssh prod-stepstone -L3001:terra-kpi-backend.atlas:8000"
+alias connect-to-kpi-service-dev"ssh dev-stepstone"
+
+# Refresh all source tokens
+token-refresh () {
+    echo "Refreshing AWS CodeArtiface login"
+    yawsso || yawsso login --profile prod-admin
+    poetry config --unset http-basic.source-python-packages
+    poetry config http-basic.source-python-packages aws "$(aws codeartifact get-authorization-token --profile infra-admin --domain source-ag --query authorizationToken --output text)"
+}
+
+# For localstack
+alias awslocal="aws --endpoint-url=http://localhost:64566  --profile=localstack"
