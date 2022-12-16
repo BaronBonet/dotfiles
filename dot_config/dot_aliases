@@ -51,7 +51,7 @@ poetry config http-basic.source-python-packages aws $CODEARTIFACT_AUTH_TOKEN
  }
 
 # Cat syntax highlighting
-alias c='bat'
+alias c='bat --paging=auto'
 
 # Docker
 # stop all running containers

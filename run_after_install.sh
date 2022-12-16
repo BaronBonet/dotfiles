@@ -9,3 +9,7 @@ brew install diff-so-fancy
 
 # bat for nice cat highlighting
 brew install bat
+
+# NVim
+brew install neovim
+
