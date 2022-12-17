@@ -1,0 +1,3 @@
+require("eric")
+print("hi")
+

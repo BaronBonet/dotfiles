@@ -18,3 +18,21 @@ You'll have to manually source the `.zshrc` the first time.
 ```bash
 source ~/.config/zsh/.zshrc
 ```
+
+## Hints
+
+Keep in mind external packages are being managed by chezmoi so they may need to be refreshed.
+
+- `chezmoi --refresh-externals apply`
+
+These packages are in `~/.config/.local/share/chezmoi/.chezmoiexternal.toml`
+
+
+## Tmux
+
+Using [TPM](https://github.com/tmux-plugins/tpm) you have to install the plugins with `prefix i.e. Ctrl+a` + `I`
+
+## Nvim
+Inspired by this [video](https://www.youtube.com/watch?v=w7i4amO_zaE)
+
+Using Packer, remember to use :PackerSync to install new packages

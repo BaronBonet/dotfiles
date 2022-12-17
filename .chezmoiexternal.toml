@@ -14,3 +14,8 @@
     url = "https://github.com/zsh-users/zsh-autosuggestions"
     refreshPeriod = "168h"
 
+[".config/tmux/plugins/tpm"]
+    type = "git-repo"
+    url = "https://github.com/tmux-plugins/tpm"
+    refreshPeriod = "168h"
+

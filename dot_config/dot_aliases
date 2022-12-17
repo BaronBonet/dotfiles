@@ -45,14 +45,19 @@ poetry config http-basic.source-python-packages aws $CODEARTIFACT_AUTH_TOKEN
        *.7z) 7z x $1 ;;
        *) echo "'$1' cannot be extracted via extract()" ;;
      esac
-   else
+   else:q
      echo "'$1' is not a valid file"
    fi
  }
 
 # Cat syntax highlighting
-alias c='bat'
+alias c='bat --paging=auto'
 
 # Docker
 # stop all running containers
 function docker-stop-all() {docker stop "$(docker ps -a -q)"}
+
+# Vim
+# alias vim='nvim'
+# alias v='nvim'
+alias vim='~/nvim-macos/bin/nvim'
