@@ -1,2 +1,2 @@
 require("eric.remap")
-print("hello from eric")
+print("Hello from eric")

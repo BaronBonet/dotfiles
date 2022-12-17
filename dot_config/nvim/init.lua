@@ -1,2 +1,3 @@
 require("eric")
-print("hello")
+print("hi")
+

@@ -19,7 +19,10 @@ else
 	brew install bat
 
 	# NVim
-	brew install neovim
+	curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz
+	tar xzf nvim-macos.tar.gz
+	./nvim-macos/bin/nvim
+
         
 	# TODO: would be nice if these were managed by chmozi
 	# Packer plugin manager
