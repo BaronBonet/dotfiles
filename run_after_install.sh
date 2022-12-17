@@ -20,12 +20,12 @@ else
 
 	# NVim
 	brew install neovim
+        
+	# TODO: would be nice if these were managed by chmozi
+	# Packer plugin manager
+	git clone --depth 1 https://github.com/wbthomason/packer.nvim\
+		 ~/.config/.local/share/nvim/site/pack/packer/start/packer.nvim
 
-	# Plugin manager vim-plug: https://github.com/junegunn/vim-plug
-	sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-		       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-	echo "Vim plug installed be sure to run ':PlugInstall' next time you use neovim."
-
-	echo "Trying to install coco, you may need to install yarn for this to work"
-	cd ~/.config/.local/share/nvim/plugged/coco.nvim && yarn install
+	# For greping within nvim
+	brew install ripgrep
 fi

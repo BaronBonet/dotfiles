@@ -32,3 +32,6 @@ These packages are in `~/.config/.local/share/chezmoi/.chezmoiexternal.toml`
 
 Using [TPM](https://github.com/tmux-plugins/tpm) you have to install the plugins with `prefix i.e. Ctrl+a` + `I`
 
+## Nvim
+
+Using Packer, remember to use :PackerSync to install new packages
