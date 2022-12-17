@@ -21,11 +21,8 @@ alias lt='lsd --tree'
 
 alias ch="chezmoi"
 
-# set codeartifact token for poetry install/update etc
-function codeartifact() {
-AWS_PROFILE=infra-read-only export CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain source-ag --query authorizationToken --output text)
-poetry config http-basic.source-python-packages aws $CODEARTIFACT_AUTH_TOKEN
-}
+# Delete all Non named tmux panes
+alias tmux-kill="tmux ls -F'#{session_name}'|egrep '^[0-9]+$'|xargs -I% tmux kill-session -t '=%'"
 
 # Extract archives - use: extract <file>
  # Credits to http://dotfiles.org/~pseup/.bashrc
@@ -58,6 +55,7 @@ alias c='bat --paging=auto'
 function docker-stop-all() {docker stop "$(docker ps -a -q)"}
 
 # Vim
-# alias vim='nvim'
-# alias v='nvim'
-alias vim='~/nvim-macos/bin/nvim'
+alias vim='nvim'
+alias v='nvim'
+
+source "$XDG_CONFIG_HOME/.aliases/.source_aliases"

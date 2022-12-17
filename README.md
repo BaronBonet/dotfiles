@@ -8,10 +8,10 @@ Dotfiles are managed using [chezmoi](https://www.chezmoi.io/).
 To initialize the dotfiles repo:
 
 ```bash
-chezmoi init --apply https://github.com/baronbonet/dotfiles.git
+chezmoi init --apply git@github.com:BaronBonet/dotfiles.git
 ```
 
-This should create a `~/.config` folder with all of my dotfiles (along with a `~/.zshenv` file).
+This should create a `~/.config` folder with all of my dotfiles, along with a few other files in the home directory e.g. `~/.zshenv`
 
 You'll have to manually source the `.zshrc` the first time.
 
@@ -28,11 +28,18 @@ Keep in mind external packages are being managed by chezmoi so they may need to 
 These packages are in `~/.config/.local/share/chezmoi/.chezmoiexternal.toml`
 
 
-## Tmux
+## Packages
 
-Using [TPM](https://github.com/tmux-plugins/tpm) you have to install the plugins with `prefix i.e. Ctrl+a` + `I`
+Most packages are currently managed with brew. They are install in the `run_after_install.sh` or are managed by chezmoi, located in the `.chezmoiexternal.toml`
 
-## Nvim
-Inspired by this [video](https://www.youtube.com/watch?v=w7i4amO_zaE)
+### Tmux
 
-Using Packer, remember to use :PackerSync to install new packages
+Managed using [TPM](https://github.com/tmux-plugins/tpm) you have to install the plugins with `prefix i.e. Ctrl+a` + `I` when you 1st use tmux. 
+
+### Nvim
+Inspired by a few different repositories [thePrimeagen](https://github.com/ThePrimeagen/init.lua) 
+and [josean-dev](https://github.com/josean-dev/dev-environment-files).
+
+Packages are managed by [packer](https://github.com/wbthomason/packer.nvim) and installed automatically by opening `.config/nvim/lua/eric/plugins-setup.lua` as saving it `:w`.
+
+

@@ -7,13 +7,16 @@ fi
 
 export PATH=/opt/homebrew/bin:$PATH
 
-source "$XDG_CONFIG_HOME/.aliases"
+source "$XDG_CONFIG_HOME/.aliases/.aliases"
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 
 ## ZSH complete
-#autoload -U compinit; compinit
+autoload -U compinit; compinit
 ## https://github.com/zsh-users/zsh-completions
-#fpath=($ZDOTDIR/plugins/zsh-completions/src $fpath)
+fpath=($ZDOTDIR/plugins/zsh-completions/src $fpath)
+
+# Completions
+source "$ZDOTDIR/plugins/zsh-completions"
 
 # VIM mode
 source "$ZDOTDIR/plugins/vim_mode"
