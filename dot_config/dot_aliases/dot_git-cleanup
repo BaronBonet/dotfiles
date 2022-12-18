@@ -1,0 +1,17 @@
+#/bin/bash
+
+# stolen from https://github.com/mkrcah/dotfiles/blob/master/.bin/git-cleanup
+
+function git-cleanup(){
+    echo 'Switching to main'
+    git checkout main
+
+    echo 'Deleting local branches merged to main'
+    git branch --merged=main | grep -v main | grep -v release | xargs git branch -d
+
+    echo 'Deleting remote-tracking references that no longer exist on the remote'
+    git fetch --prune
+
+    echo 'Deleting [gone] local branches'
+    git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == "[gone]" {print $1}' | xargs  git branch -D
+}
