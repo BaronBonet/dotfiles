@@ -15,11 +15,8 @@ Plugin 'gmarik/Vundle.vim'
 
 Plugin 'vim-scripts/indentpython.vim'
 
-
 " Commentary plugin allows for commmenting out text with `gc`
 Plugin 'tpope/vim-commentary'
-
-colorscheme everforest
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -34,8 +31,6 @@ set noswapfile " disable the swapfile
 set hlsearch "highlight all results
 set ignorecase " ignore case in search
 set incsearch " show search results as you type
-
-set background=dark
 
 let &t_SI = "\<esc>[5 q"  " blinking I-beam in insert mode
 let &t_SR = "\<esc>[3 q"  " blinking underline in replace mode
@@ -59,9 +54,6 @@ filetype plugin indent on
 
 " Enhanced completion in command-line mode
 set wildmenu
-
-" Use <c-k> to jump to next uppercase character
-nnoremap <c-k> :<c-u>call search('\u')<cr>
 
 " relative line numbers
 :set relativenumber
