@@ -61,3 +61,4 @@ alias v='nvim'
 source "$XDG_CONFIG_HOME/.aliases/.source_aliases"
 source "$XDG_CONFIG_HOME/.aliases/.git-cleanup"
 
+alias tf='terraform'
