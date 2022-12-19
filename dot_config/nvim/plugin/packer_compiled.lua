@@ -76,134 +76,139 @@ time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
   ["Comment.nvim"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/Comment.nvim",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/Comment.nvim",
     url = "https://github.com/numToStr/Comment.nvim"
   },
   LuaSnip = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/LuaSnip",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/LuaSnip",
     url = "https://github.com/L3MON4D3/LuaSnip"
   },
   ["cmp-buffer"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/cmp-buffer",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/cmp-buffer",
     url = "https://github.com/hrsh7th/cmp-buffer"
   },
   ["cmp-nvim-lsp"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",
     url = "https://github.com/hrsh7th/cmp-nvim-lsp"
   },
   ["cmp-nvim-lua"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/cmp-nvim-lua",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/cmp-nvim-lua",
     url = "https://github.com/hrsh7th/cmp-nvim-lua"
   },
   ["cmp-path"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/cmp-path",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/cmp-path",
     url = "https://github.com/hrsh7th/cmp-path"
   },
   cmp_luasnip = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/cmp_luasnip",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
     url = "https://github.com/saadparwaiz1/cmp_luasnip"
   },
   ["friendly-snippets"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/friendly-snippets",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/friendly-snippets",
     url = "https://github.com/rafamadriz/friendly-snippets"
+  },
+  ["git-blame.nvim"] = {
+    loaded = true,
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/git-blame.nvim",
+    url = "https://github.com/f-person/git-blame.nvim"
   },
   ["lsp-zero.nvim"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/lsp-zero.nvim",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/lsp-zero.nvim",
     url = "https://github.com/VonHeikemen/lsp-zero.nvim"
   },
   ["lualine.nvim"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/lualine.nvim",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/lualine.nvim",
     url = "https://github.com/nvim-lualine/lualine.nvim"
   },
   ["mason-lspconfig.nvim"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/mason-lspconfig.nvim",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/mason-lspconfig.nvim",
     url = "https://github.com/williamboman/mason-lspconfig.nvim"
   },
   ["mason.nvim"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/mason.nvim",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/mason.nvim",
     url = "https://github.com/williamboman/mason.nvim"
   },
   ["nvim-autopairs"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/nvim-autopairs",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/nvim-autopairs",
     url = "https://github.com/windwp/nvim-autopairs"
   },
   ["nvim-cmp"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/nvim-cmp",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/nvim-cmp",
     url = "https://github.com/hrsh7th/nvim-cmp"
   },
   ["nvim-lspconfig"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/nvim-lspconfig",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
   },
   ["nvim-treesitter"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/nvim-treesitter",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
     url = "https://github.com/nvim-treesitter/nvim-treesitter"
   },
   ["nvim-ts-autotag"] = {
     load_after = {},
     loaded = true,
     needs_bufread = false,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/opt/nvim-ts-autotag",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/opt/nvim-ts-autotag",
     url = "https://github.com/windwp/nvim-ts-autotag"
   },
   ["nvim-web-devicons"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/nvim-web-devicons",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/nvim-web-devicons",
     url = "https://github.com/nvim-tree/nvim-web-devicons"
   },
   ["packer.nvim"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/packer.nvim",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/packer.nvim",
     url = "https://github.com/wbthomason/packer.nvim"
   },
   ["plenary.nvim"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/plenary.nvim",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
   ["telescope-fzf-native.nvim"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/telescope-fzf-native.nvim",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/telescope-fzf-native.nvim",
     url = "https://github.com/nvim-telescope/telescope-fzf-native.nvim"
   },
   ["telescope.nvim"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/telescope.nvim",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
   },
   ["vim-maximizer"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/vim-maximizer",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/vim-maximizer",
     url = "https://github.com/szw/vim-maximizer"
   },
   ["vim-nightfly-guicolors"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/vim-nightfly-guicolors",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/vim-nightfly-guicolors",
     url = "https://github.com/bluz71/vim-nightfly-guicolors"
   },
   ["vim-surround"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/vim-surround",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/vim-surround",
     url = "https://github.com/tpope/vim-surround"
   },
   ["vim-tmux-navigator"] = {
     loaded = true,
-    path = "/Users/ericbonet/.config/local/share/nvim/site/pack/packer/start/vim-tmux-navigator",
+    path = "/Users/ericbonet/.config/.local/share/nvim/site/pack/packer/start/vim-tmux-navigator",
     url = "https://github.com/christoomey/vim-tmux-navigator"
   }
 }
