@@ -12,6 +12,7 @@ classic: false
 blocks:
   - date
   - size
+  - permission
   - name
 
 # Other permissions to use

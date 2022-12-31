@@ -62,3 +62,5 @@ source "$XDG_CONFIG_HOME/.aliases/.source_aliases"
 source "$XDG_CONFIG_HOME/.aliases/.git-cleanup"
 
 alias tf='terraform'
+
+alias awslocal="aws --endpoint-url=http://localhost:64566  --profile=localstack"

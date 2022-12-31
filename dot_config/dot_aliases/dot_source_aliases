@@ -18,3 +18,11 @@ token-refresh () {
 # To remember logging into to aws ecr, probably need to change the ARN
 alias docker-aws="aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 084973803638.dkr.ecr.eu-central-1.amazonaws.com"
 
+function codeartifact() {
+AWS_PROFILE=infra-read-only export CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain source-ag --query authorizationToken --output text)
+poetry config http-basic.source-python-packages aws $CODEARTIFACT_AUTH_TOKEN
+}
+
+
+# For port forwarding services from the bastian host
+alias connect-to-dev-cultivation-strategy-service="ssh dev-stepstone -L58080:track-cultivation-strategy-service.atlas:8080"
