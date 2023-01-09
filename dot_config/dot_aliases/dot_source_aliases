@@ -4,8 +4,8 @@ alias connect-to-stagin-db="cd ~/source_software/general-infra/scripts/; ./aws-d
 alias connect-to-prod-db="export AWS_PROFILE=prod-admin && aws sso login --profile prod-admin && cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel production source_db primary"
 alias connect-to-terra-dev-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel development source_terra_db"
 alias connect-to-terra-prod-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel production source_terra_db"
-alias connect-to-dev-kpi-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel development track_metrics_db"
-alias connect-to-prod-kpi-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel production track_kpi_db"
+alias connect-to-dev-metrics-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel development track_metrics_db"
+alias connect-to-prod-metrics-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel production track_metrics_db"
 
 # Refresh all source tokens
 token-refresh () {
@@ -21,6 +21,13 @@ alias docker-aws="aws ecr get-login-password --region eu-central-1 | docker logi
 function codeartifact() {
 AWS_PROFILE=infra-read-only export CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain source-ag --query authorizationToken --output text)
 poetry config http-basic.source-python-packages aws $CODEARTIFACT_AUTH_TOKEN
+}
+
+pl () {
+	echo "Refreshing AWS CodeArtiface login"
+	yawsso -p {development,prod,infra}-admin || yawsso login --profile prod-admin
+	poetry config --unset http-basic.source-python-packages
+	poetry config http-basic.source-python-packages aws "$(aws codeartifact get-authorization-token --profile infra-admin --domain source-ag --query authorizationToken --output text)"
 }
 
 
