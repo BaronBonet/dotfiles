@@ -8,7 +8,9 @@ alias g="git"
 alias gs='git status'
 alias ga='git add'
 alias gp='git push'
+alias gpf='git push --force-with-lease'
 alias gc='git commit'
+alias gca='git commit --amend'
 alias gd='git diff'
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>    %Creset' --abbrev-commit"
 # Go to project root
