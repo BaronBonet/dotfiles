@@ -19,7 +19,7 @@ alias groot='[ ! -z `git rev-parse --show-cdup` ] && cd `git rev-parse --show-cd
 
 # https://github.com/Peltoche/lsd
 alias l="lsd -la"
-alias lt='lsd --tree'
+alias lt='l --tree'
 
 alias ch="chezmoi"
 
