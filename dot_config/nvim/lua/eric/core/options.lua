@@ -16,7 +16,11 @@ opt.expandtab = true
 opt.autoindent = true
 
 -- line wraping
-opt.wrap = false
+opt.wrap = true
+opt.wrapmargin = 0
+vim.opt.linebreak = true
+vim.opt.breakindent = true
+
 
 -- search settings
 opt.ignorecase = true
@@ -39,5 +43,4 @@ opt.splitbelow = true
 opt.scrolloff = 8
 opt.signcolumn = "yes"
 opt.isfname:append("@-@")
-
 
