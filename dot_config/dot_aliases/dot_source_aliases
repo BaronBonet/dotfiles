@@ -6,6 +6,7 @@ alias connect-to-terra-dev-db="cd ~/source_software/general-infra/scripts/; ./aw
 alias connect-to-terra-prod-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel production source_terra_db"
 alias connect-to-dev-metrics-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel development track_metrics_db"
 alias connect-to-prod-metrics-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel production track_metrics_db"
+alias connect-to-prod-scenario-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel production scenario_db"
 alias connect-to-dev-weather-forecast-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel development short_term_weather_forecast_service_db"
 
 # Refresh all source tokens
