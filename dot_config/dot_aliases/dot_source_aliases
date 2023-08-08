@@ -8,22 +8,10 @@ alias connect-to-dev-metrics-db="cd ~/source_software/general-infra/scripts/; ./
 alias connect-to-prod-metrics-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel production track_metrics_db"
 alias connect-to-prod-scenario-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel production scenario_db"
 alias connect-to-dev-weather-forecast-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel development short_term_weather_forecast_service_db"
-
-# Refresh all source tokens
-token-refresh () {
-    echo "Refreshing AWS CodeArtiface login"
-    yawsso || yawsso login --profile prod-admin
-    poetry config --unset http-basic.source-python-packages
-    poetry config http-basic.source-python-packages aws "$(aws codeartifact get-authorization-token --profile infra-admin --domain source-ag --query authorizationToken --output text)"
-}
+alias connect-to-prod-weather-forecast-db="cd ~/source_software/general-infra/scripts/; ./aws-db-tunnel production short_term_weather_forecast_service_db"
 
 # To remember logging into to aws ecr, probably need to change the ARN
 alias docker-aws="aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 084973803638.dkr.ecr.eu-central-1.amazonaws.com"
-
-function codeartifact() {
-AWS_PROFILE=infra-read-only export CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain source-ag --query authorizationToken --output text)
-poetry config http-basic.source-python-packages aws $CODEARTIFACT_AUTH_TOKEN
-}
 
 alias code-artifact-token='aws codeartifact get-authorization-token --domain source-ag --query authorizationToken --output text --profile infra-admin'
 
