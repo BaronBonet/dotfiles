@@ -1,5 +1,5 @@
-require("eric")
-local lsp = require('lsp-zero')
+-- bootstrap lazy.nvim, LazyVim and your plugins
+require("config.lazy")
 
-lsp.preset('recommended')
-lsp.setup()
+require("lspconfig").pyright.setup({})
+require("mini.comment").setup({})
