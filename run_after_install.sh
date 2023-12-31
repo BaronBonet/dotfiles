@@ -1,45 +1,50 @@
 #!/bin/bash
 
+# Function to install Homebrew packages
 brew_install() {
-    printf "\nInstalling $1"
-    if brew list $1 &>/dev/null; then
-        printf "\n${1} is already installed\n"
-    else
-        brew install $1 && printf "\n$1 is installed\n"
-    fi
+	printf "\nInstalling $1"
+	if brew list $1 &>/dev/null; then
+		printf "\n${1} is already installed\n"
+	else
+		brew install $1 && printf "\n$1 is installed\n"
+	fi
 }
 
-# fzf for ctrl+r
-folder="~/.fzf"
-if ! git clone --depth 1 https://github.com/junegunn/fzf.git "${folder}" 2>/dev/null && [ -d "${folder}" ]; then
-    echo "Failed to clone fzf because directory ${fzfDirectory} exists"
+# Clone and install fzf
+folder="$HOME/.fzf"
+if [ ! -d "${folder}" ]; then
+	git clone --depth 1 https://github.com/junegunn/fzf.git "${folder}"
+	"${folder}/install" --all
 else
-    yes  | ~/.fzf/install
+	echo "fzf is already installed"
 fi
 
+# Determine OS and install packages
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+	echo "Installing packages for Ubuntu"
 
-# This is abusing the purpose of run_after_install but works for now for installing these packages on a mac. 
-# TODO: get this working for a linux environment
-which -s brew
-if [[ $? != 0 ]] ; then
-    # Install Homebrew
-    printf "Brew is not installed, installing brew \n"
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-else
-    echo "Brew is available, attempting to install packages after upgrading brew"
-    brew update
-	# Diff so fancy
+	sudo apt update
+	sudo apt install -y bat ripgrep jq neovim zsh build-essential
+	wget https://go.dev/dl/go1.21.5.linux-amd64.tar.gz
+	rm -rf /usr/local/go && tar -C /usr/local -xzf go1.21.5.linux-amd64.tar.gz
+	export PATH=$PATH:/usr/local/go/bin
+
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+	echo "Installing packages for macOS"
+
+	# Install Homebrew if not installed
+	if ! command -v brew &>/dev/null; then
+		echo "Installing Homebrew"
+		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	fi
+
+	brew update
 	brew_install "diff-so-fancy"
-
-	# bat for nice cat highlighting
 	brew_install "bat"
-
-	# NVim
 	brew_install "nvim"
-
-	# For greping within nvim
 	brew_install "ripgrep"
+	brew_install "jq"
 
-    # For nice output of json
-    brew_install "jq"
+else
+	echo "Unsupported OS"
 fi
