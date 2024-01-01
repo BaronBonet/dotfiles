@@ -24,7 +24,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 	echo "Installing packages for Ubuntu"
 
 	sudo apt update
-	sudo apt install -y bat ripgrep jq neovim zsh build-essential
+	sudo apt install -y bat ripgrep jq neovim zsh build-essential diff-so-fancy
 	wget https://go.dev/dl/go1.21.5.linux-amd64.tar.gz
 	rm -rf /usr/local/go && tar -C /usr/local -xzf go1.21.5.linux-amd64.tar.gz
 	export PATH=$PATH:/usr/local/go/bin
