@@ -20,8 +20,20 @@ pl () {
 	yawsso -p {development,prod,infra}-admin || yawsso login --profile prod-admin
 	poetry config --unset http-basic.source-python-packages
 	poetry config http-basic.source-python-packages aws "$(aws codeartifact get-authorization-token --profile infra-admin --domain source-ag --query authorizationToken --output text)"
+   	aws codeartifact login --tool pip --domain source-ag --domain-owner 084973803638 --repository source-python-packages
 }
 
 
 # For port forwarding services from the bastian host
 alias connect-to-dev-cultivation-strategy-service="ssh dev-stepstone -L58080:track-cultivation-strategy-service.atlas:8080"
+alias connect-to-prod-maks="ssh prod-stepstone -L58080:track-metric-and-kpi-service.atlas:8080"
+#
+# For port forwarding services from the bastian host
+alias connect-to-terra-kpi-prod="ssh prod-stepstone -L58001:terra-kpi-backend.atlas:8000"
+# Required for new source tooling
+# SOURCE_TOOLING_AWS_INFRA_PROFILE=infra-admin
+# alias pl=refresh-package-and-image-access
+
+function get-terra-db-secret() {
+    aws secretsmanager get-secret-value --secret-id source_terra_db-secret --region eu-central-1 --output text --query SecretString --profile "$1" | jq '.password' | tr -d '\"' | tr -d '\n' | pbcopy
+}

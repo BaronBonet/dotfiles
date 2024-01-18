@@ -1,4 +1,5 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+
 if not vim.loop.fs_stat(lazypath) then
   -- bootstrap lazy.nvim
   -- stylua: ignore
@@ -8,14 +9,36 @@ vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
 require("lazy").setup({
   spec = {
-    -- add LazyVim and import its plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-    -- import any extras modules here
-    -- { import = "lazyvim.plugins.extras.lang.typescript" },
-    -- { import = "lazyvim.plugins.extras.lang.json" },
-    { import = "lazyvim.plugins.extras.ui.mini-animate" },
-    -- { import = "lazyvim.plugins.extras.dap.core" },
-    -- import/override with your plugins
+
+    { import = "lazyvim.plugins.extras.lang.json" },
+
+    { import = "lazyvim.plugins.extras.lang.python" },
+
+    { import = "lazyvim.plugins.extras.lang.go" },
+    {
+      import = "lazyvim.plugins.extras.dap.core",
+    },
+    {
+      import = "lazyvim.plugins.extras.coding.copilot",
+      opts = {
+        suggestion = { enabled = true },
+        panel = { enabled = true },
+        filetypes = {
+          markdown = false,
+          help = true,
+        },
+      },
+    },
+    { import = "lazyvim.plugins.extras.lang.terraform" },
+    { import = "lazyvim.plugins.extras.lang.yaml" },
+    { import = "lazyvim.plugins.extras.lang.docker" },
+    { import = "lazyvim.plugins.extras.lang.markdown" },
+    { import = "lazyvim.plugins.extras.formatting.black" },
+    -- While doing crafting interperters
+    { import = "lazyvim.plugins.extras.lang.java" },
+
+    -- import/override with your pluginsi
     { import = "plugins" },
   },
   defaults = {
@@ -28,7 +51,7 @@ require("lazy").setup({
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
   install = { colorscheme = { "tokyonight", "habamax" } },
-  checker = { enabled = true }, -- automatically check for plugin updates
+  checker = { enabled = true, notify = false }, -- automatically check for plugin updates
   performance = {
     rtp = {
       -- disable some rtp plugins
@@ -36,7 +59,7 @@ require("lazy").setup({
         "gzip",
         -- "matchit",
         -- "matchparen",
-        -- "netrwPlugin",
+        "netrwPlugin",
         "tarPlugin",
         "tohtml",
         "tutor",
