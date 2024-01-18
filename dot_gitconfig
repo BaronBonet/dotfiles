@@ -21,3 +21,10 @@
 
 [url "ssh://git@github.com/"]
     insteadOf = https://github.com/
+[push]
+	autoSetupRemote = true
+
+[alias]
+	wip = !git add --all && git commit -m 'WIP'
+
+

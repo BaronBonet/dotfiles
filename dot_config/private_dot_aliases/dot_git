@@ -1,0 +1,51 @@
+#/bin/bash
+
+alias tree="git ls-tree -r --name-only HEAD | tree --fromfile"
+alias g="git"
+alias gs='git status'
+alias ga='git add'
+alias gp='git push'
+alias gpf='git push --force-with-lease'
+alias gc='git commit'
+alias gca='git commit --amend'
+alias gd='git diff'
+alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>    %Creset' --abbrev-commit"
+# Go to project root
+alias groot='[ ! -z `git rev-parse --show-cdup` ] && cd `git rev-parse --show-cdup || pwd`'
+
+
+# stolen from https://github.com/mkrcah/dotfiles/blob/master/.bin/git-cleanup
+function git-cleanup(){
+    echo 'Switching to main'
+    git checkout main
+
+    echo 'Deleting local branches merged to main'
+    git branch --merged=main | grep -v main | grep -v release | xargs git branch -d
+
+    echo 'Deleting remote-tracking references that no longer exist on the remote'
+    git fetch --prune
+
+    echo 'Deleting [gone] local branches'
+    git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == "[gone]" {print $1}' | xargs  git branch -D
+}
+
+rebase-single-commit() { 
+    # usage `rebase-single-commit main`
+    # effect: rebases the current branch onto the supplied branch. Only works if the current branch has a single commit.
+
+    # The branch to rebase onto
+    target_branch="$1"
+
+    # Count the number of commits on the current branch not on the target branch
+    commit_count=$(git rev-list --count HEAD "^$target_branch")
+
+    # Check if commit count is more than 1
+    if [ "$commit_count" -ne 1 ]; then
+        echo "Error: The current branch has more than one commit."
+        return 1
+    fi
+
+    # Proceed with the rebase
+    git rebase --onto "$target_branch" HEAD~ "$(git branch --show-current)"
+}
+

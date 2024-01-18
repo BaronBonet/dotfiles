@@ -58,3 +58,6 @@ set wildmenu
 " relative line numbers
 :set relativenumber
 :set number
+
+" space + p puts removed word in register
+vim.keymap("n", "<leader>p", "\"_dp")
