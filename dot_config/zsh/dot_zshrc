@@ -7,12 +7,16 @@ fi
 
 export PATH=/opt/homebrew/bin:$PATH
 
+# AWS Completer to allow for tab completions
+export PATH=/opt/homebrew/bin/aws_completer:$PATH
+
 source "$XDG_CONFIG_HOME/.aliases/.aliases"
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 
-## ZSH complete
+# ZSH complete
+autoload bashcompinit && bashcompinit
 autoload -U compinit; compinit
-## https://github.com/zsh-users/zsh-completions
+# https://github.com/zsh-users/zsh-completions
 fpath=($ZDOTDIR/plugins/zsh-completions/src $fpath)
 
 # Completions
@@ -26,18 +30,22 @@ source "$ZDOTDIR/plugins/curser_mode"
 
 # Auto suggestions while typing
 source "$ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+bindkey '^ ' autosuggest-accept # Remap the right arrow key to Ctrl-space
 
 # Syntax highliting in the shell
 source "$ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
-# Python
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+# For managing python versions, needs to be installed 
+# https://asdf-vm.com/guide/getting-started.html
+. "$HOME/.asdf/asdf.sh"
+
 export PATH="$PATH:$HOME/.local/bin"
-export PATH="$HOME/.poetry/bin:$PATH"
+
 # Allows pre commit to run using zsh
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
+# Make sure we use default pypi unless set
+export PIP_INDEX_URL=https://pypi.org/simple
+
 
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
@@ -45,3 +53,22 @@ export PATH="$HOME/.poetry/bin:$PATH"
 [ -f ~/.fzf.zsh ] && source ~/.config/fzf/.fzf.zsh
 
 
+# Autoload aws completer
+autoload bashcompinit && bashcompinit
+autoload -Uz compinit && compinit
+complete -C '/opt/homebrew/bin/aws_completer' aws
+
+# Trying source-tooling
+# source ~/source_software/source-tooling/tooling.zsh
+# init-source-shell-env
+# export SOURCE_TOOLING_AWS_INFRA_PROFILE=infra-admin
+ #
+# GO stuff
+export GOBIN=$(go env GOPATH)/bin
+export PATH=$PATH:$GOBIN
+
+# Goland
+export PATH=$PATH:/Applications/GoLand.app/Contents/MacOS
+
+# Since something is getting screwey with the colors
+# export TERM=xterm-256color
