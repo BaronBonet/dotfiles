@@ -1,30 +1,4 @@
--- TODO: how to make this work for all current telescope buffers
--- local my_find_files
--- my_find_files = function(opts, no_ignore)
---   opts = opts or {}
---   no_ignore = vim.F.if_nil(no_ignore, false)
---   opts.attach_mappings = function(_, map)
---     map("i", "<C-h>", function(prompt_bufnr) -- <C-h> to toggle modes
---       local prompt = require("telescope.actions.state").get_current_line()
---       require("telescope.actions").close(prompt_bufnr)
---       no_ignore = not no_ignore
---       my_find_files({ default_text = prompt }, no_ignore)
---     end)
---     return true
---   end
---
---   if no_ignore then
---     opts.no_ignore = true
---     opts.hidden = true
---     opts.prompt_title = "Find Files <ALL>"
---     require("telescope.builtin").find_files(opts)
---   else
---     opts.prompt_title = "Find Files"
---     require("telescope.builtin").find_files(opts)
---   end
--- end
 return {
-  -- So I don't have to remember to save a file
   {
     "okuuva/auto-save.nvim",
     event = { "InsertLeave" },
@@ -140,7 +114,6 @@ return {
           require("telescope").load_extension("fzf")
         end,
       },
-      "nvim-telescope/telescope-file-browser.nvim",
     },
     keys = function()
       return {
@@ -159,24 +132,41 @@ return {
           end,
           desc = "[S]earch current [W]ord",
         },
-        -- FIXME: This should retrun . dotfiles e.g. .github/actions/...
-        -- should this also use the git root or the project root?
         {
           "<leader>sf",
           function()
             local builtin = require("telescope.builtin")
-            builtin.find_files({
-              no_ignore = true,
-              hidden = true,
-              file_ignore_patterns = { "^.git/", "^.venv/" },
-            })
+            local function find_files_optionally_show_hidden(opts, no_ignore)
+              opts = opts or {}
+              no_ignore = vim.F.if_nil(no_ignore, false)
+              opts.attach_mappings = function(_, map)
+                map({ "n", "i" }, "<C-h>", function(prompt_bufnr)
+                  local prompt = require("telescope.actions.state").get_current_line()
+                  require("telescope.actions").close(prompt_bufnr)
+                  no_ignore = not no_ignore
+                  find_files_optionally_show_hidden({ default_text = prompt }, no_ignore)
+                end)
+                return true
+              end
+
+              if no_ignore then
+                opts.no_ignore = true
+                opts.hidden = true
+                opts.prompt_title = "Find Files <ALL>"
+                builtin.find_files(opts)
+              else
+                opts.prompt_title = "Find Files"
+                builtin.find_files(opts)
+              end
+            end
+            find_files_optionally_show_hidden()
           end,
           desc = "[S]earch all [F]iles in your current working directory, except for git",
         },
-        -- FIXME: This should retrun . dotfiles e.g. .github/actions/...
         {
-          "<leader>sG",
+          "<leader>sg",
           function()
+            local builtin = require("telescope.builtin")
             local function find_git_root()
               -- Use the current buffer's path as the starting point for the git search
               local current_file = vim.api.nvim_buf_get_name(0)
@@ -199,15 +189,35 @@ return {
               end
               return git_root
             end
+
             local git_root = find_git_root()
-            if git_root then
-              require("telescope.builtin").live_grep({
-                search_dirs = { git_root },
-                -- additional_args = function(opts)
-                --   return { "--hidden" } -- , "--no-ignore-vcs" }
-                -- end,
-              })
+
+            local function find_git_root_optionally_show_hidden(default_text, no_ignore)
+              local opts = {}
+              opts.search_dirs = { git_root }
+              opts.attach_mappings = function(_, map)
+                map({ "n", "i" }, "<C-h>", function(prompt_bufnr)
+                  local prompt = require("telescope.actions.state").get_current_line()
+                  require("telescope.actions").close(prompt_bufnr)
+                  find_git_root_optionally_show_hidden(prompt, not no_ignore)
+                end)
+                return true
+              end
+
+              if no_ignore then
+                opts.prompt_title = "Grep (git root) <ALL>"
+                opts.default_text = default_text
+                opts.additional_args = function()
+                  return { "--hidden", "--no-ignore" }
+                end
+                builtin.live_grep(opts)
+              else
+                opts.prompt_title = "Grep (git root)"
+                opts.default_text = default_text
+                builtin.live_grep(opts)
+              end
             end
+            find_git_root_optionally_show_hidden()
           end,
           desc = "[S]earch by [G]rep on Git Root",
         },
@@ -241,135 +251,16 @@ return {
           end,
           desc = "[S]earch available [F]unctions",
         },
-        { "<leader>sgc", "<cmd>Telescope git_commits<CR>", desc = "[S]earch [G]it [C]ommits" },
+        { "<leader>sG", "<cmd>Telescope git_commits<CR>", desc = "[S]earch [G]it Commits" },
         {
           "<leader><space>",
           require("lazyvim.util").telescope("files"),
           desc = "Find Files (root dir) respect_gitignore",
         },
-        -- {
-        --   "<leader>e",
-        --   function()
-        --     local telescope = require("telescope")
-        --
-        --     local function telescope_buffer_dir()
-        --       return vim.fn.expand("%:p:h")
-        --     end
-        --
-        --     telescope.extensions.file_browser.file_browser({
-        --       path = "%:p:h",
-        --       cwd = telescope_buffer_dir(),
-        --       respect_gitignore = true,
-        --       hidden = false,
-        --       grouped = true,
-        --       previewer = true,
-        --       initial_mode = "normal",
-        --       layout_config = { height = 40 },
-        --     })
-        --   end,
-        --   desc = "Open File Browser don't show gitignore",
-        -- },
-        -- {
-        --   "<leader>E",
-        --   function()
-        --     local telescope = require("telescope")
-        --
-        --     local function telescope_buffer_dir()
-        --       return vim.fn.expand("%:p:h")
-        --     end
-        --
-        --     telescope.extensions.file_browser.file_browser({
-        --       path = "%:p:h",
-        --       cwd = telescope_buffer_dir(),
-        --       respect_gitignore = false,
-        --       hidden = true,
-        --       grouped = true,
-        --       previewer = true,
-        --       initial_mode = "normal",
-        --       layout_config = { height = 40 },
-        --     })
-        --   end,
-        --   desc = "Open File Browser showing [E]verything",
-        -- },
-        -- {
-        --   "<leader>ff",
-        --   function()
-        --     my_find_files()
-        --   end,
-        --   desc = "Find Files",
-        -- },
       }
     end,
-    config = function(_, opts)
+    config = function()
       require("telescope").load_extension("fzf")
-      -- local telescope = require("telescope")
-      -- local fb_actions = require("telescope").extensions.file_browser.actions
-      --
-      -- local actions = require("telescope.actions")
-      -- local action_state = require("telescope.actions.state")
-      --
-      -- -- Define a global variable to keep track of the hidden files state
-      -- local telescope_hidden_files = false
-      --
-      -- local function toggle_hidden(prompt_bufnr)
-      --   -- Toggle the global hidden files state
-      --   telescope_hidden_files = not telescope_hidden_files
-      --
-      --   local picker = action_state.get_current_picker(prompt_bufnr)
-      --   -- print fields of pickex
-      --   print(vim.inspect(picker))
-      --   -- Close the current picker
-      --   actions.close(prompt_bufnr)
-      --
-      --   local current_search_word = action_state.get_current_line()
-      --   local finder = picker.finder
-      --
-      --   local cwd = vim.fn.getcwd()
-      --
-      --   -- TODO: May need to make this a switch statment based on the current picker
-      --   -- require("telescope.builtin").find_files({
-      --   -- picker({
-      --   --   hidden = telescope_hidden_files,
-      --   --   no_ignore = telescope_hidden_files,
-      --   --   cwd = cwd,
-      --   --   default_text = current_search_word,
-      --   -- })
-      -- end
-      --
-      -- opts.defaults = vim.tbl_deep_extend("force", opts.defaults, {
-      --   wrap_results = true,
-      --   layout_strategy = "horizontal",
-      --   layout_config = { prompt_position = "top" },
-      --   sorting_strategy = "ascending",
-      --   winblend = 0,
-      --   prompt_prefix = "🔍",
-      --   mappings = {
-      --     i = {
-      --       ["<C-h>"] = toggle_hidden,
-      --     },
-      --   },
-      --   border = true,
-      -- })
-      -- opts.pickers = {
-      --   diagnostics = {
-      --     theme = "ivy",
-      --     initial_mode = "normal",
-      --   },
-      -- }
-      -- opts.extensions = {
-      --   file_browser = {
-      --     mappings = {
-      --       ["n"] = {
-      --         ["N"] = fb_actions.create,
-      --         ["/"] = function()
-      --           vim.cmd("startinsert")
-      --         end,
-      --       },
-      --     },
-      --   },
-      -- }
-      -- telescope.setup(opts)
-      -- require("telescope").load_extension("file_browser")
     end,
   },
   {

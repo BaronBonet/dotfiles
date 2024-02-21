@@ -1,4 +1,4 @@
-#/bin/bash
+/bin/bash
 
 alias tree="git ls-tree -r --name-only HEAD | tree --fromfile"
 alias g="git"
