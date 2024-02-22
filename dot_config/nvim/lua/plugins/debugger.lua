@@ -184,6 +184,19 @@ return {
       -- https://github.com/mfussenegger/nvim-dap-python?tab=readme-ov-file#debugpy
       require("dap-python").setup("~/.virtualenvs/debugpy/bin/python")
       require("dap-python").test_runner = "pytest"
+
+      require("dap").configurations.python = {
+        {
+          type = "python",
+          request = "launch",
+          name = "Launch File",
+          program = "${file}",
+          cwd = vim.fn.getcwd(),
+          env = {
+            PYTHONPATH = vim.fn.getcwd() .. ":" .. (os.getenv("PYTHONPATH") or ""),
+          },
+        },
+      }
     end,
   },
   {

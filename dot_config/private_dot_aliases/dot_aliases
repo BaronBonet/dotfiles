@@ -71,3 +71,39 @@ alias tree="git ls-tree -r --name-only HEAD | tree --fromfile"
 source "$XDG_CONFIG_HOME/.aliases/.source_aliases"
 source "$XDG_CONFIG_HOME/.aliases/.git"
 
+set_poetry_python() {
+  local python_version="$1"
+  if [ -z "$python_version" ]; then
+    echo "You must provide a Python version as an argument."
+    return 1
+  fi
+
+  # Check if the Python version is already installed with asdf
+  if asdf list python | grep -q "$python_version"; then
+    echo "Python $python_version is already installed."
+  else
+    echo "Installing Python $python_version with asdf..."
+    asdf install python "$python_version"
+  fi
+
+  # Ensure asdf is initialized in the current shell session
+  if [ -z "$(command -v asdf)" ]; then
+    echo "Initializing asdf..."
+    . $(brew --prefix asdf)/asdf.sh
+  fi
+
+# Set the local Python version to the specified version
+  asdf local python "$python_version"
+
+  # Find the path to the specified Python version
+  local python_path=$(asdf which python)
+  if [ -z "$python_path" ]; then
+    echo "Failed to find the path for Python $python_version. Make sure it's installed correctly."
+    return 1
+  fi
+
+  # Set poetry to use the specified Python version
+  echo "Setting poetry to use Python from $python_path"
+  poetry env use "$python_path"
+}
+
