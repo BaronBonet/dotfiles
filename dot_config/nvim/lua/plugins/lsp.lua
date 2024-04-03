@@ -33,6 +33,9 @@ return {
         ["lua"] = { "stylua" },
         ["*"] = { "codespell" },
       },
+      formatters = {
+        golines = { prepend_args = { "--no-reformat-tags" } },
+      },
     },
   },
 }
