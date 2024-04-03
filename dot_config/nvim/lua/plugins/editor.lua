@@ -225,7 +225,7 @@ return {
         { "<leader>sD", "<cmd>Telescope diagnostics<cr>", desc = "Workspace diagnostics" },
         { "<leader>sc", "<cmd>Telescope command_history<cr>", desc = "[S]earch [C]ommand History" },
         { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "[S]earch available [C]ommands" },
-        { "<leader>sr", "<cmd>Telescope registers<cr>", desc = "Search Registers" },
+        -- { "<leader>sr", "<cmd>Telescope registers<cr>", desc = "Search Registers" },
         { "<leader>sR", "<cmd>Telescope resume<cr>", desc = "Resume last telescope session" },
         {
           "<leader>sh",
@@ -354,7 +354,10 @@ return {
         {
           "<leader>e",
           function()
-            require("neo-tree.command").execute({ toggle = true, dir = require("lazyvim.util").root() })
+            require("neo-tree.command").execute({
+              toggle = true,
+              dir = require("lazyvim.util").root(),
+            })
           end,
           desc = "Explorer NeoTree (root dir)",
         },
@@ -367,6 +370,39 @@ return {
         },
       }
     end,
+  },
+  {
+    "nvim-pack/nvim-spectre",
+    keys = {
+      {
+        "<leader>rr",
+        function()
+          require("spectre").open()
+        end,
+        desc = "[R]eplace in Files (Spectre)",
+      },
+      {
+        "<leader>rw",
+        function()
+          require("spectre").open_visual({ select_word = true })
+        end,
+        desc = "[R]eplace current [Word] in files (Spectre)",
+      },
+      {
+        "<leader>rf",
+        function()
+          require("spectre").open_file_search({ select_word = true })
+        end,
+        desc = "[R]eplace current word in current [F]ile (Spectre)",
+      },
+      {
+        "<leader>rt",
+        function()
+          require("spectre").toggle()
+        end,
+        desc = "[R]ename [T]oggle (Spectre)",
+      },
+    },
   },
   {
     "folke/which-key.nvim",

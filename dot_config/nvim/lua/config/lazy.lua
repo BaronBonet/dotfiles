@@ -21,14 +21,6 @@ require("lazy").setup({
     },
     {
       import = "lazyvim.plugins.extras.coding.copilot",
-      opts = {
-        suggestion = { enabled = true },
-        panel = { enabled = true },
-        filetypes = {
-          markdown = false,
-          help = true,
-        },
-      },
     },
     { import = "lazyvim.plugins.extras.lang.terraform" },
     { import = "lazyvim.plugins.extras.lang.yaml" },
