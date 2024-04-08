@@ -347,6 +347,10 @@ return {
           hide_gitignored = true,
           hide_dotfiles = false,
         },
+        follow_current_file = {
+          enabled = true,
+          leave_dirs_open = true, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
+        },
       },
     },
     keys = function()
@@ -356,17 +360,25 @@ return {
           function()
             require("neo-tree.command").execute({
               toggle = true,
+              reveal = true, -- auto expand current file
               dir = require("lazyvim.util").root(),
             })
           end,
-          desc = "Explorer NeoTree (root dir)",
+          desc = "Explorer NeoTree (project root dir)",
         },
         {
           "<leader>E",
           function()
-            require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
+            require("neo-tree.command").execute({ toggle = true, reveal = true, dir = vim.loop.cwd() })
           end,
-          desc = "Explorer NeoTree (cwd)",
+          desc = "Explorer NeoTree (cwd, where you opened nvim)",
+        },
+        {
+          "-",
+          function()
+            require("neo-tree.command").execute({ toggle = true, position = "current" })
+          end,
+          desc = "Toggle Neotree (reveal in current position)",
         },
       }
     end,

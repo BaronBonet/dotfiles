@@ -7,7 +7,6 @@ local function map(mode, l, r, opts)
   vim.keymap.set(mode, l, r, opts)
 end
 
--- TODO: how to overwrite all q keymaps efficiently?
 map("n", "<leader>qq", "<cmd>q<cr>", { noremap = true, desc = "[Q]uit" })
 map("n", "<leader>qa", "<cmd>qa<cr>", { noremap = true, desc = "[Q]uit [A]ll" })
 

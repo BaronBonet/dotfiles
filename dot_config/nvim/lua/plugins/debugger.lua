@@ -51,6 +51,7 @@ return {
           dapui.setup({
             icons = { expanded = "▾", collapsed = "▸", current_frame = "*" },
             controls = {
+              element = "",
               enabled = true,
               icons = {
                 pause = "⏸",
@@ -194,6 +195,7 @@ return {
           name = "Launch File",
           program = "${file}",
           cwd = vim.fn.getcwd(),
+          justMyCode = false, -- Also follow importend code
           env = {
             PYTHONPATH = vim.fn.getcwd() .. ":" .. (os.getenv("PYTHONPATH") or ""),
           },
