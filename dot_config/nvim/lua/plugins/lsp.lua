@@ -11,7 +11,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = {
-      autoformat = false, -- format with <leader>cf
+      autoformat = false, -- format with <leader>f
       servers = {
         lua_ls = {
           Lua = {
@@ -34,7 +34,7 @@ return {
         ["*"] = { "codespell" },
       },
       formatters = {
-        golines = { prepend_args = { "--no-reformat-tags" } },
+        golines = { prepend_args = { "--no-reformat-tags", "-m", "120" } },
       },
     },
   },
