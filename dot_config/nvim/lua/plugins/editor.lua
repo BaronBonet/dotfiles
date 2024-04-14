@@ -10,74 +10,36 @@ return {
   },
   {
     "ThePrimeagen/harpoon",
-    branch = "harpoon2",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      require("harpoon"):setup({})
-    end,
-    keys = {
-      {
-        "<leader>a",
-        function()
-          require("harpoon"):list():append()
-        end,
-        desc = "[A] a file to harpoon",
-      },
-      {
-        "<C-z>",
-        function()
-          local conf = require("telescope.config").values
-          local function toggle_telescope(harpoon_files)
-            local file_paths = {}
-            for _, item in ipairs(harpoon_files.items) do
-              table.insert(file_paths, item.value)
-            end
+    keys = function()
+      local keys = {
+        {
+          "<leader>H",
+          function()
+            require("harpoon"):list():append()
+          end,
+          desc = "Harpoon File",
+        },
+        {
+          "<leader>h",
+          function()
+            local harpoon = require("harpoon")
+            harpoon.ui:toggle_quick_menu(harpoon:list())
+          end,
+          desc = "Harpoon Quick Menu",
+        },
+      }
 
-            require("telescope.pickers")
-              .new({}, {
-                prompt_title = "Harpoon",
-                finder = require("telescope.finders").new_table({
-                  results = file_paths,
-                }),
-                previewer = conf.file_previewer({}),
-                sorter = conf.generic_sorter({}),
-              })
-              :find()
-          end
-          local harpoon = require("harpoon")
-          toggle_telescope(harpoon:list())
-        end,
-        desc = "Open harpoon menu",
-      },
-      {
-        "<C-s>",
-        function()
-          require("harpoon"):list():select(1)
-        end,
-        desc = "harpoon to file 1",
-      },
-      {
-        "<C-q>",
-        function()
-          require("harpoon"):list():select(2)
-        end,
-        desc = "harpoon to file 2",
-      },
-      {
-        "<C-w>",
-        function()
-          require("harpoon"):list():select(3)
-        end,
-        desc = "harpoon to file 3",
-      },
-      {
-        "<C-e>",
-        function()
-          require("harpoon"):list():select(4)
-        end,
-        desc = "harpoon to file 4",
-      },
-    },
+      for i = 6, 9 do
+        table.insert(keys, {
+          "<leader>" .. i,
+          function()
+            require("harpoon"):list():select(i - 5)
+          end,
+          desc = "Harpoon to File " .. i - 5,
+        })
+      end
+      return keys
+    end,
   },
   {
     "folke/trouble.nvim",
@@ -261,7 +223,6 @@ return {
         { "<leader>sD", "<cmd>Telescope diagnostics<cr>", desc = "Workspace diagnostics" },
         { "<leader>sc", "<cmd>Telescope command_history<cr>", desc = "[S]earch [C]ommand History" },
         { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "[S]earch available [C]ommands" },
-        -- { "<leader>sr", "<cmd>Telescope registers<cr>", desc = "Search Registers" },
         { "<leader>sR", "<cmd>Telescope resume<cr>", desc = "Resume last telescope session" },
         {
           "<leader>sh",
@@ -320,49 +281,49 @@ return {
     keys = function()
       return {
         {
-          "<leader>hs",
+          "<leader>gs",
           function()
             require("gitsigns").stage_hunk()
           end,
           desc = "Stage hunk",
         },
         {
-          "<leader>hu",
+          "<leader>gu",
           function()
             require("gitsigns").undo_stage_hunk()
           end,
           desc = "Undo stage hunk",
         },
         {
-          "<leader>hS",
+          "<leader>gS",
           function()
             require("gitsigns").stage_buffer()
           end,
           desc = "git Stage entire buffer",
         },
         {
-          "<leader>hd",
+          "<leader>gd",
           function()
             require("gitsigns").diffthis()
           end,
           desc = "git diff against index",
         },
         {
-          "<leader>hD",
+          "<leader>gD",
           function()
             require("gitsigns").diffthis("~")
           end,
           desc = "git diff against last commit",
         },
         {
-          "<leader>hb",
+          "<leader>gb",
           function()
             require("gitsigns").blame_line({ full = false })
           end,
           desc = "git blame line",
         },
         {
-          "<leader>hB",
+          "<leader>gB",
           function()
             require("gitsigns").blame_line({ full = true })
           end,
@@ -466,7 +427,7 @@ return {
       opts.defaults["<leader>r"] = { name = "+[R]ename" }
       opts.defaults["<leader>s"] = { name = "+[S]earch" }
       opts.defaults["<leader>h"] = { name = "+Git [H]unk" }
-      opts.defaults["<leader>g"] = { name = "+[G]it UI" }
+      opts.defaults["<leader>G"] = { name = "+[G]it UI" }
       return opts
     end,
   },
