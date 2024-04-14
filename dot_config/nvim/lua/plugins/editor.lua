@@ -7,6 +7,17 @@ return {
         enabled = false,
       },
     },
+    keys = function()
+      return {
+        {
+          "<leader>as",
+          function()
+            require("auto-save").toggle()
+          end,
+          desc = "[A]uto [S]ave",
+        },
+      }
+    end,
   },
   {
     "ThePrimeagen/harpoon",
@@ -43,53 +54,24 @@ return {
   },
   {
     "folke/trouble.nvim",
-  -- stylua: ignore
+    branch = "dev",
     keys = function()
       return {
+        { "<leader>tt", "<cmd>Trouble diagnostics toggle<cr>", desc = "[T]oggle [T]rouble" },
         {
-          "<leader>tt",
-          function()
-            require("trouble").toggle()
-          end,
-          desc = "[T]oggle [T]rouble",
+          "<leader>tT",
+          "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+          desc = "[T]oggle [T]rouble current buffer",
         },
+        { "<leader>ts", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "[T]oggle [S]ymbols Trouble" },
         {
-          "<leader>tw",
-          function()
-            require("trouble").toggle("workspace_diagnostics")
-          end,
-          desc = "[T]oggle Trouble [W]orkspace",
+          "<leader>tS",
+          "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+          desc = "[T]rouble L[S]P references/definitions/...",
         },
-        {
-          "<leader>td",
-          function()
-            require("trouble").toggle("document_diagnostics")
-          end,
-          desc = "[T]oggle Trouble [D]ocument",
-        },
-        {
-          "<leader>tl",
-          function()
-            require("trouble").toggle("loclist")
-          end,
-          desc = "[T]oggle Trouble [L]oclist",
-        },
-        {
-          "<leader>tq",
-          function()
-            require("trouble").toggle("quickfix")
-          end,
-          desc = "[T]oggle Trouble [Q]uickfix",
-        },
-        {
-          "<leader>tf",
-          function()
-            require("trouble").toggle("file")
-          end,
-          desc = "[T]oggle Trouble [F]ile",
-        },
+        { "<leader>tl", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
+        { "<leader>tq", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
         { "<leader>to", "<cmd>TodoTrouble<cr>", desc = "[T]o d[o]" },
-        { "<leader>tT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
       }
     end,
   },
@@ -104,6 +86,7 @@ return {
   },
   {
     "nvim-telescope/telescope.nvim",
+    -- Includes ability to use ctrl+h to toggle hidden files when doing some searching
     dependencies = {
       {
         "nvim-telescope/telescope-fzf-native.nvim",
@@ -412,23 +395,5 @@ return {
         desc = "[R]ename [T]oggle (Spectre)",
       },
     },
-  },
-  {
-    "folke/which-key.nvim",
-    opts = function(_, opts)
-      opts.defaults["<leader>w"] = nil
-      opts.defaults["<leader>f"] = nil
-      opts.defaults["<leader><tab>"] = nil
-      opts.defaults["<leader>x"] = nil
-      opts.defaults["<leader>u"] = { name = "[U]i" }
-      opts.defaults["<leader>q"] = { name = "+[Q]uit" }
-      opts.defaults["<leader>sg"] = { name = "+[G]it" }
-      opts.defaults["<leader>t"] = { name = "+[T]rouble" }
-      opts.defaults["<leader>r"] = { name = "+[R]ename" }
-      opts.defaults["<leader>s"] = { name = "+[S]earch" }
-      opts.defaults["<leader>h"] = { name = "+Git [H]unk" }
-      opts.defaults["<leader>G"] = { name = "+[G]it UI" }
-      return opts
-    end,
   },
 }

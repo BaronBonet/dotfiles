@@ -71,4 +71,26 @@ return {
     },
     keys = { { "<leader>z", "<cmd>ZenMode<cr>", desc = "Zen Mode" } },
   },
+  {
+    "folke/which-key.nvim",
+    opts = function(_, opts)
+      opts.defaults["<leader>w"] = nil
+      opts.defaults["<leader>f"] = nil
+      opts.defaults["<leader><tab>"] = nil
+      opts.defaults["<leader>x"] = nil
+      opts.defaults["<leader>u"] = { name = "[U]i" }
+      opts.defaults["<leader>q"] = { name = "+[Q]uit or reload" }
+      opts.defaults["<leader>sg"] = { name = "+[G]it" }
+      opts.defaults["<leader>t"] = { name = "+[T]rouble" }
+      opts.defaults["<leader>r"] = { name = "+[R]ename" }
+      opts.defaults["<leader>s"] = { name = "+[S]earch" }
+      opts.defaults["<leader>g"] = { name = "+[G]it hunk" }
+      opts.defaults["<leader>G"] = { name = "+[G]it UI" }
+      opts.defaults["<leader>a"] = { name = "+[A]uto" }
+      opts.defaults["<leader>b"] = { name = "[B]uffer" }
+      opts.defaults["<leader>c"] = { name = "[C]ode" }
+      opts.defaults["<leader>d"] = { name = "[D]ebug" }
+      return opts
+    end,
+  },
 }

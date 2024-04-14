@@ -15,6 +15,12 @@ vim.opt.guicursor = {
   "r:hor50-Cursor/lCursor-blinkwait100-blinkon100-blinkoff100",
 }
 
+-- Customize current line highlight color
+vim.api.nvim_set_hl(0, "CursorLine", { bg = "#2a2a2a" })
+
+-- Customize visual mode selection color
+vim.api.nvim_set_hl(0, "Visual", { bg = "#FF0000" })
+
 -- spell check
 vim.api.nvim_command("autocmd FileType markdown,text,tex,go,python setlocal spell")
 
@@ -24,4 +30,3 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 
 -- disable mouse
 -- vim.opt.mouse = ""
-

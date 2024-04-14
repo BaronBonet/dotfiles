@@ -40,7 +40,7 @@ return {
     keys = function()
       return {
         {
-          "<leader>p",
+          "<leader>l",
           function()
             -- Loads an env file in the current directory and sets the environment variables
             -- Workflow should be add the DB url to the env file then open DBUI to assess the databases
@@ -67,7 +67,7 @@ return {
             end
             vim.cmd("DBUIToggle")
           end,
-          desc = "Database Client",
+          desc = "[L]aunch Database Client",
         },
       }
     end,

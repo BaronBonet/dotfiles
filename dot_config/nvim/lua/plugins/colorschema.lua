@@ -7,6 +7,10 @@ return {
       require("tokyonight").setup({
         style = "night",
         on_highlights = function(hl, c)
+          hl.Visual = {
+            bg = "#806340", -- Set the background color for the visual mode selection
+          }
+          -- Borderless telescope
           local prompt = "#2d3149"
           hl.TelescopeNormal = {
             bg = c.bg_dark,
