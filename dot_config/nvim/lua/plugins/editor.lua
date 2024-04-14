@@ -84,12 +84,48 @@ return {
   -- stylua: ignore
     keys = function()
       return {
-        { "<leader>tt", function() require("trouble").toggle() end, desc = "[T]oggle [T]rouble" },
-        { "<leader>tw", function() require("trouble").toggle("workspace_diagnostics") end, desc = "[T]oggle Trouble [W]orkspace" },
-        { "<leader>td", function() require("trouble").toggle("document_diagnostics") end, desc = "[T]oggle Trouble [D]ocument" },
-        { "<leader>tl", function() require("trouble").toggle("loclist") end, desc = "[T]oggle Trouble [L]oclist" },
-        { "<leader>tq", function() require("trouble").toggle("quickfix") end, desc = "[T]oggle Trouble [Q]uickfix" },
-        { "<leader>tf", function() require("trouble").toggle("file") end, desc = "[T]oggle Trouble [F]ile" },
+        {
+          "<leader>tt",
+          function()
+            require("trouble").toggle()
+          end,
+          desc = "[T]oggle [T]rouble",
+        },
+        {
+          "<leader>tw",
+          function()
+            require("trouble").toggle("workspace_diagnostics")
+          end,
+          desc = "[T]oggle Trouble [W]orkspace",
+        },
+        {
+          "<leader>td",
+          function()
+            require("trouble").toggle("document_diagnostics")
+          end,
+          desc = "[T]oggle Trouble [D]ocument",
+        },
+        {
+          "<leader>tl",
+          function()
+            require("trouble").toggle("loclist")
+          end,
+          desc = "[T]oggle Trouble [L]oclist",
+        },
+        {
+          "<leader>tq",
+          function()
+            require("trouble").toggle("quickfix")
+          end,
+          desc = "[T]oggle Trouble [Q]uickfix",
+        },
+        {
+          "<leader>tf",
+          function()
+            require("trouble").toggle("file")
+          end,
+          desc = "[T]oggle Trouble [F]ile",
+        },
         { "<leader>to", "<cmd>TodoTrouble<cr>", desc = "[T]o d[o]" },
         { "<leader>tT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
       }

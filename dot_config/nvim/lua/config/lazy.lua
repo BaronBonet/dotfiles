@@ -27,6 +27,7 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.lang.docker" },
     { import = "lazyvim.plugins.extras.lang.markdown" },
     { import = "lazyvim.plugins.extras.formatting.black" },
+    { import = "lazyvim.plugins.extras.util.dot" },
     -- While doing crafting interperters
     { import = "lazyvim.plugins.extras.lang.java" },
 

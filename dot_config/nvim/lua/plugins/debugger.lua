@@ -1,4 +1,4 @@
--- tdoo: add a keybinding to show all breakpoints
+-- TODO: add a keybinding to show all breakpoints
 return {
   {
     "mfussenegger/nvim-dap",
@@ -187,7 +187,7 @@ return {
       require("dap-python").test_runner = "pytest"
 
       -- This is a custom configuration for python with sets the PYTHONPATH to the current directory
-      -- In the event a python project is set up strangly you may have to udate the PYTHONPATH here to get the debugger working
+      -- In the event a python project is set up strangly you may have to update the PYTHONPATH here to get the debugger working
       require("dap").configurations.python = {
         {
           type = "python",
