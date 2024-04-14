@@ -31,6 +31,7 @@ require("lazy").setup({
     -- While doing crafting interperters
     { import = "lazyvim.plugins.extras.lang.java" },
     { import = "lazyvim.plugins.extras.editor.harpoon2" },
+    { import = "lazyvim.plugins.extras.editor.trouble-v3" },
 
     -- import/override with your pluginsi
     { import = "plugins" },

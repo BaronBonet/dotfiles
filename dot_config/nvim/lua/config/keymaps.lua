@@ -57,6 +57,8 @@ local normal_keymaps_to_del = {
   "<leader>bd",
   "<leader>ft",
   "<leader>fT",
+  "<leader>K",
+  "<leader><leader>",
 }
 
 delKeyMap(normal_keymaps_to_del)
