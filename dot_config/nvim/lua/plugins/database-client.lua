@@ -55,14 +55,15 @@ return {
               local lines = vim.fn.readfile(env_file)
 
               for _, line in ipairs(lines) do
-                if not line:find("=") then
+                local equalIndex = line:find("=")
+                if not equalIndex then
+                  print("Invalid line: " .. line)
                   goto continue
                   ::continue::
                 end
-                local parts = vim.split(line, "=")
-                if #parts == 2 then
-                  vim.fn.setenv(parts[1], parts[2])
-                end
+                local key = line:sub(1, equalIndex - 1)
+                local value = line:sub(equalIndex + 1)
+                vim.fn.setenv(key, value)
               end
             end
             vim.cmd("DBUIToggle")

@@ -19,6 +19,13 @@ return {
             diagnostics = { globals = { "vim" }, disable = { "missing-fields" } },
           },
         },
+        gopls = {
+          settings = {
+            gopls = {
+              buildFlags = { "-tags=integration" },
+            },
+          },
+        },
       },
     },
   },
@@ -31,10 +38,11 @@ return {
         ["python"] = { "black", "isort" },
         ["go"] = { "goimports", "gofmt", "golines" },
         ["lua"] = { "stylua" },
+        ["sql"] = { "sqlfluff" },
         ["*"] = { "codespell" },
       },
       formatters = {
-        golines = { prepend_args = { "--no-reformat-tags", "-m", "120" } },
+        golines = { prepend_args = { "--no-reformat-tags", "-m", "120", "--base-formatter=gofmt" } },
       },
     },
   },
