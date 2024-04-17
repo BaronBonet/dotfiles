@@ -6,6 +6,10 @@ return {
     dependencies = {
       "mfussenegger/nvim-dap-python",
       {
+        "leoluz/nvim-dap-go",
+        config = true,
+      },
+      {
         "williamboman/mason.nvim",
         opts = function(_, opts)
           opts.ensure_installed = opts.ensure_installed or {}

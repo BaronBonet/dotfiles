@@ -35,7 +35,6 @@ local function delKeyMap(keymaps)
 end
 
 local normal_keymaps_to_del = {
-  "<leader>l",
   "<leader>L",
   "<leader>w|",
   "<leader>|",
