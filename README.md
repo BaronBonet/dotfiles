@@ -1,5 +1,8 @@
 # Dotfiles
 
+# TODO
+- Use a brewfile instead of brew install all over the run_after_install.sh file to install brew packages
+
 ## Getting started
 
 Dotfiles are managed using [chezmoi](https://www.chezmoi.io/).
