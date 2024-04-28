@@ -22,6 +22,8 @@ map("n", "<leader>rn", vim.lsp.buf.rename, { noremap = true, desc = "[R]e[n]ame"
 -- Select all text in the buffer
 map("n", "<leader>v", "ggVG", { noremap = true, silent = true, desc = "[V]isually Select All" })
 
+map("n", "<leader>um", "<cmd>messages<CR>", { noremap = true, silent = true, desc = "[U]i [M]essages, show all" })
+
 map({ "n", "v" }, "<leader>f", function()
   require("lazyvim.util").format({ force = true })
 end, { desc = "[F]ormat" })

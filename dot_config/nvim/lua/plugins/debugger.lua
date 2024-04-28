@@ -75,6 +75,11 @@ return {
                   {
                     id = "repl",
                     size = 0.4,
+                    mappings = {
+                      n = {
+                        close = { "q", "<Esc>" },
+                      },
+                    },
                   },
                   {
                     id = "console",
@@ -208,7 +213,7 @@ return {
     end,
   },
   {
-    -- TODO: This (debugger autocomplete) is working for python but not for go
+    -- TODO: This (debugger autocomplete) is working for python but not for go, it seems like this is a current limitation of delve
     "rcarriga/cmp-dap",
     config = function()
       require("cmp").setup({

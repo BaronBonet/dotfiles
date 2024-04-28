@@ -312,6 +312,13 @@ return {
           end,
           desc = "git blame full",
         },
+        {
+          "<leader>gm",
+          function()
+            require("gitsigns").diffthis("main")
+          end,
+          desc = "[G]it diff against [M]ain",
+        },
       }
     end,
   },
