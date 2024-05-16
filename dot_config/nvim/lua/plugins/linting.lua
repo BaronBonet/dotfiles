@@ -9,6 +9,7 @@ return {
       bash = { "shellcheck" },
       go = { "golangcilint" },
       markdown = { "markdownlint" }, -- configs live in ~/.markdownlintrc
+      proto = { "buf_lint" },
       dockerfile = { "hadolint" },
     },
   },

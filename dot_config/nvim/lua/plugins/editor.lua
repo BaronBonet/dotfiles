@@ -317,7 +317,7 @@ return {
           function()
             require("gitsigns").diffthis("main")
           end,
-          desc = "[G]it diff against [M]ain",
+          desc = "git blame full",
         },
       }
     end,
@@ -359,13 +359,6 @@ return {
             require("neo-tree.command").execute({ toggle = true, reveal = true, dir = vim.loop.cwd() })
           end,
           desc = "Explorer NeoTree (cwd, where you opened nvim)",
-        },
-        {
-          "-",
-          function()
-            require("neo-tree.command").execute({ toggle = true, position = "current" })
-          end,
-          desc = "Toggle Neotree (reveal in current position)",
         },
       }
     end,

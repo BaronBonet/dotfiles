@@ -28,10 +28,9 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.lang.markdown" },
     { import = "lazyvim.plugins.extras.formatting.black" },
     { import = "lazyvim.plugins.extras.util.dot" },
-    -- While doing crafting interperters
-    { import = "lazyvim.plugins.extras.lang.java" },
     { import = "lazyvim.plugins.extras.editor.harpoon2" },
     { import = "lazyvim.plugins.extras.editor.trouble-v3" },
+    -- { import = "lazyvim.plugins.extras.lang.ruby" },
 
     -- import/override with your pluginsi
     { import = "plugins" },
