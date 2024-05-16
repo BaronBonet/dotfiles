@@ -13,6 +13,9 @@ return {
       vim.list_extend(opts.ensure_installed, {
         "shellcheck",
         "shellharden",
+        -- both for ruby
+        "solargraph",
+        "sorbet",
       })
     end,
   },
@@ -34,8 +37,13 @@ return {
             },
           },
         },
+        -- For ruby
         sorbet = {},
-        solargraph = {},
+        solargraph = {
+          root_dir = function(fname)
+            return require("lspconfig").util.root_pattern("Gemfile", ".git")(fname) or vim.fn.getcwd()
+          end,
+        },
       },
     },
   },

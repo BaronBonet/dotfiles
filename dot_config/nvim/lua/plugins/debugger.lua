@@ -1,89 +1,8 @@
 -- TODO: add a keybinding to show all breakpoints
 
 return {
-  -- {
-  --   "olimorris/neotest-rspec", -- used for ruby debugging, https://rspec.info/about/
-  -- },
-  -- {
-  --   "suketa/nvim-dap-ruby",
-  --   config = function()
-  --     require("dap-ruby").setup()
-  --   end,
-  -- },
-  {
-    "nvim-neotest/neotest",
-    optional = true,
-    dependencies = {
-      "olimorris/neotest-rspec",
-    },
-    opts = {
-      adapters = {
-        ["neotest-rspec"] = {
-          -- NOTE: By default neotest-rspec uses the system wide rspec gem instead of the one through bundler
-          -- rspec_cmd = function()
-          --   return vim.tbl_flatten({
-          --     "bundle",
-          --     "exec",
-          --     "rspec",
-          --   })
-          -- end,
-        },
-      },
-    },
-  },
   {
     "mfussenegger/nvim-dap",
-    optional = true,
-    config = function()
-      -- icons and a visual line when for the debug session
-      local Config = require("lazyvim.config")
-      vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
-
-      for name, sign in pairs(Config.icons.dap) do
-        sign = type(sign) == "table" and sign or { sign }
-        vim.fn.sign_define(
-          "Dap" .. name,
-          { text = sign[1], texthl = sign[2] or "DiagnosticInfo", linehl = sign[3], numhl = sign[3] }
-        )
-      end
-      -- You have to install debugpy in a seperate virtuaenv for this to work
-      -- https://github.com/mfussenegger/nvim-dap-python?tab=readme-ov-file#debugpy
-      require("dap-python").setup("~/.virtualenvs/debugpy/bin/python")
-      require("dap-python").test_runner = "pytest"
-
-      local dap = require("dap")
-      -- This is a custom configuration for python with sets the PYTHONPATH to the current directory
-      -- In the event a python project is set up strangly you may have to update the PYTHONPATH here to get the debugger working
-      dap.configurations.python = {
-        {
-          type = "python",
-          request = "launch",
-          name = "Launch File",
-          program = "${file}",
-          cwd = vim.fn.getcwd(),
-          justMyCode = false, -- Also follow importend code
-          env = {
-            PYTHONPATH = vim.fn.getcwd() .. ":" .. (os.getenv("PYTHONPATH") or ""),
-          },
-        },
-      }
-
-      -- dap.adapters.ruby = {
-      --   type = "executable",
-      --   command = "rdgb",
-      --   args = { "--port", "${port}", "--" },
-      -- }
-      -- -- require("dap-ruby").setup()
-      -- dap.configurations.ruby = {
-      --   {
-      --     type = "ruby",
-      --     request = "launch",
-      --     name = "Debug",
-      --     program = "${file}",
-      --     args = {},
-      --   },
-      -- }
-    end,
     dependencies = {
       "mfussenegger/nvim-dap-python",
       -- "suketa/nvim-dap-ruby",
@@ -123,11 +42,6 @@ return {
         end,
         opts = {},
         config = function(_, opts)
-          -- To enable auto completing in the terminal
-          -- require("neodev").setup({
-          --   library = { plugins = { "nvim-dap-ui" }, types = true },
-          -- })
-
           local dap = require("dap")
           local dapui = require("dapui")
           dapui.setup(opts)
@@ -180,6 +94,116 @@ return {
         end,
       },
     },
+    optional = true,
+    config = function()
+      -- icons and a visual line when for the debug session
+      local Config = require("lazyvim.config")
+      vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
+
+      for name, sign in pairs(Config.icons.dap) do
+        sign = type(sign) == "table" and sign or { sign }
+        vim.fn.sign_define(
+          "Dap" .. name,
+          { text = sign[1], texthl = sign[2] or "DiagnosticInfo", linehl = sign[3], numhl = sign[3] }
+        )
+      end
+      -- You have to install debugpy in a seperate virtuaenv for this to work
+      -- https://github.com/mfussenegger/nvim-dap-python?tab=readme-ov-file#debugpy
+      require("dap-python").setup("~/.virtualenvs/debugpy/bin/python")
+      require("dap-python").test_runner = "pytest"
+
+      local dap = require("dap")
+      -- This is a custom configuration for python with sets the PYTHONPATH to the current directory
+      -- In the event a python project is set up strangly you may have to update the PYTHONPATH here to get the debugger working
+      dap.configurations.python = {
+        {
+          type = "python",
+          request = "launch",
+          name = "Launch File",
+          program = "${file}",
+          cwd = vim.fn.getcwd(),
+          justMyCode = false, -- Also follow importend code
+          env = {
+            PYTHONPATH = vim.fn.getcwd() .. ":" .. (os.getenv("PYTHONPATH") or ""),
+          },
+        },
+      }
+
+      dap.adapters.ruby = function(callback, config)
+        local function str_to_list(inputstr)
+          local t = {}
+          for str in string.gmatch(inputstr, "[^%s]+") do
+            table.insert(t, str)
+          end
+          return t
+        end
+        callback({
+          type = "server",
+          host = "0.0.0.0",
+          port = "11111",
+          executable = {
+            command = "bundle",
+            args = {
+              "exec",
+              "rdbg",
+              "-n",
+              "--open",
+              "--port",
+              "11111",
+              "-c",
+              "--",
+              "bundle",
+              "exec",
+              config.command,
+              unpack(str_to_list(config.script)),
+            },
+          },
+        })
+      end
+
+      dap.configurations.ruby = {
+        {
+          type = "ruby",
+          name = "Debug current file",
+          request = "attach",
+          localfs = true,
+          command = "ruby",
+          script = "${file}",
+        },
+        {
+          type = "ruby",
+          name = "Run current spec file",
+          request = "attach",
+          localfs = true,
+          command = "rspec",
+          script = "${file}",
+        },
+        {
+          type = "ruby",
+          name = "Run all spec files",
+          request = "attach",
+          localfs = true,
+          command = "rspec",
+          script = ".",
+        },
+        {
+          type = "ruby",
+          name = "Test - Redacted",
+          request = "attach",
+          localfs = true,
+          command = "/opt/redacted/bin/redacted",
+          script = "redacted",
+        },
+        {
+          type = "ruby",
+          name = "Redacted - Run application",
+          request = "attach",
+          localfs = true,
+          command = "/opt/redacted/bin/redacted",
+          script = "--fg",
+        },
+      }
+    end,
     keys = function()
       return {
         {
