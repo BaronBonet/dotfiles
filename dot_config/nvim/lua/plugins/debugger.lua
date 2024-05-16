@@ -1,10 +1,92 @@
 -- TODO: add a keybinding to show all breakpoints
+
 return {
+  -- {
+  --   "olimorris/neotest-rspec", -- used for ruby debugging, https://rspec.info/about/
+  -- },
+  -- {
+  --   "suketa/nvim-dap-ruby",
+  --   config = function()
+  --     require("dap-ruby").setup()
+  --   end,
+  -- },
+  {
+    "nvim-neotest/neotest",
+    optional = true,
+    dependencies = {
+      "olimorris/neotest-rspec",
+    },
+    opts = {
+      adapters = {
+        ["neotest-rspec"] = {
+          -- NOTE: By default neotest-rspec uses the system wide rspec gem instead of the one through bundler
+          -- rspec_cmd = function()
+          --   return vim.tbl_flatten({
+          --     "bundle",
+          --     "exec",
+          --     "rspec",
+          --   })
+          -- end,
+        },
+      },
+    },
+  },
   {
     "mfussenegger/nvim-dap",
     optional = true,
+    config = function()
+      -- icons and a visual line when for the debug session
+      local Config = require("lazyvim.config")
+      vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
+
+      for name, sign in pairs(Config.icons.dap) do
+        sign = type(sign) == "table" and sign or { sign }
+        vim.fn.sign_define(
+          "Dap" .. name,
+          { text = sign[1], texthl = sign[2] or "DiagnosticInfo", linehl = sign[3], numhl = sign[3] }
+        )
+      end
+      -- You have to install debugpy in a seperate virtuaenv for this to work
+      -- https://github.com/mfussenegger/nvim-dap-python?tab=readme-ov-file#debugpy
+      require("dap-python").setup("~/.virtualenvs/debugpy/bin/python")
+      require("dap-python").test_runner = "pytest"
+
+      local dap = require("dap")
+      -- This is a custom configuration for python with sets the PYTHONPATH to the current directory
+      -- In the event a python project is set up strangly you may have to update the PYTHONPATH here to get the debugger working
+      dap.configurations.python = {
+        {
+          type = "python",
+          request = "launch",
+          name = "Launch File",
+          program = "${file}",
+          cwd = vim.fn.getcwd(),
+          justMyCode = false, -- Also follow importend code
+          env = {
+            PYTHONPATH = vim.fn.getcwd() .. ":" .. (os.getenv("PYTHONPATH") or ""),
+          },
+        },
+      }
+
+      -- dap.adapters.ruby = {
+      --   type = "executable",
+      --   command = "rdgb",
+      --   args = { "--port", "${port}", "--" },
+      -- }
+      -- -- require("dap-ruby").setup()
+      -- dap.configurations.ruby = {
+      --   {
+      --     type = "ruby",
+      --     request = "launch",
+      --     name = "Debug",
+      --     program = "${file}",
+      --     args = {},
+      --   },
+      -- }
+    end,
     dependencies = {
       "mfussenegger/nvim-dap-python",
+      -- "suketa/nvim-dap-ruby",
       {
         "leoluz/nvim-dap-go",
         config = true,
@@ -155,9 +237,13 @@ return {
             local filetype = vim.bo.filetype
             if filetype == "go" then
               require("dap-go").debug_test()
-            else
+            elseif filetype == "ruby" then
+              print("I cannot do that yet Eric")
+            elseif filetype == "python" then
               -- since i only use pytest don't need to use test_class
               require("dap-python").test_method()
+            else
+              print("No test method for filetype: " .. filetype)
             end
           end,
           desc = "Debug the closest test method above the cursor",
@@ -175,39 +261,6 @@ return {
             require("dap").terminate()
           end,
           desc = "End the debug session",
-        },
-      }
-    end,
-    config = function()
-      -- icons and a visual line when for the debug session
-      local Config = require("lazyvim.config")
-      vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
-
-      for name, sign in pairs(Config.icons.dap) do
-        sign = type(sign) == "table" and sign or { sign }
-        vim.fn.sign_define(
-          "Dap" .. name,
-          { text = sign[1], texthl = sign[2] or "DiagnosticInfo", linehl = sign[3], numhl = sign[3] }
-        )
-      end
-      -- You have to install debugpy in a seperate virtuaenv for this to work
-      -- https://github.com/mfussenegger/nvim-dap-python?tab=readme-ov-file#debugpy
-      require("dap-python").setup("~/.virtualenvs/debugpy/bin/python")
-      require("dap-python").test_runner = "pytest"
-
-      -- This is a custom configuration for python with sets the PYTHONPATH to the current directory
-      -- In the event a python project is set up strangly you may have to update the PYTHONPATH here to get the debugger working
-      require("dap").configurations.python = {
-        {
-          type = "python",
-          request = "launch",
-          name = "Launch File",
-          program = "${file}",
-          cwd = vim.fn.getcwd(),
-          justMyCode = false, -- Also follow importend code
-          env = {
-            PYTHONPATH = vim.fn.getcwd() .. ":" .. (os.getenv("PYTHONPATH") or ""),
-          },
         },
       }
     end,
