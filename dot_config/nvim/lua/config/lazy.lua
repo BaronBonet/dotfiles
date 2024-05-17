@@ -30,7 +30,7 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.util.dot" },
     { import = "lazyvim.plugins.extras.editor.harpoon2" },
     { import = "lazyvim.plugins.extras.editor.trouble-v3" },
-    -- { import = "lazyvim.plugins.extras.lang.ruby" },
+    { import = "lazyvim.plugins.extras.lang.ruby" },
 
     -- import/override with your pluginsi
     { import = "plugins" },

@@ -1,11 +1,17 @@
 -- TODO: add a keybinding to show all breakpoints
 
+-- https://www.reddit.com/r/ruby/comments/1ctwtrd/comment/l4grs82/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+local function start_ruby_debugger()
+  vim.fn.setenv("RUBYOPT", "-rdebug/open")
+  require("dap").continue()
+end
+
 return {
   {
     "mfussenegger/nvim-dap",
     dependencies = {
       "mfussenegger/nvim-dap-python",
-      -- "suketa/nvim-dap-ruby",
+      "suketa/nvim-dap-ruby", -- Debug Ruby
       {
         "leoluz/nvim-dap-go",
         config = true,
@@ -112,7 +118,10 @@ return {
       require("dap-python").setup("~/.virtualenvs/debugpy/bin/python")
       require("dap-python").test_runner = "pytest"
 
+      require("dap-ruby").setup()
+
       local dap = require("dap")
+
       -- This is a custom configuration for python with sets the PYTHONPATH to the current directory
       -- In the event a python project is set up strangly you may have to update the PYTHONPATH here to get the debugger working
       dap.configurations.python = {
@@ -126,81 +135,6 @@ return {
           env = {
             PYTHONPATH = vim.fn.getcwd() .. ":" .. (os.getenv("PYTHONPATH") or ""),
           },
-        },
-      }
-
-      dap.adapters.ruby = function(callback, config)
-        local function str_to_list(inputstr)
-          local t = {}
-          for str in string.gmatch(inputstr, "[^%s]+") do
-            table.insert(t, str)
-          end
-          return t
-        end
-        callback({
-          type = "server",
-          host = "0.0.0.0",
-          port = "11111",
-          executable = {
-            command = "bundle",
-            args = {
-              "exec",
-              "rdbg",
-              "-n",
-              "--open",
-              "--port",
-              "11111",
-              "-c",
-              "--",
-              "bundle",
-              "exec",
-              config.command,
-              unpack(str_to_list(config.script)),
-            },
-          },
-        })
-      end
-
-      dap.configurations.ruby = {
-        {
-          type = "ruby",
-          name = "Debug current file",
-          request = "attach",
-          localfs = true,
-          command = "ruby",
-          script = "${file}",
-        },
-        {
-          type = "ruby",
-          name = "Run current spec file",
-          request = "attach",
-          localfs = true,
-          command = "rspec",
-          script = "${file}",
-        },
-        {
-          type = "ruby",
-          name = "Run all spec files",
-          request = "attach",
-          localfs = true,
-          command = "rspec",
-          script = ".",
-        },
-        {
-          type = "ruby",
-          name = "Test - Redacted",
-          request = "attach",
-          localfs = true,
-          command = "/opt/redacted/bin/redacted",
-          script = "redacted",
-        },
-        {
-          type = "ruby",
-          name = "Redacted - Run application",
-          request = "attach",
-          localfs = true,
-          command = "/opt/redacted/bin/redacted",
-          script = "--fg",
         },
       }
     end,
@@ -223,7 +157,12 @@ return {
         {
           "<leader>dc",
           function()
-            require("dap").continue()
+            local filetype = vim.bo.filetype
+            if filetype == "ruby" then
+              start_ruby_debugger()
+            else
+              require("dap").continue()
+            end
           end,
           desc = "Start/Continue",
         },
@@ -261,8 +200,6 @@ return {
             local filetype = vim.bo.filetype
             if filetype == "go" then
               require("dap-go").debug_test()
-            elseif filetype == "ruby" then
-              print("I cannot do that yet Eric")
             elseif filetype == "python" then
               -- since i only use pytest don't need to use test_class
               require("dap-python").test_method()
