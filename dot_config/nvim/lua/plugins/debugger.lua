@@ -2,43 +2,32 @@
 
 -- https://www.reddit.com/r/ruby/comments/1ctwtrd/comment/l4grs82/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
 local function start_ruby_debugger()
+  -- TODO: we should also make this custom since it stops always at the 1st line
   vim.fn.setenv("RUBYOPT", "-rdebug/open")
   require("dap").continue()
 end
 
 local function start_rspec_debugger()
-  vim.fn.setenv("RUBYOPT", "-rdebug/open")
+  local relative_file_path = vim.fn.expand("%")
+  local command = "rspec"
+  if vim.fn.filereadable("bin/rspec") then
+    command = "bin/rspec"
+  end
+  print("Using command: " .. command)
+  -- https://github.com/ruby/debug?tab=readme-ov-file#invoke-as-a-remote-debuggee
+  vim.fn.setenv("RUBYOPT", "-rdebug/open_nonstop")
   require("dap").run({
     type = "ruby",
-    name = "debug rspec file",
+    name = "debug current rspec file",
     request = "attach",
-    command = "rspec",
-    script = "${file}",
-    port = 38698,
+    command = command,
+    current_file = true,
+    -- script = "${file}",
+    port = 38698, -- TODO: might be nice to make sure this port is open
     server = "127.0.0.1",
-    options = {
-      source_filetype = "ruby",
-    },
-    localfs = true, -- required for to be able to set breakpoints locally
-    --   env = {
-    --     JRUBY_OPTS = "-X+O",
-    --     RUBYOPT = "-rdebug/open",
-    --   },
+    localfs = true, -- required to be able to set breakpoints locally
+    waiting = 100, -- HACK: This is a race condition with the set RUBYOPT, if you get ECONNREFUSED try changing RUBYOPT to -rdebug/open
   })
-  -- require("dap").run({
-  --   name = "Debug RSpec",
-  --   type = "ruby",
-  --   request = "attach",
-  --   program = { "bin/rspec" },
-  --   -- args = { "--pattern", vim.fn.expand("%"), "--backtrace" },
-  --   env = {
-  --     JRUBY_OPTS = "-X+O",
-  --     RUBYOPT = "-rdebug/open",
-  --   },
-  --   waiting = 1000,
-  --   server = "127.0.0.1",
-  --   port = 38698,
-  -- })
 end
 
 return {
