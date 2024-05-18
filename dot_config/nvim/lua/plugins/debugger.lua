@@ -6,6 +6,41 @@ local function start_ruby_debugger()
   require("dap").continue()
 end
 
+local function start_rspec_debugger()
+  vim.fn.setenv("RUBYOPT", "-rdebug/open")
+  require("dap").run({
+    type = "ruby",
+    name = "debug rspec file",
+    request = "attach",
+    command = "rspec",
+    script = "${file}",
+    port = 38698,
+    server = "127.0.0.1",
+    options = {
+      source_filetype = "ruby",
+    },
+    localfs = true, -- required for to be able to set breakpoints locally
+    --   env = {
+    --     JRUBY_OPTS = "-X+O",
+    --     RUBYOPT = "-rdebug/open",
+    --   },
+  })
+  -- require("dap").run({
+  --   name = "Debug RSpec",
+  --   type = "ruby",
+  --   request = "attach",
+  --   program = { "bin/rspec" },
+  --   -- args = { "--pattern", vim.fn.expand("%"), "--backtrace" },
+  --   env = {
+  --     JRUBY_OPTS = "-X+O",
+  --     RUBYOPT = "-rdebug/open",
+  --   },
+  --   waiting = 1000,
+  --   server = "127.0.0.1",
+  --   port = 38698,
+  -- })
+end
+
 return {
   {
     "mfussenegger/nvim-dap",
@@ -203,6 +238,8 @@ return {
             elseif filetype == "python" then
               -- since i only use pytest don't need to use test_class
               require("dap-python").test_method()
+            elseif filetype == "ruby" then
+              start_rspec_debugger()
             else
               print("No test method for filetype: " .. filetype)
             end
