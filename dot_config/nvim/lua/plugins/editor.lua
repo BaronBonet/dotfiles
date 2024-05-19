@@ -97,14 +97,21 @@ return {
       },
     },
     keys = function()
+      local builtin = require("telescope.builtin")
       return {
         {
           "<leader>so",
           function()
-            local builtin = require("telescope.builtin")
+            builtin.oldfiles({ cwd_only = true })
+          end,
+          desc = "[S]earch [O]ld files in cwd",
+        },
+        {
+          "<leader>sO",
+          function()
             builtin.oldfiles()
           end,
-          desc = "[S]earch [O]ld files",
+          desc = "[S]earch [O]ld files in all directories",
         },
         {
           "<leader>sw",
@@ -116,7 +123,6 @@ return {
         {
           "<leader>sf",
           function()
-            local builtin = require("telescope.builtin")
             local function find_files_optionally_show_hidden(opts, no_ignore)
               opts = opts or {}
               no_ignore = vim.F.if_nil(no_ignore, false)
@@ -147,7 +153,6 @@ return {
         {
           "<leader>sg",
           function()
-            local builtin = require("telescope.builtin")
             local function find_git_root()
               -- Use the current buffer's path as the starting point for the git search
               local current_file = vim.api.nvim_buf_get_name(0)
@@ -210,7 +215,6 @@ return {
         {
           "<leader>sh",
           function()
-            local builtin = require("telescope.builtin")
             builtin.help_tags()
           end,
           desc = "[S]earch [H]elp available help tags",
@@ -218,7 +222,6 @@ return {
         {
           "sp",
           function()
-            local builtin = require("telescope.builtin")
             builtin.resume()
           end,
           desc = "[S]earch the [P]revious telescope picker",
@@ -226,7 +229,6 @@ return {
         {
           "<leader>sF",
           function()
-            local builtin = require("telescope.builtin")
             builtin.treesitter()
           end,
           desc = "[S]earch available [F]unctions",

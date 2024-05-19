@@ -255,6 +255,7 @@ return {
   {
     -- TODO: This (debugger autocomplete) is working for python but not for go, it seems like this is a current limitation of delve
     "rcarriga/cmp-dap",
+    lazy = true,
     config = function()
       require("cmp").setup({
         enabled = function()
