@@ -70,14 +70,13 @@ return {
           return {}
         end,
         opts = {},
-        config = function(_, opts)
-          print("Setting up dap-ui")
+        config = function(_)
           local dap = require("dap")
           local dapui = require("dapui")
 
+          -- conditionally configure debugger based in filetype of code we are debugging
           local function get_elements()
             local filetype = vim.bo.filetype
-            print(filetype)
             local elements = {
               {
                 id = "repl",
@@ -94,46 +93,32 @@ return {
               },
             }
 
+            -- With ruby it seems like we don't need the console
             if filetype ~= "ruby" then
               table.insert(elements, 2, {
                 id = "console",
                 size = 0.35,
               })
             else
-              elements[2].size = 0.6
+              elements[1].size = 0.55
+              elements[2].size = 0.45
             end
 
             return elements
           end
-          dapui.setup(opts)
+
           dap.listeners.after.event_initialized["dapui_config"] = function()
+            dapui.setup({
+              layouts = {
+                {
+                  elements = get_elements(),
+                  position = "bottom",
+                  size = 20,
+                },
+              },
+            })
             dapui.open({})
           end
-          dapui.setup({
-            icons = { expanded = "▾", collapsed = "▸", current_frame = "*" },
-            controls = {
-              element = "",
-              enabled = true,
-              icons = {
-                pause = "⏸",
-                play = "▶",
-                step_into = "⏎",
-                step_over = "⏭",
-                step_out = "⏮",
-                step_back = "b",
-                run_last = "▶▶",
-                terminate = "⏹",
-                disconnect = "⏏",
-              },
-            },
-            layouts = {
-              {
-                elements = get_elements(),
-                position = "bottom",
-                size = 20,
-              },
-            },
-          })
         end,
       },
     },
