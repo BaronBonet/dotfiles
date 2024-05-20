@@ -8,7 +8,6 @@ local function start_ruby_debugger()
 end
 
 local function start_rspec_debugger()
-  local relative_file_path = vim.fn.expand("%")
   local command = "rspec"
   if vim.fn.filereadable("bin/rspec") then
     command = "bin/rspec"
@@ -22,7 +21,6 @@ local function start_rspec_debugger()
     request = "attach",
     command = command,
     current_file = true,
-    -- script = "${file}",
     port = 38698, -- TODO: might be nice to make sure this port is open
     server = "127.0.0.1",
     localfs = true, -- required to be able to set breakpoints locally
@@ -66,14 +64,47 @@ return {
       },
       {
         "rcarriga/nvim-dap-ui",
+        lazy = true,
         -- disable default keybindings
         keys = function()
           return {}
         end,
         opts = {},
         config = function(_, opts)
+          print("Setting up dap-ui")
           local dap = require("dap")
           local dapui = require("dapui")
+
+          local function get_elements()
+            local filetype = vim.bo.filetype
+            print(filetype)
+            local elements = {
+              {
+                id = "repl",
+                size = 0.4,
+                mappings = {
+                  n = {
+                    close = { "q", "<Esc>" },
+                  },
+                },
+              },
+              {
+                id = "scopes",
+                size = 0.25,
+              },
+            }
+
+            if filetype ~= "ruby" then
+              table.insert(elements, 2, {
+                id = "console",
+                size = 0.35,
+              })
+            else
+              elements[2].size = 0.6
+            end
+
+            return elements
+          end
           dapui.setup(opts)
           dap.listeners.after.event_initialized["dapui_config"] = function()
             dapui.open({})
@@ -97,25 +128,7 @@ return {
             },
             layouts = {
               {
-                elements = {
-                  {
-                    id = "repl",
-                    size = 0.4,
-                    mappings = {
-                      n = {
-                        close = { "q", "<Esc>" },
-                      },
-                    },
-                  },
-                  {
-                    id = "console",
-                    size = 0.35,
-                  },
-                  {
-                    id = "scopes",
-                    size = 0.25,
-                  },
-                },
+                elements = get_elements(),
                 position = "bottom",
                 size = 20,
               },
@@ -255,7 +268,7 @@ return {
   {
     -- TODO: This (debugger autocomplete) is working for python but not for go, it seems like this is a current limitation of delve
     "rcarriga/cmp-dap",
-    lazy = true,
+    -- lazy = true, -- Cannot be lazy loaded or the ui is not overwriten
     config = function()
       require("cmp").setup({
         enabled = function()
