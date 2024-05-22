@@ -17,6 +17,7 @@
 [core]
 	pager = diff-so-fancy | less --tabs=4 -RFX
 	editor = nvim
+	excludesFile = /Users/ericbonet/.gitignore_global
 [interactive]
 	diffFilter = diff-so-fancy --patch
 
@@ -32,3 +33,7 @@
 # https://git-scm.com/book/en/v2/Git-Tools-Rerere
 [rerere]
 	enabled = true
+
+# https://stackoverflow.com/a/73991595/9236687
+[rebase]
+  updateRefs = true
