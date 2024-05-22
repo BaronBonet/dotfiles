@@ -235,9 +235,9 @@ return {
         },
         { "<leader>sG", "<cmd>Telescope git_commits<CR>", desc = "[S]earch [G]it Commits" },
         {
-          "<leader><space>",
-          require("lazyvim.util").telescope("files"),
-          desc = "Find Files (root dir) respect_gitignore",
+          "<leader>ss",
+          "<cmd>Telescope lsp_document_symbols<CR>",
+          desc = "[S]earch [S]ymbols in the current document",
         },
       }
     end,

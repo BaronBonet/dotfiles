@@ -28,11 +28,19 @@ map({ "n", "v" }, "<leader>f", function()
   require("lazyvim.util").format({ force = true })
 end, { desc = "[F]ormat" })
 
+-- Remap incriment to ctrl-s
+vim.api.nvim_set_keymap("n", "<C-s>", "<C-a>", { noremap = true, silent = true })
+
 -- Removing default keymaps i don't use
 -- https://www.lazyvim.org/configuration/general#keymaps
 local function delKeyMap(keymaps)
   for _, keymap in ipairs(keymaps) do
-    vim.keymap.del("n", keymap)
+    local success, err = pcall(function()
+      vim.keymap.del("n", keymap)
+    end)
+    if not success then
+      print("Failed to delete keymap: " .. keymap .. " - " .. err)
+    end
   end
 end
 

@@ -94,7 +94,8 @@ return {
             }
 
             -- With ruby it seems like we don't need the console
-            if filetype ~= "ruby" then
+            local languages_without_console = { "ruby", "go", "python" }
+            if not filetype.find(table.concat(languages_without_console, ","), filetype) then
               table.insert(elements, 2, {
                 id = "console",
                 size = 0.35,

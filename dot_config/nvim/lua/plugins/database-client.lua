@@ -1,6 +1,7 @@
 local sql_ft = { "sql", "mysql", "plsql" }
 
 return {
+  -- TODO: I dont think this is needed
   {
     "nvim-treesitter/nvim-treesitter",
     optional = true,
