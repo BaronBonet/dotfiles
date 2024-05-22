@@ -50,7 +50,8 @@ export PIP_INDEX_URL=https://pypi.org/simple
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
-[ -f ~/.fzf.zsh ] && source ~/.config/fzf/.fzf.zsh
+source <(fzf --zsh)
+# [ -f ~/.fzf.zsh ] && source ~/.config/fzf/.fzf.zsh
 
 
 # Autoload aws completer
@@ -58,23 +59,12 @@ autoload bashcompinit && bashcompinit
 autoload -Uz compinit && compinit
 complete -C '/opt/homebrew/bin/aws_completer' aws
 
-# Trying source-tooling
-# source ~/source_software/source-tooling/tooling.zsh
-# init-source-shell-env
-# export SOURCE_TOOLING_AWS_INFRA_PROFILE=infra-admin
- #
 # GO stuff
 export GOBIN=$(go env GOPATH)/bin
 export PATH=$PATH:$GOBIN
 
 # Goland
-export PATH=$PATH:/Applications/GoLand.app/Contents/MacOS
-
-# ruby should use the lasest version managed by brew
-# export PATH="$PATH:/opt/homebrew/opt/ruby/bin"
-# export PATH="$PATH:/opt/homebrew/opt/ruby/bin/gem"
-
+# export PATH=$PATH:/Applications/GoLand.app/Contents/MacOS
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-# export PATH="$PATH:$HOME/.rvm/bin"
 eval "$(~/.rbenv/bin/rbenv init - bash)"

@@ -3,6 +3,9 @@
 # TODO
 - Use a brewfile instead of brew install all over the run_after_install.sh file to install brew packages
 
+## Starting a new machine
+
+- Follow [steps to create and add an sshkey](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 ## Getting started
 
 Dotfiles are managed using [chezmoi](https://www.chezmoi.io/).
@@ -13,7 +16,7 @@ To initialize the dotfiles repo:
 chezmoi init --apply git@github.com:BaronBonet/dotfiles.git
 ```
 
-This should create a `~/.config` folder with all of my dotfiles, along with a few other files in the home directory e.g. `~/.zshenv`
+This should create a `~/.config` folder with all of my dotfiles, along with a few other files in the home directory e.g. `~/.zshenv` 
 
 You'll have to manually source the `.zshrc` the first time.
 
