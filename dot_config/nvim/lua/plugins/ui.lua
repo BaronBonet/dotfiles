@@ -88,7 +88,8 @@ return {
     config = function()
       require("scrollbar").setup({
         handle = {
-          color = colors.bg_highlight,
+          color = colors.dark3,
+          blend = 30, -- Integer between 0 and 100. 0 for fully opaque and 100 to full transparent.
         },
         marks = {
           Search = { color = colors.orange },
@@ -125,7 +126,8 @@ return {
           globalstatus = true,
           disabled_filetypes = { statusline = { "dashboard", "alpha", "starter" } },
         },
-        sections = {
+        tabline = {}, -- Tabline is for the top of the window
+        sections = { -- Sections are for the bottom of the window
           lualine_a = { "mode" },
           lualine_b = {
             "branch",

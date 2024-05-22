@@ -6,8 +6,9 @@ return {
         "shellcheck",
         "shellharden",
         -- both for ruby
-        "solargraph",
-        "sorbet",
+        -- "solargraph", -- Seems to be slow
+        -- "sorbet",
+        "rubocop",
       })
     end,
   },
@@ -30,12 +31,15 @@ return {
           },
         },
         -- For ruby
-        sorbet = {},
-        solargraph = {
-          root_dir = function(fname)
-            return require("lspconfig").util.root_pattern("Gemfile", ".git")(fname) or vim.fn.getcwd()
-          end,
-        },
+        -- sorbet = {},
+        -- solargraph = {
+        --   root_dir = function(fname)
+        --     return require("lspconfig").util.root_pattern("Gemfile", ".git")(fname) or vim.fn.getcwd()
+        --   end,
+        -- },
+        -- rubocop = {
+        --   filetypes = { "eruby", "ruby" },
+        -- },
       },
     },
   },
@@ -53,6 +57,24 @@ return {
       },
       formatters = {
         golines = { prepend_args = { "--no-reformat-tags", "-m", "120", "--base-formatter=gofmt" } },
+      },
+    },
+  },
+  -- linting
+  {
+    "mfussenegger/nvim-lint",
+    optional = true,
+    opts = {
+      events = { "BufWritePost", "BufReadPost", "InsertLeave" },
+      linters_by_ft = {
+        sh = { "shellcheck" },
+        bash = { "shellcheck" },
+        go = { "golangcilint" },
+        markdown = { "markdownlint" }, -- configs live in ~/.markdownlintrc
+        proto = { "buf_lint" },
+        dockerfile = { "hadolint" },
+        -- eruby = { "rubocop" },
+        -- ruby = { "rubocop" },
       },
     },
   },

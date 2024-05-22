@@ -70,5 +70,11 @@ export PATH=$PATH:$GOBIN
 # Goland
 export PATH=$PATH:/Applications/GoLand.app/Contents/MacOS
 
-# Since something is getting screwey with the colors
-# export TERM=xterm-256color
+# ruby should use the lasest version managed by brew
+# export PATH="$PATH:/opt/homebrew/opt/ruby/bin"
+# export PATH="$PATH:/opt/homebrew/opt/ruby/bin/gem"
+
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+# export PATH="$PATH:$HOME/.rvm/bin"
+eval "$(~/.rbenv/bin/rbenv init - bash)"

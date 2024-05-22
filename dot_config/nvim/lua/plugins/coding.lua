@@ -1,5 +1,16 @@
 return {
   { "terrastruct/d2-vim" },
+  -- https://github.com/tpope/vim-rails?tab=readme-ov-file#railsvim
+  { "tpope/vim-rails" },
+  -- embedded template is required for ruby, to ensure html.erb files are properly highlighted
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = function(_, opts)
+      if type(opts.ensure_installed) == "table" then
+        vim.list_extend(opts.ensure_installed, { "embedded_template" })
+      end
+    end,
+  },
   {
     "smjonas/inc-rename.nvim",
     cmd = "IncRename",

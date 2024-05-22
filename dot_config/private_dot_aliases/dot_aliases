@@ -107,3 +107,20 @@ set_poetry_python() {
   poetry env use "$python_path"
 }
 
+s3pc(){
+    filename="$1"
+    subfolder="rotterdam-renovation"
+
+    if [[ -z "$filename" ]]; then
+        echo "Error: Please provide a filename to copy."
+        return 1
+    fi
+
+    if [[ -z "$subfolder" ]]; then
+        echo "Copying file directly to the bucket root..."
+        aws s3 cp "$filename" s3://<bucket-name>/"$filename"
+    else
+        echo "Copying file to $subfolder subfolder..."
+        aws s3 cp "$filename" s3://ericcbonet-blog-cdn/"$subfolder"/"$filename"
+    fi
+    }

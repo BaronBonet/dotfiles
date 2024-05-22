@@ -22,4 +22,4 @@ vim.api.nvim_create_autocmd("VimResized", {
 
 -- Ruby --
 -- Stolen from: https://github.com/prdanelli/dotfiles/blob/main/neovim-lazy/lua/config/autocmds.lua
-vim.api.nvim_create_augroup("_ruby", { clear = true })
+-- vim.api.nvim_create_augroup("_ruby", { clear = true })
