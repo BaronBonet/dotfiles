@@ -14,6 +14,11 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply BaronBonet
 
 This should copy all my dotfiles to their respective locations, and run install scripts.
 
+### Install scripts?
+
+
+https://www.chezmoi.io/user-guide/machines/macos/#use-brew-bundle-to-manage-your-brews-and-casks
+
 ## Getting started
 
 Dotfiles are managed using [chezmoi](https://www.chezmoi.io/).
