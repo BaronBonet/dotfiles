@@ -1,3 +1,17 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+
+printf "Starting run once before install"
+
+if ! which -s brew; then
+printf "Brew is not installed, installing brew \n"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+else
+echo "Brew is available, upgrading brew"
+brew update
+fi
+
+brew bundle --no-lock --file=/dev/stdin <<EOF
 tap "homebrew/bundle"
 tap "homebrew/cask-fonts"
 tap "homebrew/services"
@@ -43,3 +57,6 @@ cask "basictex"
 cask "docker"
 cask "font-jetbrains-mono-nerd-font"
 cask "google-chrome"
+EOF
+
+{{ end -}}
