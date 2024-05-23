@@ -19,6 +19,17 @@ This should copy all my dotfiles to their respective locations, and run install 
 
 https://www.chezmoi.io/user-guide/machines/macos/#use-brew-bundle-to-manage-your-brews-and-casks
 
+
+## Working with chezmoi
+
+For any file managed by chezmoi you can use the following commands to interact with them:
+- `ch diff <file>` to see the changes between the current file and the chezmoi managed file
+- `ch add <file>` to add the file to chezmoi
+
+To apply the changes from the managed files from chezmoi to your local files use:
+- `ch diff` to see the changes that will be applied
+- `ch apply` to apply the changes
+
 ## Getting started
 
 Dotfiles are managed using [chezmoi](https://www.chezmoi.io/).
@@ -56,3 +67,4 @@ Managed using [TPM](https://github.com/tmux-plugins/tpm) you have to install the
 ### Nvim
 
 Using [lazvim](https://www.lazyvim.org/)
+
