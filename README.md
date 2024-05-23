@@ -1,19 +1,42 @@
 # Dotfiles
 
-# TODO
-- Use a brewfile instead of brew install all over the run_after_install.sh file to install brew packages
 
 ## Starting a new machine
 
 - [Create and add an sshkey](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 - [Add this sshkey to github](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
+
+Now run this one liner, as show on [chezmoi.io](https://www.chezmoi.io/)
+
+```bash
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply BaronBonet
+```
+
+This should copy all my dotfiles to their respective locations, and run install scripts.
+
+### Install scripts?
+
+
+https://www.chezmoi.io/user-guide/machines/macos/#use-brew-bundle-to-manage-your-brews-and-casks
+
+
+## Working with chezmoi
+
+For any file managed by chezmoi you can use the following commands to interact with them:
+- `ch diff <file>` to see the changes between the current file and the chezmoi managed file
+- `ch add <file>` to add the file to chezmoi
+
+To apply the changes from the managed files from chezmoi to your local files use:
+- `ch diff` to see the changes that will be applied
+- `ch apply` to apply the changes
+
 ## Getting started
 
 Dotfiles are managed using [chezmoi](https://www.chezmoi.io/).
 
 To initialize the dotfiles repo:
 
-```bash
+``
 chezmoi init --apply git@github.com:BaronBonet/dotfiles.git
 ```
 
@@ -44,3 +67,4 @@ Managed using [TPM](https://github.com/tmux-plugins/tpm) you have to install the
 ### Nvim
 
 Using [lazvim](https://www.lazyvim.org/)
+

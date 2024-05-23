@@ -10,3 +10,4 @@ export SAVEHIST=10000                   # Maximum events in history file
 
 # For inspiration
 # https://github.com/Phantas0s/.dotfiles/blob/master/zsh/zshenv
+. "$HOME/.cargo/env"

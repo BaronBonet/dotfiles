@@ -50,9 +50,7 @@ export PIP_INDEX_URL=https://pypi.org/simple
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
-source <(fzf --zsh)
-# [ -f ~/.fzf.zsh ] && source ~/.config/fzf/.fzf.zsh
-
+[ -f ~/.fzf.zsh ] && source ~/.config/fzf/.fzf.zsh
 
 # Autoload aws completer
 autoload bashcompinit && bashcompinit
