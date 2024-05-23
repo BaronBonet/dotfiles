@@ -6,9 +6,6 @@
 	rebase = true
 [branch]
 	autosetuprebase = always
-[user]
-	name = ericcbonet
-	email = ericcbonet@gmail.com
 
 [includeIf "gitdir:~/source_software/"]
     path = ~/source_software/.gitconfig
@@ -37,3 +34,15 @@
 # https://stackoverflow.com/a/73991595/9236687
 [rebase]
   updateRefs = true
+
+# Use 1Password to sign commits
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+[commit]
+	gpgsign = true
+[user]
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICqtBs+WKw9QiPZVGKV2x181P5UHXSiM/qk/XlQmB21s
+	name = Eric Bonet
+	email = ericcbonet@gmail.com

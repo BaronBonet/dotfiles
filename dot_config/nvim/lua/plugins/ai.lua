@@ -1,9 +1,9 @@
 return {
   {
     "zbirenbaum/copilot.lua",
+    lazy = true,
     keys = function()
       local copilot_enabled = vim.fn.system("Copilot status"):find("Copilot is enabled") ~= nil
-
       return {
         {
           "<leader>ac",
@@ -25,13 +25,11 @@ return {
   },
   {
     "jackMort/ChatGPT.nvim",
-    event = "VeryLazy",
+    lazy = true,
     config = function()
-      local home = vim.fn.expand("$HOME")
       require("chatgpt").setup({
-        -- TODO: Make this more secure
-        -- api_key_cmd = "gpg --decrypt --quiet " .. home .. "/.config/chatgpt_api_key.txt.gpg",
-        api_key_cmd = "cat " .. home .. "/.config/chatgpt_api_key.txt",
+        -- Get the API key from one password vault
+        api_key_cmd = " op item get OpenAI_API_KEY --fields label=password",
         openai_params = {
           model = "gpt-4o",
           frequency_penalty = 0,
@@ -48,6 +46,15 @@ return {
           temperature = 0,
           top_p = 1,
           n = 1,
+        },
+        popup_window = {
+          border = {
+            highlight = "FloatBorder",
+            style = "rounded",
+            text = {
+              top = " Eric's Little Helper ",
+            },
+          },
         },
       })
     end,
@@ -66,4 +73,5 @@ return {
       }
     end,
   },
+  -- TODO: improve they keybindings for copilot chat if you've tried it
 }

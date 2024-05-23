@@ -1,31 +1,40 @@
 -- TODO: add a keybinding to show all breakpoints
+local Utils = require("utils")
 
 -- https://www.reddit.com/r/ruby/comments/1ctwtrd/comment/l4grs82/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
 local function start_ruby_debugger()
-  -- TODO: we should also make this custom since it stops always at the 1st line
+  -- TODO: make this custom just like testing since it stops always at the 1st line
   vim.fn.setenv("RUBYOPT", "-rdebug/open")
   require("dap").continue()
 end
 
 local function start_rspec_debugger()
   local command = "rspec"
-  if vim.fn.filereadable("bin/rspec") then
+  if Utils.file_exists("bin/rspec") then
     command = "bin/rspec"
+  else
+    -- FIXME: this assume you have rspec in the system
+    print("No bin/rspec found, using rspec")
   end
-  print("Using command: " .. command)
   -- https://github.com/ruby/debug?tab=readme-ov-file#invoke-as-a-remote-debuggee
   vim.fn.setenv("RUBYOPT", "-rdebug/open_nonstop")
-  require("dap").run({
-    type = "ruby",
-    name = "debug current rspec file",
-    request = "attach",
-    command = command,
-    current_file = true,
-    port = 38698, -- TODO: might be nice to make sure this port is open
-    server = "127.0.0.1",
-    localfs = true, -- required to be able to set breakpoints locally
-    waiting = 100, -- HACK: This is a race condition with the set RUBYOPT, if you get ECONNREFUSED try changing RUBYOPT to -rdebug/open
-  })
+  local status, err = pcall(function()
+    require("dap").run({
+      type = "ruby",
+      name = "debug current rspec file",
+      request = "attach",
+      command = command,
+      current_file = true,
+      port = 38698,
+      server = "127.0.0.1",
+      localfs = true,
+      waiting = 100,
+    })
+  end)
+
+  if not status then
+    print("Failed to start the debugger, did you create the bin directory by running 'bundle binstubs --all': " .. err)
+  end
 end
 
 return {
@@ -136,7 +145,7 @@ return {
           { text = sign[1], texthl = sign[2] or "DiagnosticInfo", linehl = sign[3], numhl = sign[3] }
         )
       end
-      -- You have to install debugpy in a seperate virtuaenv for this to work
+      -- You have to install debugpy in a separate virtuaenv for this to work
       -- https://github.com/mfussenegger/nvim-dap-python?tab=readme-ov-file#debugpy
       require("dap-python").setup("~/.virtualenvs/debugpy/bin/python")
       require("dap-python").test_runner = "pytest"
@@ -254,7 +263,7 @@ return {
   {
     -- TODO: This (debugger autocomplete) is working for python but not for go, it seems like this is a current limitation of delve
     "rcarriga/cmp-dap",
-    -- lazy = true, -- Cannot be lazy loaded or the ui is not overwriten
+    -- lazy = true, -- Cannot be lazy loaded or the ui is not overwritten
     config = function()
       require("cmp").setup({
         enabled = function()

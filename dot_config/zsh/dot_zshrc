@@ -25,8 +25,11 @@ source "$ZDOTDIR/plugins/zsh-completions"
 # VIM mode
 source "$ZDOTDIR/plugins/vim_mode"
 
-# Change curser
+# Change cursor
 source "$ZDOTDIR/plugins/curser_mode"
+
+# To enable fzf tab completion
+source "$ZDOTDIR/plugins/fzf-tab/fzf-tab.plugin.zsh"
 
 # Auto suggestions while typing
 source "$ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
@@ -46,23 +49,52 @@ export PATH="$PATH:$HOME/.local/bin"
 # Make sure we use default pypi unless set
 export PIP_INDEX_URL=https://pypi.org/simple
 
-
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
-
-[ -f ~/.fzf.zsh ] && source ~/.config/fzf/.fzf.zsh
 
 # Autoload aws completer
 autoload bashcompinit && bashcompinit
 autoload -Uz compinit && compinit
 complete -C '/opt/homebrew/bin/aws_completer' aws
 
+eval "$(zoxide init zsh)"
+# Onepassword shell completion
+eval "$(op completion zsh)"; compdef _op op
+
 # GO stuff
 export GOBIN=$(go env GOPATH)/bin
 export PATH=$PATH:$GOBIN
 
+export PATH=~/.cargo/bin/:$PATH
 # Goland
 # export PATH=$PATH:/Applications/GoLand.app/Contents/MacOS
 
+# History
+HISTSIZE=10000
+HISTFILE="$ZDOTDIR/.zsh_history"
+SAVEHIST=$HISTSIZE
+HISTDUP=erase #Erases duplicates in history
+setopt appendhistory # Append history instead of overwrite
+setopt sharehistory # Share history between sessions
+setopt hist_ignore_dups # Ignore duplicates in history
+setopt hist_ignore_all_dups # Ignore all duplicates in history
+setopt hist_save_no_dups # Do not save duplicates in history
+setopt hist_find_no_dups # Do not find duplicates in history
+
+# Completion colors
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+# Allow for case insensitive completion
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+# Descriptions format
+zstyle ':completion:*:descriptions' format '[%d]'
+# Use fzf completion menu, not default
+zstyle ':completion:*' menu no
+# make tab completion popup in tmux
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+
+eval "$(fzf --zsh)"
+[ -f ~/.fzf.zsh ] && source ~/.config/fzf/.fzf.zsh
+
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-eval "$(~/.rbenv/bin/rbenv init - bash)"
+# TODO: is this required?
+# eval "$(~/.rbenv/bin/rbenv init - bash)"
