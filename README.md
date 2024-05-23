@@ -1,6 +1,5 @@
 # Dotfiles
 
-
 ## Starting a new machine
 
 - [Create and add an sshkey](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
@@ -16,17 +15,17 @@ This should copy all my dotfiles to their respective locations, and run install 
 
 ### Install scripts?
 
-
-https://www.chezmoi.io/user-guide/machines/macos/#use-brew-bundle-to-manage-your-brews-and-casks
-
+<https://www.chezmoi.io/user-guide/machines/macos/#use-brew-bundle-to-manage-your-brews-and-casks>
 
 ## Working with chezmoi
 
 For any file managed by chezmoi you can use the following commands to interact with them:
+
 - `ch diff <file>` to see the changes between the current file and the chezmoi managed file
 - `ch add <file>` to add the file to chezmoi
 
 To apply the changes from the managed files from chezmoi to your local files use:
+
 - `ch diff` to see the changes that will be applied
 - `ch apply` to apply the changes
 
@@ -37,16 +36,17 @@ Dotfiles are managed using [chezmoi](https://www.chezmoi.io/).
 To initialize the dotfiles repo:
 
 ``
-chezmoi init --apply git@github.com:BaronBonet/dotfiles.git
-```
+chezmoi init --apply <git@github.com>:BaronBonet/dotfiles.git
 
-This should create a `~/.config` folder with all of my dotfiles, along with a few other files in the home directory e.g. `~/.zshenv` 
+````
+
+This should create a `~/.config` folder with all of my dotfiles, along with a few other files in the home directory e.g. `~/.zshenv`
 
 You'll have to manually source the `.zshrc` the first time.
 
 ```bash
 source ~/.config/zsh/.zshrc
-```
+````
 
 ## Hints
 
@@ -67,4 +67,3 @@ Managed using [TPM](https://github.com/tmux-plugins/tpm) you have to install the
 ### Nvim
 
 Using [lazvim](https://www.lazyvim.org/)
-
