@@ -1,18 +1,22 @@
 return {
   {
+    -- Responsible for installing Language Servers
+    -- Use :MasonLog to see logs
     "williamboman/mason.nvim",
     opts = function(_, opts)
       vim.list_extend(opts.ensure_installed, {
         "shellcheck",
         "shellharden",
+        "bash-language-server",
         -- both for ruby
-        -- "solargraph", -- Seems to be slow
-        -- "sorbet",
+        "sorbet",
         "rubocop",
+        "erb-lint",
       })
     end,
   },
   {
+    -- Responsible for custom configuration for the language server if needed
     "neovim/nvim-lspconfig",
     opts = {
       autoformat = false, -- format with <leader>f
@@ -30,20 +34,11 @@ return {
             },
           },
         },
-        -- For ruby
-        -- sorbet = {},
-        -- solargraph = {
-        --   root_dir = function(fname)
-        --     return require("lspconfig").util.root_pattern("Gemfile", ".git")(fname) or vim.fn.getcwd()
-        --   end,
-        -- },
-        -- rubocop = {
-        --   filetypes = { "eruby", "ruby" },
-        -- },
       },
     },
   },
-  -- formatting
+  -- Responsible for automatic formatting, if you press <leader>f this is run
+  -- Check formatters here: https://github.com/stevearc/conform.nvim?tab=readme-ov-file#formatters
   {
     "stevearc/conform.nvim",
     optional = true,
@@ -53,28 +48,28 @@ return {
         ["go"] = { "goimports", "gofmt", "golines" },
         ["lua"] = { "stylua" },
         ["sql"] = { "sqlfluff" },
-        ["*"] = { "codespell" },
+        -- ["*"] = { "codespell" }, -- TODO: This will autoformat spelling, which can be annoying for things like [S]ymbols, since it changes it to [S]symbols
+        -- TODO: figure out how to get shellharden to work
+        ["ruby"] = { "rubyfmt", "rubocop" },
       },
       formatters = {
         golines = { prepend_args = { "--no-reformat-tags", "-m", "120", "--base-formatter=gofmt" } },
       },
     },
   },
-  -- linting
+  -- linting, gives errors and warnings
   {
     "mfussenegger/nvim-lint",
     optional = true,
     opts = {
       events = { "BufWritePost", "BufReadPost", "InsertLeave" },
       linters_by_ft = {
-        sh = { "shellcheck" },
-        bash = { "shellcheck" },
         go = { "golangcilint" },
         markdown = { "markdownlint" }, -- configs live in ~/.markdownlintrc
         proto = { "buf_lint" },
         dockerfile = { "hadolint" },
-        -- eruby = { "rubocop" },
-        -- ruby = { "rubocop" },
+        eruby = { "rubocop" },
+        ruby = { "rubocop" },
       },
     },
   },

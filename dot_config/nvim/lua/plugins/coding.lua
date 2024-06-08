@@ -1,8 +1,8 @@
 return {
   { "terrastruct/d2-vim" },
   -- https://github.com/tpope/vim-rails?tab=readme-ov-file#railsvim
-  { "tpope/vim-rails" },
-  -- embedded template is required for ruby, to ensure html.erb files are properly highlighted
+  -- { "tpope/vim-rails" },
+  -- embedded template is required for ruby, to ensure html.drb files are properly highlighted
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)

@@ -22,6 +22,7 @@ require("lazy").setup({
     {
       import = "lazyvim.plugins.extras.coding.copilot",
     },
+    { import = "lazyvim.plugins.extras.coding.copilot-chat" },
     { import = "lazyvim.plugins.extras.lang.terraform" },
     { import = "lazyvim.plugins.extras.lang.yaml" },
     { import = "lazyvim.plugins.extras.lang.docker" },
@@ -32,7 +33,6 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.util.dot" },
 
     { import = "lazyvim.plugins.extras.editor.harpoon2" },
-    { import = "lazyvim.plugins.extras.editor.trouble-v3" },
     { import = "lazyvim.plugins.extras.editor.refactoring" },
 
     -- import/override with your pluginsi
@@ -59,7 +59,8 @@ require("lazy").setup({
         "netrwPlugin",
         "tarPlugin",
         "tohtml",
-        "tutor",
+        -- TODO: Disable again once you've done the tutor
+        -- "tutor",
         "zipPlugin",
       },
     },

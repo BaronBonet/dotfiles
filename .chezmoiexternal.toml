@@ -22,3 +22,9 @@
     type = "git-repo"
     url = "https://github.com/zsh-users/zsh-completions.git"
     refreshPeriod = "168h"
+
+[".config/zsh/plugins/fzf-tab"]
+    type = "git-repo"
+    url = "https://github.com/Aloxaf/fzf-tab"
+    refreshPeriod = "168h"
+

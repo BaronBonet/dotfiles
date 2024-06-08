@@ -26,7 +26,7 @@ return {
         {
           "<leader>H",
           function()
-            require("harpoon"):list():append()
+            require("harpoon"):list():add()
           end,
           desc = "Harpoon File",
         },
@@ -54,7 +54,6 @@ return {
   },
   {
     "folke/trouble.nvim",
-    branch = "dev",
     keys = function()
       return {
         { "<leader>tt", "<cmd>Trouble diagnostics toggle<cr>", desc = "[T]oggle [T]rouble" },

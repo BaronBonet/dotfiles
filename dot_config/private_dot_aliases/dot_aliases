@@ -1,6 +1,7 @@
 alias ea="chezmoi edit -a ~/.config/.aliases"
 
 alias sz="echo Applying new zshrc configs; source ~/.config/zsh/.zshrc"
+alias vc="nvim ~/.config"
 
 # Git
 alias g="git"
@@ -56,22 +57,20 @@ alias c='bat --paging=auto'
 # stop all running containers
 function docker-stop-all() {docker stop "$(docker ps -a -q)"}
 
+alias i="fastfetch" # Fetch system info and display it
+
 # Vim
 alias vim='nvim'
 alias v='nvim'
 
 alias tf='terraform'
 
-alias awslocal="aws --endpoint-url=http://localhost:64566  --profile=localstack"
-
-alias clion='open -na "CLion.app" --args "$@"'
-
 alias tree="git ls-tree -r --name-only HEAD | tree --fromfile"
 
 source "$XDG_CONFIG_HOME/.aliases/.source_aliases"
 source "$XDG_CONFIG_HOME/.aliases/.git"
 
-set_poetry_python() {
+set-poetry-python() {
   local python_version="$1"
   if [ -z "$python_version" ]; then
     echo "You must provide a Python version as an argument."
@@ -107,6 +106,7 @@ set_poetry_python() {
   poetry env use "$python_path"
 }
 
+# Helper function while i was making the blog about renovating rotterdam house
 s3pc(){
     filename="$1"
     subfolder="rotterdam-renovation"
