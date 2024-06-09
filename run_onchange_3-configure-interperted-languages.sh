@@ -1,24 +1,6 @@
 #!/bin/bash
 
-# TODO: This is run every time we do a `ch apply`, it would be nicer to break it apart so parts of it only run when needed
-# https://www.chezmoi.io/user-guide/use-scripts-to-perform-actions/#install-packages-with-scripts
 # NOTE: Can use  $(chezmoi source-path) to go to chemozi root
-
-if ! command -v brew &>/dev/null; then
-	echo 'Brew is not installed, installing brew'
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-	eval "$(/opt/homebrew/bin/brew shellenv)"
-else
-	echo "Brew is available, upgrading brew"
-	brew update
-fi
-
-# Install & update brew packages
-brew bundle --file=~/.config/Brewfile
-
-# Source tmux plugins
-~/.tmux/plugins/tpm/scripts/install_plugins.sh
 
 # Install debugpy for python debugging in neovim
 install_debugpy() {
@@ -45,13 +27,6 @@ install_debugpy() {
 	fi
 }
 
-if [ -d "$HOME/.asdf" ]; then
-	echo "asdf already exists, skipping clone"
-else
-	# Check for latest here: https://asdf-vm.com/guide/getting-started.html#_2-download-asdf
-	git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.0
-fi
-
 # Function to conditionally install a language
 conditionally_install_language() {
 	local lang=$1
@@ -67,11 +42,11 @@ conditionally_install_language() {
 		echo "$lang is not managed by asdf, installing global version of $lang with asdf"
 		echo "Fetching available $lang versions..."
 
-		available_versions=$(asdf list-all "$lang" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$')
+		available_versions=($(asdf list-all "$lang" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$'))
 
 		echo "Select a version to install (e.g. 187, the number next to the $lang version):"
 		select version in "${available_versions[@]}"; do
-			if [ "$version" != "" ]; then
+			if [ -n "$version" ]; then
 				echo "Installing $lang $version"
 				asdf install "$lang" "$version"
 				asdf global "$lang" "$version"
@@ -90,7 +65,7 @@ conditionally_install_language() {
 			curl -sSL https://install.python-poetry.org | python3 -
 
 			install_debugpy || echo "Installing debugpy failed"
-    # TODO: it would be better to have this be a seperate script that always runs when somethign changes
+			# TODO: it would be better to have this be a seperate script that always runs when somethign changes
 		elif [ "$lang" == "ruby" ]; then
 			echo "Installing bundler for Ruby"
 			gem install bundler
@@ -108,7 +83,7 @@ conditionally_install_language() {
 manage_tool_version() {
 	local lang=$1
 	local version=$2
-	local tool_versions_file=~/.tool-versions
+	local tool_versions_file=$HOME/.tool-versions
 
 	check_tool_version() {
 		grep -E "^$lang [0-9]+\.[0-9]+\.[0-9]+$" "$tool_versions_file"
@@ -144,9 +119,3 @@ manage_tool_version() {
 
 conditionally_install_language python || echo "Conditionally installing Python failed"
 conditionally_install_language ruby || echo "Conditionally installing Ruby failed"
-
-# Install tms for convenient tmux session
-if ! command -v tms >/dev/null 2>&1; then
-	echo "Installing tms for tmux session management"
-	cargo install tmux-sessionizer
-fi

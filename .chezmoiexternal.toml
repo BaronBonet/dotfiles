@@ -1,30 +1,49 @@
 ["powerlevel10k"]
-    type = "git-repo"
-    url = "https://github.com/romkatv/powerlevel10k.git"
+    type = "archive"
+    url = "https://github.com/romkatv/powerlevel10k/archive/master.tar.gz"
     refreshPeriod = "168h"
+    exact = true
+    stripComponents = 1
 
 [".config/tmux/plugins/tpm"]
-    type = "git-repo"
-    url = "https://github.com/tmux-plugins/tpm"
+    type = "archive"
+    url = "https://github.com/tmux-plugins/tpm/archive/master.tar.gz"
     refreshPeriod = "168h"
+    exact = true
+    stripComponents = 1
 
 [".config/zsh/plugins/zsh-syntax-highlighting"]
-    type = "git-repo"
-    url = "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+    type = "archive"
+    url = "https://github.com/zsh-users/zsh-syntax-highlighting/archive/master.tar.gz"
     refreshPeriod = "168h"
+    exact = true
+    stripComponents = 1
 
 [".config/zsh/plugins/zsh-autosuggestions"]
-    type = "git-repo"
-    url = "https://github.com/zsh-users/zsh-autosuggestions"
+    type = "archive"
+    url = "https://github.com/zsh-users/zsh-autosuggestions/archive/master.tar.gz"
     refreshPeriod = "168h"
+    exact = true
+    stripComponents = 1
 
 [".config/zsh/plugins/zsh-completions"]
-    type = "git-repo"
-    url = "https://github.com/zsh-users/zsh-completions.git"
+    type = "archive"
+    url = "https://github.com/zsh-users/zsh-completions/archive/master.tar.gz"
     refreshPeriod = "168h"
+    exact = true
+    stripComponents = 1
 
 [".config/zsh/plugins/fzf-tab"]
-    type = "git-repo"
-    url = "https://github.com/Aloxaf/fzf-tab"
+    type = "archive"
+    url = "https://github.com/Aloxaf/fzf-tab/archive/master.tar.gz"
     refreshPeriod = "168h"
+    exact = true
+    stripComponents = 1
+
+[".asdf"]
+    type = "archive"
+    url = "https://github.com/asdf-vm/asdf/archive/master.tar.gz"
+    refreshPeriod = "168h"
+    exact = true
+    stripComponents = 1
 
