@@ -10,6 +10,18 @@
 --
 -- Keep in mind while in a file you can use ]c to jump to the next conflict and [c to jump to the previous conflict
 
+local function has_conflicts()
+  local current_file = vim.fn.expand("%:p")
+  local handle = io.popen("git diff --name-only --diff-filter=U --relative")
+  local result = handle:read("*a")
+  handle:close()
+  for file in result:gmatch("[^\r\n]+") do
+    if vim.fn.fnamemodify(file, ":p") == current_file then
+      return true
+    end
+  end
+  return false
+end
 return {
   {
     "tpope/vim-fugitive",
@@ -18,18 +30,40 @@ return {
       return {
         {
           "<leader>gv",
-          "<cmd>Gvdiffsplit!<CR>",
+          function()
+            if has_conflicts() then
+              vim.cmd("Gvdiffsplit!")
+            else
+              print("No conflicts to resolve in this buffer.")
+            end
+          end,
           desc = "[G]it [V]diffsplit, for three way merge conflict",
         },
         {
-          "<leader>gdh",
+          "<leader>grh",
           "<cmd>diffget //2<CR>",
-          desc = "[G]it [D]iff [H]unk, get from HEAD",
+          desc = "[G]it [R]esolve select [H]ead, get from HEAD, the left pane",
         },
         {
-          "<leader>gdl",
+          "<leader>grl",
           "<cmd>diffget //3<CR>",
-          desc = "[G]it [D]iff [L]ocal, get from local",
+          desc = "[G]it [R]esolve [L]ocal, get from local, the right pane",
+        },
+        {
+          "<leader>grn",
+          function()
+            if not has_conflicts() then
+              vim.cmd("wincmd o") -- Clear the workspace
+
+              local current_file = vim.fn.expand("%:p")
+              os.execute("git add " .. current_file)
+
+              vim.cmd("bn") -- Move to the next buffer
+            else
+              print("There are still merge conflicts to resolve")
+            end
+          end,
+          desc = "[G]it [R]esolve [N]ext, clear workspace and move to next buffer if conflicts are resolved",
         },
       }
     end,
