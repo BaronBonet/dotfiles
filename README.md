@@ -4,6 +4,8 @@ Managed using [chezmoi](https://www.chezmoi.io/). Attempting to keep my dotfiles
 
 I wouldn't suggest anyone other than myself use these dot files as is, I've littered my configs (e.g. `.gitconfig`) with personal information. Feel free to browse these files and copy what you like.
 
+# TODO: <https://pawelgrzybek.com/change-macos-user-preferences-via-command-line/>
+
 ## Getting started
 
 Open a terminal and run the modified one liner (taken from [chezmoi.io](https://www.chezmoi.io/)), to clone and apply my dotfiles. Xcode may need to be installed for this to work, it will prompt you to install it if required. If brew in not installed it will also be installed as well, if you're prompted to add anything to your .bashrc file after installing brew be sure to do so.
@@ -13,9 +15,6 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/BaronBon
 ```
 
 This should copy all my dotfiles to their respective locations, and run the [install script](https://www.chezmoi.io/user-guide/use-scripts-to-perform-actions/) found [here](run_after-install-packages.sh). This script installs brew, all of my brew packages as well as the interpreted languages I'm currently using (Python and Ruby) managed by [asdf](https://asdf-vm.com/).
-
-<!--- [Create and add an sshkey](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)-->
-<!--- [Add this sshkey to github](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)-->
 
 ### Further setup
 
