@@ -6,10 +6,16 @@ I wouldn't suggest anyone other than myself use these dot files as is, I've litt
 
 ## Getting started
 
-Open a terminal and run the modified one liner (taken from [chezmoi.io](https://www.chezmoi.io/)), to clone and apply my dotfiles. Xcode may need to be installed for this to work, it will prompt you to install it if required. If brew in not installed it will also be installed as well, if you're prompted to add anything to your .bashrc file after installing brew be sure to do so.
+The majority of my dotfiles exist in `~/.config/` in order to get chezmoi to copy itself to the correct location open a terminal and run:
+
+```shell
+export XDG_CONFIG_HOME="$HOME/.config"
+```
+
+Then run this one liner (taken from [chezmoi.io](https://www.chezmoi.io/)), to clone and apply my dotfiles. Xcode may need to be installed for this to work, it will prompt you to install it if required. If brew in not installed it will also be installed as well, if you're prompted to add anything to your .bashrc file after installing brew be sure to do so.
 
 ```bash
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/BaronBonet/dotfiles.git
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply BaronBonet
 ```
 
 This should copy all my dotfiles to their respective locations, and run the [install script](https://www.chezmoi.io/user-guide/use-scripts-to-perform-actions/) found [here](run_after-install-packages.sh). This script installs brew, all of my brew packages as well as the interpreted languages I'm currently using (Python and Ruby) managed by [asdf](https://asdf-vm.com/).
@@ -42,20 +48,6 @@ Helpful tools to interact with github via the terminal. Also greatly increases t
 ```
 
 To enable copilot in nvim, when you 1st open nvim run `:Copilot auth` and follow the instructions.
-
-#### 1Password
-
-Open the 1Password desktop app, and login. This is required to use the 1Password cli. Follow the [instruction](https://developer.1password.com/docs/cli/get-started/#step-2-turn-on-the-1password-desktop-app-integration) for integrating with the 1Password desktop app.
-
-Turn on the [1Password SSH agent](https://developer.1password.com/docs/ssh/get-started/#step-3-turn-on-the-1password-ssh-agent), to use 1Password for managing ssh keys.
-
-### Final steps
-
-Because the dotfiles were cloned using `https` instead of `ssh`, you'll need to update git to use ssh. You can do this by running the following command:
-
-```bash
-git remote set-url origin git@github.com:BaronBonet/dotfiles.git
-```
 
 ## Working with chezmoi
 
