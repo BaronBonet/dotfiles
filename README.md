@@ -4,8 +4,6 @@ Managed using [chezmoi](https://www.chezmoi.io/). Attempting to keep my dotfiles
 
 I wouldn't suggest anyone other than myself use these dot files as is, I've littered my configs (e.g. `.gitconfig`) with personal information. Feel free to browse these files and copy what you like.
 
-# TODO: <https://pawelgrzybek.com/change-macos-user-preferences-via-command-line/>
-
 ## Getting started
 
 Open a terminal and run the modified one liner (taken from [chezmoi.io](https://www.chezmoi.io/)), to clone and apply my dotfiles. Xcode may need to be installed for this to work, it will prompt you to install it if required. If brew in not installed it will also be installed as well, if you're prompted to add anything to your .bashrc file after installing brew be sure to do so.
