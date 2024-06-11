@@ -4,3 +4,6 @@
 .asdf/repository
 .asdf/shims
 .asdf/tmp
+powerlevel10k/gitstatus/**
+powerlevel10k/internal/**
+powerlevel10k/*.zwc
