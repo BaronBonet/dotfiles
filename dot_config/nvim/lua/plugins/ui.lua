@@ -246,6 +246,7 @@ return {
       opts.defaults["<leader>c"] = { name = "[C]ode" }
       opts.defaults["<leader>d"] = { name = "[D]ebug" }
       opts.defaults["<leader>i"] = { name = "A[I]" }
+      opts.defaults["<leader>gr"] = { name = "[G]it [R]esolve" }
       return opts
     end,
   },
