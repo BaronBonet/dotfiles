@@ -19,6 +19,7 @@ return {
     -- Responsible for custom configuration for the language server if needed
     "neovim/nvim-lspconfig",
     opts = {
+      inlay_hints = { enabled = false },
       autoformat = false, -- format with <leader>f
       servers = {
         lua_ls = {
@@ -41,19 +42,21 @@ return {
   -- Check formatters here: https://github.com/stevearc/conform.nvim?tab=readme-ov-file#formatters
   {
     "stevearc/conform.nvim",
-    optional = true,
+    -- optional = true,
+    loglevel = "debug",
     opts = {
       formatters_by_ft = {
-        ["python"] = { "black", "isort" },
-        ["go"] = { "goimports", "gofmt", "golines" },
-        ["lua"] = { "stylua" },
-        ["sql"] = { "sqlfluff" },
+        python = { "black", "isort" },
+        go = { "goimports", "gofmt", "golines" },
+        lua = { "stylua" },
+        sql = { "sqlfluff" },
         -- ["*"] = { "codespell" }, -- TODO: This will autoformat spelling, which can be annoying for things like [S]ymbols, since it changes it to [S]symbols
         -- TODO: figure out how to get shellharden to work
-        ["ruby"] = { "rubyfmt", "rubocop" },
+        ruby = { "rubyfmt", "rubocop" },
       },
       formatters = {
-        golines = { prepend_args = { "--no-reformat-tags", "-m", "120", "--base-formatter=gofmt" } },
+        injected = { options = { ignore_errors = true } },
+        golines = { prepend_args = { "--no-reformat-tags", "-m", "120" } },
       },
     },
   },
