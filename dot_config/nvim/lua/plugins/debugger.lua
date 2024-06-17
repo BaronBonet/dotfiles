@@ -4,36 +4,50 @@ local Utils = require("utils")
 -- https://www.reddit.com/r/ruby/comments/1ctwtrd/comment/l4grs82/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
 local function start_ruby_debugger()
   -- TODO: make this custom just like testing since it stops always at the 1st line
+  local dap = require("dap")
   vim.fn.setenv("RUBYOPT", "-rdebug/open")
-  require("dap").continue()
+  dap.continue()
 end
 
 local function start_rspec_debugger()
   local command = "rspec"
+  local dap = require("dap")
   if Utils.file_exists("bin/rspec") then
+    vim.notify("Using bin/rspec", vim.log.levels.DEBUG)
     command = "bin/rspec"
   else
-    -- FIXME: this assume you have rspec in the system
-    print("No bin/rspec found, using rspec")
+    vim.notify("No bin/rspec found, using rspec, did you remember to run `bundle binstubs --all`", vim.log.levels.INFO)
   end
+  -- add the current file to the command
   -- https://github.com/ruby/debug?tab=readme-ov-file#invoke-as-a-remote-debuggee
-  vim.fn.setenv("RUBYOPT", "-rdebug/open_nonstop")
+  -- vim.fn.setenv("RUBYOPT", "-rdebug/open_nonstop")
+  vim.fn.setenv("RUBYOPT", "-rdebug/open")
   local status, err = pcall(function()
-    require("dap").run({
+    dap.run({
       type = "ruby",
       name = "debug current rspec file",
       request = "attach",
       command = command,
-      current_file = true,
+      -- current_file = true,
       port = 38698,
       server = "127.0.0.1",
-      localfs = true,
+      -- localfs = true,
       waiting = 100,
+      stopOnEntry = false,
     })
   end)
-
   if not status then
-    print("Failed to start the debugger, did you create the bin directory by running 'bundle binstubs --all': " .. err)
+    vim.notify(
+      "Failed to start the debugger, did you create the bin directory by running 'bundle binstubs --all': " .. err,
+      vim.log.levels.WARN
+    )
+  end
+  -- unset rubyopt of there is clashing with rubocop when trying to lint/config
+  dap.listeners.after.event_terminated["unset_rubyopt"] = function()
+    vim.fn.setenv("RUBYOPT", "")
+  end
+  dap.listeners.after.event_exited["unset_rubyopt"] = function()
+    vim.fn.setenv("RUBYOPT", "")
   end
 end
 
@@ -42,7 +56,10 @@ return {
     "mfussenegger/nvim-dap",
     dependencies = {
       "mfussenegger/nvim-dap-python",
-      "suketa/nvim-dap-ruby", -- Debug Ruby
+      {
+        "suketa/nvim-dap-ruby",
+        -- commit = "7b2c026baeedcd5aa0687067ea640767e9d45faf",
+      },
       {
         "leoluz/nvim-dap-go",
         config = true,
@@ -102,7 +119,6 @@ return {
               },
             }
 
-            -- With ruby it seems like we don't need the console
             local languages_without_console = { "ruby", "go", "python" }
             if not filetype.find(table.concat(languages_without_console, ","), filetype) then
               table.insert(elements, 2, {
@@ -238,7 +254,7 @@ return {
             elseif filetype == "ruby" then
               start_rspec_debugger()
             else
-              print("No test method for filetype: " .. filetype)
+              vim.notify("No test method for filetype: " .. filetype, vim.log.levels.WARN)
             end
           end,
           desc = "Debug the closest test method above the cursor",

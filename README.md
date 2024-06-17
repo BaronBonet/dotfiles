@@ -62,3 +62,10 @@ To apply the changes from the managed files from chezmoi to your local files use
 - `ch apply` to apply the changes
 
 Regularly run `ch apply` to ensure your managed dot files are not too far behind. It will notify you what it will modify (so what you haven't updated in chemozi). If that's the case then add the file/folder with `ch add`
+
+If you want to run all of the scripts in `.chezmoiscripts` then [clear the state of the scripts](https://www.chezmoi.io/user-guide/use-scripts-to-perform-actions/#clear-the-state-of-all-run_onchange_-and-run_once_-scripts) with:
+
+```shell
+chezmoi state delete-bucket --bucket=entryState
+chezmoi state delete-bucket --bucket=scriptState
+```

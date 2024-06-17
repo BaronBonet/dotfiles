@@ -1,11 +1,14 @@
 return {
   {
     "okuuva/auto-save.nvim",
-    event = { "InsertLeave" },
+    -- event = { "InsertLeave" },
+    cmd = "ASToggle", -- optional for lazy loading on command
+    event = { "InsertLeave", "TextChanged" },
     opts = {
       execution_message = {
         enabled = false,
       },
+      trigger_events = { defer_save = { "InsertLeave" } },
     },
     keys = function()
       return {
@@ -21,6 +24,7 @@ return {
   },
   {
     "ThePrimeagen/harpoon",
+    branch = "harpoon2",
     keys = function()
       local keys = {
         {
@@ -28,7 +32,7 @@ return {
           function()
             require("harpoon"):list():add()
           end,
-          desc = "Harpoon File",
+          desc = "[H]arpoon File",
         },
         {
           "<leader>h",
@@ -36,7 +40,7 @@ return {
             local harpoon = require("harpoon")
             harpoon.ui:toggle_quick_menu(harpoon:list())
           end,
-          desc = "Harpoon Quick Menu",
+          desc = "[h]arpoon Quick Menu",
         },
       }
 
@@ -97,6 +101,8 @@ return {
     },
     keys = function()
       local builtin = require("telescope.builtin")
+      local action_state = require("telescope.actions.state")
+      local actions = require("telescope.actions")
       return {
         {
           "<leader>so",
@@ -212,13 +218,6 @@ return {
         { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "[S]earch available [C]ommands" },
         { "<leader>sR", "<cmd>Telescope resume<cr>", desc = "Resume last telescope session" },
         {
-          "<leader>sh",
-          function()
-            builtin.help_tags()
-          end,
-          desc = "[S]earch [H]elp available help tags",
-        },
-        {
           "sp",
           function()
             builtin.resume()
@@ -237,6 +236,29 @@ return {
           "<leader>ss",
           "<cmd>Telescope lsp_document_symbols<CR>",
           desc = "[S]earch [S]ymbols in the current document",
+        },
+        {
+          "<leader>sh",
+          function()
+            builtin.git_bcommits({
+              attach_mappings = function(_, map)
+                map("i", "<CR>", function(prompt_bufnr)
+                  local selection = action_state.get_selected_entry()
+                  actions.close(prompt_bufnr)
+                  local commit_hash = selection.value
+                  vim.cmd("Gvdiffsplit " .. commit_hash)
+                end)
+                map("n", "<CR>", function(prompt_bufnr)
+                  local selection = action_state.get_selected_entry()
+                  actions.close(prompt_bufnr)
+                  local commit_hash = selection.value
+                  vim.cmd("Gvdiffsplit " .. commit_hash)
+                end)
+                return true
+              end,
+            })
+          end,
+          desc = "[S]earch [h]istory of commits for THIS file",
         },
       }
     end,
@@ -305,13 +327,6 @@ return {
             require("gitsigns").blame_line({ full = false })
           end,
           desc = "git blame line",
-        },
-        {
-          "<leader>gB",
-          function()
-            require("gitsigns").blame_line({ full = true })
-          end,
-          desc = "git blame full",
         },
         {
           "<leader>gm",
@@ -387,35 +402,29 @@ return {
     end,
   },
   {
-    "nvim-pack/nvim-spectre",
+    "MagicDuck/grug-far.nvim",
     keys = {
       {
         "<leader>rr",
         function()
-          require("spectre").open()
+          local grug = require("grug-far")
+          local ext = vim.bo.buftype == "" and vim.fn.expand("%:e")
+          grug.grug_far({
+            transient = true,
+            prefills = {
+              filesFilter = ext and ext ~= "" and "*." .. ext or nil,
+            },
+          })
         end,
-        desc = "[R]eplace in Files (Spectre)",
+        mode = { "n", "v" },
+        desc = "Sea[r]ch and [R]eplace",
       },
       {
         "<leader>rw",
         function()
-          require("spectre").open_visual({ select_word = true })
+          require("grug-far").grug_far({ prefills = { search = vim.fn.expand("<cword>"), flags = vim.fn.expand("%") } })
         end,
-        desc = "[R]eplace current [Word] in files (Spectre)",
-      },
-      {
-        "<leader>rf",
-        function()
-          require("spectre").open_file_search({ select_word = true })
-        end,
-        desc = "[R]eplace current word in current [F]ile (Spectre)",
-      },
-      {
-        "<leader>rt",
-        function()
-          require("spectre").toggle()
-        end,
-        desc = "[R]ename [T]oggle (Spectre)",
+        desc = "[R]eplace current [w]ord in file",
       },
     },
   },

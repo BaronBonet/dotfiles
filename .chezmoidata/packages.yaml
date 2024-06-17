@@ -37,7 +37,6 @@ packages:
       - "pre-commit"
       - "ruby-build"
       - "ripgrep"
-      - "ruby"
       - "shellcheck"
       - "shellharden"
       - "tmux"
@@ -62,6 +61,7 @@ packages:
       - "stylua"
       - "codespell"
       - "rubyfmt"
+      - "chezmoi"
     casks:
       - "whatsapp"
       - "alacritty"

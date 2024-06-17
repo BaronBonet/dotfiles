@@ -15,8 +15,9 @@ alias gd='git diff'
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>    %Creset' --abbrev-commit"
 # Go to project root
 alias groot='[ ! -z `git rev-parse --show-cdup` ] && cd `git rev-parse --show-cdup || pwd`'
-#
 
+# Open obsidian notes
+alias oo="cd ~/vaults/vault && nvim ."
 
 # https://github.com/Peltoche/lsd
 alias l="lsd -la"
@@ -67,7 +68,6 @@ alias tf='terraform'
 
 alias tree="git ls-tree -r --name-only HEAD | tree --fromfile"
 
-source "$XDG_CONFIG_HOME/.aliases/.source_aliases"
 source "$XDG_CONFIG_HOME/.aliases/.git"
 
 set-poetry-python() {
@@ -124,3 +124,5 @@ s3pc(){
         aws s3 cp "$filename" s3://ericcbonet-blog-cdn/"$subfolder"/"$filename"
     fi
     }
+
+

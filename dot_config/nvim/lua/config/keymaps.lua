@@ -28,6 +28,8 @@ map({ "n", "v" }, "<leader>f", function()
   require("lazyvim.util").format({ force = true })
 end, { desc = "[F]ormat" })
 
+map({ "n", "v" }, "<leader>w", "<cmd>w<CR>", { noremap = true, silent = true, desc = "[W]rite" })
+
 -- Remap incriment to ctrl-s
 vim.api.nvim_set_keymap("n", "<C-s>", "<C-a>", { noremap = true, silent = true })
 
@@ -67,6 +69,7 @@ local normal_keymaps_to_del = {
   "<leader>ft",
   "<leader>fT",
   "<leader>K",
+  "<leader>wm",
 }
 
 delKeyMap(normal_keymaps_to_del)

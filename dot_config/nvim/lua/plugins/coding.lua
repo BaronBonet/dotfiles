@@ -19,9 +19,9 @@ return {
   -- Cycle through autocompete options with tab rather than arrow keys
   {
     "L3MON4D3/LuaSnip",
-    keys = function()
-      return {}
-    end,
+    -- keys = function()
+    --   return {}
+    -- end,
   },
   {
     "hrsh7th/nvim-cmp",

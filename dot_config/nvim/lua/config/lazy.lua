@@ -34,6 +34,7 @@ require("lazy").setup({
 
     { import = "lazyvim.plugins.extras.editor.harpoon2" },
     { import = "lazyvim.plugins.extras.editor.refactoring" },
+    { import = "lazyvim.plugins.extras.editor.illuminate" },
 
     -- import/override with your pluginsi
     { import = "plugins" },
