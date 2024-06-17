@@ -1,3 +1,30 @@
+-- Using this because it enables me to make commands to disable certain formatters e.g. rubocop
+local conform_config = {
+  default_format_opts = {
+    timeout_ms = 3000,
+    async = false,
+    quiet = false,
+    lsp_fallback = true,
+  },
+  formatters_by_ft = {
+    python = { "black", "isort" },
+    go = { "goimports", "gofmt", "golines" },
+    lua = { "stylua" },
+    sql = { "sqlfluff" },
+    ruby = { "rubocop" },
+    eruby = { "erb-format" },
+    sh = { "shfmt" },
+  },
+  formatters = {
+    injected = { options = { ignore_errors = true } },
+    golines = { prepend_args = { "--no-reformat-tags", "-m", "120", "--base-formatter=gofmt" } },
+    -- https://github.com/stevearc/conform.nvim/issues/369
+    rubocop = {
+      options = { ignore_errors = true },
+      args = { "--server", "--auto-correct-all", "--stderr", "--force-exclusion", "--stdin", "$FILENAME" },
+    },
+  },
+}
 return {
   {
     -- Responsible for installing Language Servers
@@ -8,16 +35,22 @@ return {
         "shellcheck",
         "shellharden",
         "bash-language-server",
-        -- both for ruby
-        "sorbet",
-        "rubocop",
+        -- Ruby
         "erb-lint",
+        "erb-formatter",
+        "rubocop",
       })
     end,
   },
   {
     -- Responsible for custom configuration for the language server if needed
     "neovim/nvim-lspconfig",
+    dependencies = {
+      {
+        "folke/neoconf.nvim",
+        cmd = "Neoconf",
+      },
+    },
     opts = {
       autoformat = false, -- format with <leader>f
       servers = {
@@ -34,6 +67,18 @@ return {
             },
           },
         },
+        ruby_lsp = {},
+        rubocop = {
+          on_new_config = function(config, root_dir)
+            -- Ensure config.cmd is not nil
+            if config.cmd then
+              -- Add additional arguments to the cmd array
+              table.insert(config.cmd, "--config")
+              table.insert(config.cmd, vim.fn.expand("~/.config/rubocop/.rubocop.yml"))
+            end
+          end,
+        },
+        sorbet = {},
       },
     },
   },
@@ -41,21 +86,34 @@ return {
   -- Check formatters here: https://github.com/stevearc/conform.nvim?tab=readme-ov-file#formatters
   {
     "stevearc/conform.nvim",
-    optional = true,
-    opts = {
-      formatters_by_ft = {
-        ["python"] = { "black", "isort" },
-        ["go"] = { "goimports", "gofmt", "golines" },
-        ["lua"] = { "stylua" },
-        ["sql"] = { "sqlfluff" },
-        -- ["*"] = { "codespell" }, -- TODO: This will autoformat spelling, which can be annoying for things like [S]ymbols, since it changes it to [S]symbols
-        -- TODO: figure out how to get shellharden to work
-        ["ruby"] = { "rubyfmt", "rubocop" },
-      },
-      formatters = {
-        golines = { prepend_args = { "--no-reformat-tags", "-m", "120", "--base-formatter=gofmt" } },
-      },
-    },
+    opts = function()
+      return conform_config
+    end,
+    keys = function()
+      return {
+        {
+          "<space>ci",
+          function()
+            local formatters = conform_config.formatters_by_ft.ruby
+            local rubocop_index = nil
+            for i = 1, #formatters do
+              if formatters[i] == "rubocop" then
+                rubocop_index = i
+                break
+              end
+            end
+            if rubocop_index then
+              vim.notify("Rubocop formatter disabled", vim.log.levels.Info)
+              table.remove(formatters, rubocop_index)
+            else
+              table.insert(formatters, "rubocop")
+              vim.notify("Rubocop formatter enabled", vim.log.levels.Info)
+            end
+          end,
+          desc = "[C]ode [i] Robocop formatter remove",
+        },
+      }
+    end,
   },
   -- linting, gives errors and warnings
   {
@@ -68,8 +126,6 @@ return {
         markdown = { "markdownlint" }, -- configs live in ~/.markdownlintrc
         proto = { "buf_lint" },
         dockerfile = { "hadolint" },
-        eruby = { "rubocop" },
-        ruby = { "rubocop" },
       },
     },
   },

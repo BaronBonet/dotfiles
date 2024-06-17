@@ -166,7 +166,26 @@ return {
             { LazyVim.lualine.pretty_path() },
           },
           lualine_x = {
-            "encoding",
+            {
+              -- Lsp server name .
+              function()
+                local msg = "No Active Lsp"
+                local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = 0 })
+                local clients = vim.lsp.get_clients()
+                if next(clients) == nil then
+                  return msg
+                end
+                for _, client in ipairs(clients) do
+                  local filetypes = client.config.filetypes
+                  if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+                    return client.name
+                  end
+                end
+                return msg
+              end,
+              icon = " ",
+              color = { fg = "#2ac3de", gui = "bold" },
+            },
             {
               function()
                 local icon = require("lazyvim.config").icons.kinds.Copilot
@@ -228,25 +247,26 @@ return {
   },
   {
     "folke/which-key.nvim",
-    opts = function(_, opts)
-      opts.defaults["<leader>w"] = nil
-      opts.defaults["<leader>f"] = nil
-      opts.defaults["<leader><tab>"] = nil
-      opts.defaults["<leader>x"] = nil
-      opts.defaults["<leader>u"] = { name = "[U]i" }
-      opts.defaults["<leader>q"] = { name = "+[Q]uit or reload" }
-      opts.defaults["<leader>sg"] = { name = "+[G]it" }
-      opts.defaults["<leader>t"] = { name = "+[T]rouble" }
-      opts.defaults["<leader>r"] = { name = "+[R]ename" }
-      opts.defaults["<leader>s"] = { name = "+[S]earch" }
-      opts.defaults["<leader>g"] = { name = "+[G]it hunk" }
-      opts.defaults["<leader>G"] = { name = "+[G]it UI" }
-      opts.defaults["<leader>a"] = { name = "+[A]uto" }
-      opts.defaults["<leader>b"] = { name = "[B]uffer" }
-      opts.defaults["<leader>c"] = { name = "[C]ode" }
-      opts.defaults["<leader>d"] = { name = "[D]ebug" }
-      opts.defaults["<leader>i"] = { name = "A[I]" }
-      return opts
-    end,
+    opts = {
+      preset = "helix",
+      spec = {
+        {
+          { "<leader>a", group = "[A]uto" },
+          { "<leader>b", group = "[B]uffer" },
+          { "<leader>c", group = "[C]ode" },
+          { "<leader>d", group = "[D]ebug" },
+          { "<leader>g", icon = { icon = "", color = "red" }, group = "[G]it" },
+          { "<leader>i", group = "A[I]" },
+          { "<leader>q", group = "[Q]uit or reload" },
+          { "<leader>r", group = "[R]ename" },
+          { "<leader>s", group = "[S]earch" },
+          { "<leader>sg", desc = "[G]it" },
+          { "<leader>t", group = "[T]rouble" },
+          { "<leader>u", group = "[U]i" },
+          { "<leader>w", group = "[W]rite" },
+          { "<leader>gr", icon = { icon = "", color = "red" }, group = "[G]it [R]esolve" },
+        },
+      },
+    },
   },
 }

@@ -98,3 +98,7 @@ eval "$(fzf --zsh)"
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 # TODO: is this required?
 # eval "$(~/.rbenv/bin/rbenv init - bash)"
+
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh)"

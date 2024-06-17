@@ -1,6 +1,6 @@
 #!/bin/bash
 
-"$HOME/.tmux/plugins/tpm/scripts/install_plugins.sh"
+"$XDG_CONFIG_HOME/tmux/plugins/tpm/scripts/install_plugins.sh"
 # Install tms for convenient tmux session
 if ! command -v tms >/dev/null 2>&1; then
 	echo "Installing tms for tmux session management"

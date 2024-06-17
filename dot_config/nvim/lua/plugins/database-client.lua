@@ -1,7 +1,8 @@
 local sql_ft = { "sql", "mysql", "plsql" }
 
 return {
-  -- TODO: I dont think this is needed
+  -- TODO: This may be partiallly replacable with
+  -- https://www.lazyvim.org/extras/lang/sql
   {
     "nvim-treesitter/nvim-treesitter",
     optional = true,
