@@ -67,6 +67,5 @@ packages:
       - "alacritty"
       - "docker"
       - "font-jetbrains-mono-nerd-font"
-      - "google-chrome"
       - "rectangle"
       - "raycast"
