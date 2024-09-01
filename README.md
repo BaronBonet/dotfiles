@@ -18,7 +18,7 @@ Then run this one liner (taken from [chezmoi.io](https://www.chezmoi.io/)), to c
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply BaronBonet
 ```
 
-This should copy all my dotfiles to their respective locations, and run the [install script](https://www.chezmoi.io/user-guide/use-scripts-to-perform-actions/) found [here](run_after-install-packages.sh). This script installs brew, all of my brew packages as well as the interpreted languages I'm currently using (Python and Ruby) managed by [asdf](https://asdf-vm.com/).
+This should copy all my dotfiles to their respective locations, and run the [install script](https://www.chezmoi.io/user-guide/use-scripts-to-perform-actions/) found here. This script installs brew, all of my brew packages as well as the interpreted languages I'm currently using (Python and Ruby) managed by [asdf](https://asdf-vm.com/).
 
 ### Further setup
 
@@ -48,6 +48,10 @@ Helpful tools to interact with github via the terminal. Also greatly increases t
 ```
 
 To enable copilot in nvim, when you 1st open nvim run `:Copilot auth` and follow the instructions.
+
+#### tmux
+
+Install tmux plugins with  `prefix` + I
 
 ## Working with chezmoi
 

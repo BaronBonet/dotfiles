@@ -1,35 +1,35 @@
 return {
-  {
-    "zbirenbaum/copilot.lua",
-    lazy = true,
-    keys = function()
-      local copilot_enabled = vim.fn.system("Copilot status"):find("Copilot is enabled") ~= nil
-      return {
-        {
-          "<leader>ac",
-          function()
-            if copilot_enabled then
-              vim.cmd("Copilot disable")
-              print("Copilot disabled")
-              copilot_enabled = false
-            else
-              vim.cmd("Copilot enable")
-              print("Copilot enabled")
-              copilot_enabled = true
-            end
-          end,
-          desc = "[A]uto toggle [c]opilot",
-        },
-      }
-    end,
-  },
+  -- {
+  --   "zbirenbaum/copilot.lua",
+  --   lazy = true,
+  --   keys = function()
+  --     local copilot_enabled = vim.fn.system("Copilot status"):find("Copilot is enabled") ~= nil
+  --     return {
+  --       {
+  --         "<leader>ac",
+  --         function()
+  --           if copilot_enabled then
+  --             vim.cmd("Copilot disable")
+  --             print("Copilot disabled")
+  --             copilot_enabled = false
+  --           else
+  --             vim.cmd("Copilot enable")
+  --             print("Copilot enabled")
+  --             copilot_enabled = true
+  --           end
+  --         end,
+  --         desc = "[A]uto toggle [c]opilot",
+  --       },
+  --     }
+  --   end,
+  -- },
   {
     "jackMort/ChatGPT.nvim",
     lazy = true,
     config = function()
       require("chatgpt").setup({
         -- Get the API key from one password vault
-        api_key_cmd = " op item get OpenAI_API_KEY --fields label=password",
+        api_key_cmd = "op item get OpenAI_API_KEY --fields label=password --reveal",
         openai_params = {
           model = "gpt-4o",
           frequency_penalty = 0,
@@ -73,5 +73,4 @@ return {
       }
     end,
   },
-  -- TODO: improve they keybindings for copilot chat if you've tried it
 }

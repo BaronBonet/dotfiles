@@ -4,6 +4,8 @@
 
 vim.o.clipboard = "" -- Don't use system clipboard
 
+vim.g.lazyvim_python_ruff = "ruff"
+
 -- errors are underlined
 vim.cmd([[let &t_Cs = "\e[4:3m"]])
 vim.cmd([[let &t_Ce = "\e[4:0m"]])

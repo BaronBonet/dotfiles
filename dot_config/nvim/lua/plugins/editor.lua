@@ -349,6 +349,7 @@ return {
           visible = false,
           hide_gitignored = true,
           hide_dotfiles = false,
+          hide_by_pattern = { "*/.git" },
         },
         follow_current_file = {
           enabled = true,
