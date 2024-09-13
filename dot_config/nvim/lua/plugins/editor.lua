@@ -429,4 +429,15 @@ return {
       },
     },
   },
+  -- Color hash colors
+  -- there might be a conflict with mini.hipatters
+  -- https://github.com/norcalli/nvim-colorizer.lua/issues/102
+  {
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require("colorizer").setup()
+    end,
+    event = "BufEnter",
+    opts = { "*" },
+  },
 }

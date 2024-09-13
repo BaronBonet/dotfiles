@@ -15,6 +15,9 @@ local conform_config = {
     eruby = { "erb-format" },
     sh = { "shfmt" },
     d2 = { "d2" },
+    terraform = { "terraform_fmt" },
+    tf = { "terraform_fmt" },
+    ["terraform-vars"] = { "terraform_fmt" },
   },
   formatters = {
     injected = { options = { ignore_errors = true } },
@@ -40,6 +43,7 @@ return {
         "erb-lint",
         "erb-formatter",
         "rubocop",
+        "tflint",
       })
     end,
   },
@@ -97,7 +101,8 @@ return {
             end
           end,
         },
-        -- sorbet = {},
+        terraformls = {},
+        harper_ls = {},
       },
     },
   },
@@ -145,6 +150,8 @@ return {
         markdown = { "markdownlint" }, -- configs live in ~/.markdownlintrc
         proto = { "buf_lint" },
         dockerfile = { "hadolint" },
+        terraform = { "terraform_validate" },
+        tf = { "terraform_validate" },
       },
     },
   },

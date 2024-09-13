@@ -63,6 +63,7 @@ packages:
       - "rubyfmt"
       - "chezmoi"
       - "ast-grep"
+      - "tflint"
     casks:
       - "whatsapp"
       - "alacritty"

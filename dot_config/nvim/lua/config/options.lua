@@ -24,7 +24,7 @@ vim.api.nvim_set_hl(0, "CursorLine", { bg = "#2a2a2a" })
 vim.api.nvim_set_hl(0, "Visual", { bg = "#FF0000" })
 
 -- spell check
-vim.api.nvim_command("autocmd FileType markdown,text,tex,go,python,proto setlocal spell")
+vim.api.nvim_command("autocmd FileType markdown,text,tex,go,python,proto,ruby,d2 setlocal spell")
 
 -- When moving with ctr-<d or u> center cursor
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
