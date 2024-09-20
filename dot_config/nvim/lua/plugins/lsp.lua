@@ -102,7 +102,8 @@ return {
           end,
         },
         terraformls = {},
-        harper_ls = {},
+        -- Another forms of spell checking and it claims can do grammer, but is pretty noisy
+        -- harper_ls = {},
       },
     },
   },
