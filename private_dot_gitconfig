@@ -7,16 +7,24 @@
 [branch]
 	autosetuprebase = always
 
-[includeIf "gitdir:~/source_software/"]
-    path = ~/source_software/.gitconfig
 [init]
 	defaultBranch = main
 [core]
-	pager = diff-so-fancy | less --tabs=4 -RFX
+	pager = delta
 	editor = nvim
 	excludesFile = /Users/ericbonet/.gitignore_global
 [interactive]
-	diffFilter = diff-so-fancy --patch
+	diffFilter = delta --color-only
+
+[delta]
+  navigate = true
+  side-by-side = true
+
+[merge]
+  conflictStyle = diff3
+
+[diff]
+  colorMoved = default
 
 [url "ssh://git@github.com/"]
     insteadOf = https://github.com/

@@ -64,6 +64,7 @@ packages:
       - "chezmoi"
       - "ast-grep"
       - "tflint"
+      - "git-delta"
     casks:
       - "whatsapp"
       - "alacritty"
