@@ -1,9 +1,14 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 if not vim.loop.fs_stat(lazypath) then
-  -- bootstrap lazy.nvim
-  -- stylua: ignore
-  vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath })
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
+  })
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
@@ -22,21 +27,18 @@ require("lazy").setup({
     {
       import = "lazyvim.plugins.extras.coding.copilot",
     },
-    { import = "lazyvim.plugins.extras.coding.copilot-chat" },
     { import = "lazyvim.plugins.extras.lang.terraform" },
     { import = "lazyvim.plugins.extras.lang.yaml" },
     { import = "lazyvim.plugins.extras.lang.docker" },
     { import = "lazyvim.plugins.extras.lang.markdown" },
-    -- { import = "lazyvim.plugins.extras.lang.ruby" },
 
-    { import = "lazyvim.plugins.extras.formatting.black" },
     { import = "lazyvim.plugins.extras.util.dot" },
 
     { import = "lazyvim.plugins.extras.editor.harpoon2" },
     { import = "lazyvim.plugins.extras.editor.refactoring" },
     { import = "lazyvim.plugins.extras.editor.illuminate" },
+    { import = "lazyvim.plugins.extras.lang.typescript" },
 
-    -- import/override with your pluginsi
     { import = "plugins" },
   },
   defaults = {
@@ -60,8 +62,7 @@ require("lazy").setup({
         "netrwPlugin",
         "tarPlugin",
         "tohtml",
-        -- TODO: Disable again once you've done the tutor
-        -- "tutor",
+        "tutor",
         "zipPlugin",
       },
     },

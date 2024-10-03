@@ -4,6 +4,8 @@
 
 vim.o.clipboard = "" -- Don't use system clipboard
 
+vim.g.lazyvim_python_ruff = "ruff"
+
 -- errors are underlined
 vim.cmd([[let &t_Cs = "\e[4:3m"]])
 vim.cmd([[let &t_Ce = "\e[4:0m"]])
@@ -22,7 +24,7 @@ vim.api.nvim_set_hl(0, "CursorLine", { bg = "#2a2a2a" })
 vim.api.nvim_set_hl(0, "Visual", { bg = "#FF0000" })
 
 -- spell check
-vim.api.nvim_command("autocmd FileType markdown,text,tex,go,python,proto setlocal spell")
+vim.api.nvim_command("autocmd FileType markdown,text,tex,go,python,proto,ruby,d2 setlocal spell")
 
 -- When moving with ctr-<d or u> center cursor
 vim.keymap.set("n", "<C-d>", "<C-d>zz")

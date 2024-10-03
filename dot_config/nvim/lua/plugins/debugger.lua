@@ -5,6 +5,7 @@ local Utils = require("utils")
 local function start_ruby_debugger()
   -- TODO: make this custom just like testing since it stops always at the 1st line
   local dap = require("dap")
+
   vim.fn.setenv("RUBYOPT", "-rdebug/open")
   dap.continue()
 end
@@ -98,6 +99,7 @@ return {
         opts = {},
         config = function(_)
           local dap = require("dap")
+          dap.set_log_level("DEBUG")
           local dapui = require("dapui")
 
           -- conditionally configure debugger based in filetype of code we are debugging

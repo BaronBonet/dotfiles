@@ -349,6 +349,7 @@ return {
           visible = false,
           hide_gitignored = true,
           hide_dotfiles = false,
+          hide_by_pattern = { "*/.git" },
         },
         follow_current_file = {
           enabled = true,
@@ -427,5 +428,16 @@ return {
         desc = "[R]eplace current [w]ord in file",
       },
     },
+  },
+  -- Color hash colors
+  -- there might be a conflict with mini.hipatters
+  -- https://github.com/norcalli/nvim-colorizer.lua/issues/102
+  {
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require("colorizer").setup()
+    end,
+    event = "BufEnter",
+    opts = { "*" },
   },
 }

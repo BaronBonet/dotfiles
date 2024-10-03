@@ -7,13 +7,17 @@ local conform_config = {
     lsp_fallback = true,
   },
   formatters_by_ft = {
-    python = { "black", "isort" },
+    python = { "ruff", "isort" },
     go = { "goimports", "gofmt", "golines" },
     lua = { "stylua" },
     sql = { "sqlfluff" },
     ruby = { "rubocop" },
     eruby = { "erb-format" },
     sh = { "shfmt" },
+    d2 = { "d2" },
+    terraform = { "terraform_fmt" },
+    tf = { "terraform_fmt" },
+    ["terraform-vars"] = { "terraform_fmt" },
   },
   formatters = {
     injected = { options = { ignore_errors = true } },
@@ -39,6 +43,7 @@ return {
         "erb-lint",
         "erb-formatter",
         "rubocop",
+        "tflint",
       })
     end,
   },
@@ -67,18 +72,38 @@ return {
             },
           },
         },
-        ruby_lsp = {},
+        ruby_lsp = {
+          -- Note if you get an error about ruby-lsp not working that is because it might not be installed for
+          -- The specific ruby version you are using after configuring the local version of ruby e.g.
+          -- asdf local ruby 3.3.4
+          -- you'll have to install ruby-lsp for that version e.g.
+          -- asdf exec gem install ruby-lsp
+          -- TODO: change this to run through bin/ruby-lsp so you need to run the binstubs all command then the lsp is run through the binary in the bin
+          cmd = { "sh", "-c", "asdf exec ruby-lsp" },
+        },
         rubocop = {
+          -- TODO: this will fail miserably in places
+          cmd = { "bin/rubocop", "--lsp" },
+          -- cmd = { "asdf", "exec", "rubocop", "--lsp" },
           on_new_config = function(config, root_dir)
             -- Ensure config.cmd is not nil
             if config.cmd then
-              -- Add additional arguments to the cmd array
-              table.insert(config.cmd, "--config")
-              table.insert(config.cmd, vim.fn.expand("~/.config/rubocop/.rubocop.yml"))
+              local project_rubocop_config = root_dir .. "/.rubocop.yml"
+              if vim.fn.filereadable(project_rubocop_config) == 1 then
+                vim.notify("Using project's rubocop config", vim.log.levels.Info)
+                table.insert(config.cmd, "--config")
+                table.insert(config.cmd, project_rubocop_config)
+              else
+                vim.notify("Using rubocop config from .config/rubocop/.rubocop.yml", vim.log.levels.Info)
+                table.insert(config.cmd, "--config")
+                table.insert(config.cmd, vim.fn.expand("~/.config/rubocop/.rubocop.yml"))
+              end
             end
           end,
         },
-        sorbet = {},
+        terraformls = {},
+        -- Another forms of spell checking and it claims can do grammer, but is pretty noisy
+        -- harper_ls = {},
       },
     },
   },
@@ -126,6 +151,8 @@ return {
         markdown = { "markdownlint" }, -- configs live in ~/.markdownlintrc
         proto = { "buf_lint" },
         dockerfile = { "hadolint" },
+        terraform = { "terraform_validate" },
+        tf = { "terraform_validate" },
       },
     },
   },

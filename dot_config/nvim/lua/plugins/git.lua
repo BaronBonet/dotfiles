@@ -68,4 +68,33 @@ return {
       }
     end,
   },
+  {
+    "sindrets/diffview.nvim",
+    keys = function()
+      return {
+        {
+          "<leader>gc",
+          function()
+            local current_file = vim.fn.expand("%:p")
+            local relative_path = vim.fn.fnamemodify(current_file, ":.")
+
+            require("telescope.builtin").git_commits({
+              git_command = { "git", "log", "--pretty=oneline", "--", relative_path },
+              attach_mappings = function(_, map)
+                map("i", "<CR>", function(prompt_bufnr)
+                  local selection = require("telescope.actions.state").get_selected_entry()
+                  require("telescope.actions").close(prompt_bufnr)
+                  if selection then
+                    vim.cmd("DiffviewOpen " .. selection.value:match("^(%S+)"))
+                  end
+                end)
+                return true
+              end,
+            })
+          end,
+          desc = "[G]it [C]ommits, are listed for the file we are in, select a commit and view the diff of this current file against that commit.",
+        },
+      }
+    end,
+  },
 }
