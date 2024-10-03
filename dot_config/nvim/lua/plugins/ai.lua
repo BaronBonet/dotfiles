@@ -1,28 +1,28 @@
 return {
-  -- {
-  --   "zbirenbaum/copilot.lua",
-  --   lazy = true,
-  --   keys = function()
-  --     local copilot_enabled = vim.fn.system("Copilot status"):find("Copilot is enabled") ~= nil
-  --     return {
-  --       {
-  --         "<leader>ac",
-  --         function()
-  --           if copilot_enabled then
-  --             vim.cmd("Copilot disable")
-  --             print("Copilot disabled")
-  --             copilot_enabled = false
-  --           else
-  --             vim.cmd("Copilot enable")
-  --             print("Copilot enabled")
-  --             copilot_enabled = true
-  --           end
-  --         end,
-  --         desc = "[A]uto toggle [c]opilot",
-  --       },
-  --     }
-  --   end,
-  -- },
+  {
+    "zbirenbaum/copilot.lua",
+    lazy = true,
+    keys = function()
+      local copilot_enabled = vim.fn.system("Copilot status"):find("Copilot is enabled") ~= nil
+      return {
+        {
+          "<leader>ac",
+          function()
+            if copilot_enabled then
+              vim.cmd("Copilot disable")
+              print("Copilot disabled")
+              copilot_enabled = false
+            else
+              vim.cmd("Copilot enable")
+              print("Copilot enabled")
+              copilot_enabled = true
+            end
+          end,
+          desc = "[A]uto toggle [c]opilot",
+        },
+      }
+    end,
+  },
   {
     "jackMort/ChatGPT.nvim",
     lazy = true,
