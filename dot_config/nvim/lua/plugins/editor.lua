@@ -1,7 +1,6 @@
 return {
   {
     "okuuva/auto-save.nvim",
-    -- event = { "InsertLeave" },
     cmd = "ASToggle", -- optional for lazy loading on command
     event = { "InsertLeave", "TextChanged" },
     opts = {
@@ -410,7 +409,7 @@ return {
         function()
           local grug = require("grug-far")
           local ext = vim.bo.buftype == "" and vim.fn.expand("%:e")
-          grug.grug_far({
+          grug.open({
             transient = true,
             prefills = {
               filesFilter = ext and ext ~= "" and "*." .. ext or nil,
@@ -423,7 +422,7 @@ return {
       {
         "<leader>rw",
         function()
-          require("grug-far").grug_far({ prefills = { search = vim.fn.expand("<cword>"), flags = vim.fn.expand("%") } })
+          require("grug-far").open({ prefills = { search = vim.fn.expand("<cword>"), flags = vim.fn.expand("%") } })
         end,
         desc = "[R]eplace current [w]ord in file",
       },
