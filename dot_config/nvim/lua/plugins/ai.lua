@@ -1,3 +1,16 @@
+local config_avante = function()
+  local api_key_name = "ANTHROPIC_API_KEY"
+  local function set_api_key()
+    local api_key_cmd = "op item get CLAUDE_API_KEY --fields label=password --reveal"
+    local api_key = vim.fn.system(api_key_cmd):gsub("\n", "")
+    vim.fn.setenv(api_key_name, api_key)
+  end
+
+  if vim.fn.getenv(api_key_name) == vim.NIL then
+    set_api_key()
+    require("avante").setup()
+  end
+end
 return {
   {
     "zbirenbaum/copilot.lua",
@@ -76,18 +89,32 @@ return {
     event = "VeryLazy",
     lazy = false,
     version = false, -- set this if you want to always pull the latest change
-    opts = {
-      -- add any opts here
-    },
-    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = "make",
-    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+    keys = { -- See https://github.com/yetone/avante.nvim/wiki#keymaps for more info
+      {
+        "<leader>aa",
+        function()
+          config_avante()
+          require("avante.api").ask()
+        end,
+        desc = "avante: ask",
+        mode = { "n", "v" },
+      },
+      {
+        "<leader>ae",
+        function()
+          config_avante()
+          require("avante.api").edit()
+        end,
+        desc = "avante: edit",
+        mode = { "n", "v" },
+      },
+    },
     dependencies = {
       "stevearc/dressing.nvim",
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
-      --- The below dependencies are optional,
-      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+      "nvim-tree/nvim-web-devicons",
       "zbirenbaum/copilot.lua", -- for providers='copilot'
       {
         -- support for image pasting
