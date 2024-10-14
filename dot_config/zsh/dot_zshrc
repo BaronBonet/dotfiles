@@ -66,8 +66,6 @@ export GOBIN=$(go env GOPATH)/bin
 export PATH=$PATH:$GOBIN
 
 export PATH=~/.cargo/bin/:$PATH
-# Goland
-# export PATH=$PATH:/Applications/GoLand.app/Contents/MacOS
 
 # History
 HISTSIZE=10000

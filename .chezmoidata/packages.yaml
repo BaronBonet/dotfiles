@@ -65,6 +65,7 @@ packages:
       - "ast-grep"
       - "tflint"
       - "git-delta"
+      - "zsh-vi-mode"
     casks:
       - "whatsapp"
       - "alacritty"
