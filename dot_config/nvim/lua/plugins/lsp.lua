@@ -27,8 +27,14 @@ local conform_config = {
       options = { ignore_errors = true },
       args = { "--server", "--auto-correct-all", "--stderr", "--force-exclusion", "--stdin", "$FILENAME" },
     },
+    sqlfluff = {
+      args = { "fix", "--dialect=postgres" },
+      stdin = false,
+      require_cwd = false,
+    },
   },
 }
+
 return {
   {
     -- Responsible for installing Language Servers
@@ -44,6 +50,7 @@ return {
         "erb-formatter",
         "rubocop",
         "tflint",
+        "sqlfluff",
       })
     end,
   },
@@ -153,6 +160,15 @@ return {
         dockerfile = { "hadolint" },
         terraform = { "terraform_validate" },
         tf = { "terraform_validate" },
+      },
+      linters = {
+        sqlfluff = {
+          args = {
+            "lint",
+            "--format=json",
+            "--dialect=postgres",
+          },
+        },
       },
     },
   },
