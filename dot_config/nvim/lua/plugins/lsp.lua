@@ -10,7 +10,7 @@ local conform_config = {
     python = { "ruff", "isort" },
     go = { "goimports", "gofmt", "golines" },
     lua = { "stylua" },
-    sql = { "sqlfluff" },
+    sql = { "pg_format" },
     ruby = { "rubocop" },
     eruby = { "erb-format" },
     sh = { "shfmt" },
@@ -27,11 +27,11 @@ local conform_config = {
       options = { ignore_errors = true },
       args = { "--server", "--auto-correct-all", "--stderr", "--force-exclusion", "--stdin", "$FILENAME" },
     },
-    sqlfluff = {
-      args = { "fix", "--dialect=postgres" },
-      stdin = false,
-      require_cwd = false,
-    },
+    -- sqlfluff = {
+    --   args = { "fix", "--dialect=postgres" },
+    --   stdin = false,
+    --   require_cwd = false,
+    -- },
   },
 }
 
@@ -50,7 +50,7 @@ return {
         "erb-formatter",
         "rubocop",
         "tflint",
-        "sqlfluff",
+        -- "sqlfluff",
       })
     end,
   },
@@ -161,15 +161,15 @@ return {
         terraform = { "terraform_validate" },
         tf = { "terraform_validate" },
       },
-      linters = {
-        sqlfluff = {
-          args = {
-            "lint",
-            "--format=json",
-            "--dialect=postgres",
-          },
-        },
-      },
+      -- linters = {
+      --   sqlfluff = {
+      --     args = {
+      --       "lint",
+      --       "--format=json",
+      --       "--dialect=postgres",
+      --     },
+      --   },
+      -- },
     },
   },
 }

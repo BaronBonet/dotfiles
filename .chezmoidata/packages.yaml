@@ -66,6 +66,7 @@ packages:
       - "tflint"
       - "git-delta"
       - "zsh-vi-mode"
+      - "pgformatter"
     casks:
       - "whatsapp"
       - "alacritty"

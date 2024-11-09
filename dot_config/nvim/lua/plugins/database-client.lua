@@ -66,8 +66,8 @@ return {
                 end
                 local key = line:sub(1, equalIndex - 1)
                 local value = line:sub(equalIndex + 1)
-                vim.notify("key = " .. key, vim.log.levels.DEBUG)
-                vim.notify("value = " .. value, vim.log.levels.DEBUG)
+                -- vim.notify("key = " .. key, vim.log.levels.DEBUG)
+                -- vim.notify("value = " .. value, vim.log.levels.DEBUG)
                 vim.fn.setenv(key, value)
               end
             end

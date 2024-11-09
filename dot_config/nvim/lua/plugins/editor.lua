@@ -4,9 +4,9 @@ return {
     cmd = "ASToggle", -- optional for lazy loading on command
     event = { "InsertLeave", "TextChanged" },
     opts = {
-      execution_message = {
-        enabled = false,
-      },
+      -- execution_message = {
+      --   enabled = false,
+      -- },
       trigger_events = { defer_save = { "InsertLeave" } },
     },
     keys = function()
