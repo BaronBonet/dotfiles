@@ -57,7 +57,8 @@ autoload bashcompinit && bashcompinit
 autoload -Uz compinit && compinit
 complete -C '/opt/homebrew/bin/aws_completer' aws
 
-eval "$(zoxide init zsh)"
+# better cd with history, for completions to work add after compinit
+eval "$(zoxide init --cmd cd zsh)"
 # Onepassword shell completion
 eval "$(op completion zsh)"; compdef _op op
 

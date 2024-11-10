@@ -53,7 +53,7 @@ packages:
       - "pipx"
       - "codespell"
       - "luarocks"
-      - "zoxide"
+      - "zoxide" # For better cd
       - "fastfetch"
       - "prettierd"
       - "watchman" # For sorbet lsp in nvim
