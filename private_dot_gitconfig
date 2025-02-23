@@ -33,6 +33,16 @@
 
 [alias]
 	wip = !git add --all && git commit -m 'WIP'
+  # usage: git rebase-ours <branch>
+  rebase-ours = "!f() { \
+    git rebase \"$1\" || ( \
+    while [ -n \"$(git ls-files -u)\" ]; do \
+        git ls-files -u | awk '{print $4}' | sort -u | xargs git checkout --ours --; \
+        git add .; \
+        git rebase --continue; \
+    done); \
+  }; f"
+
 
 # https://git-scm.com/book/en/v2/Git-Tools-Rerere
 [rerere]

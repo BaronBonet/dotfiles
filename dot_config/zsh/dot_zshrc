@@ -40,7 +40,10 @@ source "$ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 # For managing python versions, needs to be installed 
 # https://asdf-vm.com/guide/getting-started.html
-. "$HOME/.asdf/asdf.sh"
+# . "$HOME/.asdf/asdf.sh"
+ASDF_DATA_DIR=/Users/ebon/.asdf
+export PATH="$ASDF_DATA_DIR/shims:$PATH"
+
 
 export PATH="$PATH:$HOME/.local/bin"
 
@@ -61,6 +64,7 @@ complete -C '/opt/homebrew/bin/aws_completer' aws
 eval "$(zoxide init --cmd cd zsh)"
 # Onepassword shell completion
 eval "$(op completion zsh)"; compdef _op op
+source /Users/ebon/.config/op/plugins.sh
 
 # GO stuff
 export GOBIN=$(go env GOPATH)/bin
@@ -94,10 +98,9 @@ zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 eval "$(fzf --zsh)"
 [ -f ~/.fzf.zsh ] && source ~/.config/fzf/.fzf.zsh
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-# TODO: is this required?
-# eval "$(~/.rbenv/bin/rbenv init - bash)"
-
 . "$HOME/.atuin/bin/env"
 
 eval "$(atuin init zsh)"
+
+# FOR JAVA 17 delete when doing using scala
+export PATH="/opt/homebrew/opt/openjdk@23/bin:$PATH"

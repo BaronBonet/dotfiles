@@ -13,30 +13,6 @@ local config_avante = function()
 end
 return {
   {
-    "zbirenbaum/copilot.lua",
-    lazy = true,
-    keys = function()
-      local copilot_enabled = vim.fn.system("Copilot status"):find("Copilot is enabled") ~= nil
-      return {
-        {
-          "<leader>ac",
-          function()
-            if copilot_enabled then
-              vim.cmd("Copilot disable")
-              print("Copilot disabled")
-              copilot_enabled = false
-            else
-              vim.cmd("Copilot enable")
-              print("Copilot enabled")
-              copilot_enabled = true
-            end
-          end,
-          desc = "[A]uto toggle [c]opilot",
-        },
-      }
-    end,
-  },
-  {
     "jackMort/ChatGPT.nvim",
     lazy = true,
     opts = {
@@ -52,7 +28,7 @@ return {
         n = 1,
       },
       openai_edit_params = {
-        model = "gpt-4o",
+        model = "gpt-4.1",
         frequency_penalty = 0,
         presence_penalty = 0,
         temperature = 0,
@@ -78,9 +54,6 @@ return {
     keys = function()
       return {
         { "<leader>ic", "<cmd>ChatGPT<CR>", desc = "A[i] ChatGPT" },
-        { "<leader>ie", "<cmd>ChatGPTEditWithInstruction<CR>", desc = "Edit with instruction", mode = { "n", "v" } },
-        { "<leader>is", "<cmd>ChatGPTRun summarize<CR>", desc = "Summarize", mode = { "n", "v" } },
-        { "<leader>ix", "<cmd>ChatGPTRun explain_code<CR>", desc = "Explain Code", mode = { "n", "v" } },
       }
     end,
   },
@@ -92,22 +65,44 @@ return {
     build = "make",
     keys = { -- See https://github.com/yetone/avante.nvim/wiki#keymaps for more info
       {
-        "<leader>aa",
+        "<leader>at",
         function()
           config_avante()
           require("avante.api").ask()
         end,
-        desc = "avante: ask",
+        desc = "avante: [t]oggle ask",
         mode = { "n", "v" },
       },
       {
-        "<leader>ae",
+        "<leader>aE",
         function()
           config_avante()
           require("avante.api").edit()
         end,
-        desc = "avante: edit",
+        desc = "avante: [E]dit",
         mode = { "n", "v" },
+      },
+    },
+    opts = {
+      providers = {
+        avante_commands = {
+          name = "avante_commands",
+          module = "blink.compat.source",
+          score_offset = 90, -- show at a higher priority than lsp
+          opts = {},
+        },
+        avante_files = {
+          name = "avante_files",
+          module = "blink.compat.source",
+          score_offset = 100, -- show at a higher priority than lsp
+          opts = {},
+        },
+        avante_mentions = {
+          name = "avante_mentions",
+          module = "blink.compat.source",
+          score_offset = 1000, -- show at a higher priority than lsp
+          opts = {},
+        },
       },
     },
     dependencies = {
@@ -115,7 +110,8 @@ return {
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
       "nvim-tree/nvim-web-devicons",
-      "zbirenbaum/copilot.lua", -- for providers='copilot'
+      "ibhagwan/fzf-lua", -- for file_selector provider fzf
+
       {
         -- Make sure to set this up properly if you have lazy=true
         "MeanderingProgrammer/render-markdown.nvim",
