@@ -67,6 +67,7 @@ packages:
       - "git-delta"
       - "zsh-vi-mode"
       - "pgformatter"
+      - "markdownlint-cli2"
     casks:
       - "whatsapp"
       - "alacritty"

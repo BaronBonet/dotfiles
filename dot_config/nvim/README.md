@@ -1,6 +1,4 @@
 # 💤 LazyVim
 
-TODO:
-
-- Trouble gutter on the right when doing ts (to see functions) is too narrow
-- Ruby rename doesn't work
+A starter template for [LazyVim](https://github.com/LazyVim/LazyVim).
+Refer to the [documentation](https://lazyvim.github.io/installation) to get started.
