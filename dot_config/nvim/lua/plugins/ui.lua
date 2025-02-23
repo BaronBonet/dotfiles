@@ -3,76 +3,6 @@ local colors = require("tokyonight.colors").setup()
 return {
   -- messages, cmdline and the popupmenu
   {
-    "folke/noice.nvim",
-    opts = function(_, opts)
-      table.insert(opts.routes, {
-        filter = {
-          event = "notify",
-          find = "No information available",
-        },
-        opts = { skip = true },
-      })
-      local focused = true
-      vim.api.nvim_create_autocmd("FocusGained", {
-        callback = function()
-          focused = true
-        end,
-      })
-      vim.api.nvim_create_autocmd("FocusLost", {
-        callback = function()
-          focused = false
-        end,
-      })
-      table.insert(opts.routes, 1, {
-        filter = {
-          cond = function()
-            return not focused
-          end,
-        },
-        view = "notify_send",
-        opts = { stop = false },
-      })
-
-      opts.commands = {
-        all = {
-          -- options for the message history that you get with `:Noice`
-          view = "split",
-          opts = { enter = true, format = "details" },
-          filter = {},
-        },
-      }
-
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "markdown",
-        callback = function(event)
-          vim.schedule(function()
-            require("noice.text.markdown").keys(event.buf)
-          end)
-        end,
-      })
-
-      opts.presets.lsp_doc_border = true
-    end,
-    keys = { { "<leader>un", "<cmd>Noice<cr>", desc = "show [N]oice notifications" } },
-  },
-  {
-    "folke/zen-mode.nvim",
-    cmd = "ZenMode",
-    opts = {
-      window = {
-        width = 180,
-      },
-      plugins = {
-        gitsigns = true,
-        tmux = true,
-        alacritty = {
-          enabled = true,
-        },
-      },
-    },
-    keys = { { "<leader>z", "<cmd>ZenMode<cr>", desc = "[Z]en Mode" } },
-  },
-  {
     "mbbill/undotree",
     cmd = "UndotreeToggle",
     config = function()
@@ -114,10 +44,10 @@ return {
 
       vim.o.laststatus = vim.g.lualine_laststatus
       local colors = {
-        [""] = LazyVim.ui.fg("Special"),
-        ["Normal"] = LazyVim.ui.fg("Special"),
-        ["Warning"] = LazyVim.ui.fg("DiagnosticError"),
-        ["InProgress"] = LazyVim.ui.fg("DiagnosticWarn"),
+        [""] = { fg = Snacks.util.color("Special") },
+        ["Normal"] = { fg = Snacks.util.color("Special") },
+        ["Warning"] = { fg = Snacks.util.color("DiagnosticError") },
+        ["InProgress"] = { fg = Snacks.util.color("DiagnosticWarn") },
       }
 
       return {
@@ -168,6 +98,7 @@ return {
           lualine_x = {
             {
               -- Lsp server name .
+              -- TODO: show multiple lsps if there are
               function()
                 local msg = "No Active Lsp"
                 local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = 0 })
@@ -186,6 +117,8 @@ return {
               icon = " ",
               color = { fg = "#2ac3de", gui = "bold" },
             },
+            -- TODO: i shoudlnt have to do all of this checkout how lua line is updated with copilot
+            -- https://www.lazyvim.org/extras/ai/copilot w
             {
               function()
                 local icon = require("lazyvim.config").icons.kinds.Copilot
@@ -222,18 +155,21 @@ return {
           {
             function() return require("noice").api.status.mode.get() end,
             cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
-            color = LazyVim.ui.fg("Constant"),
+            fg = Snacks.util.color("Constant")
+              -- color = LazyVim.ui.fg("Constant"),
           },
           -- stylua: ignore
           {
             function() return "  " .. require("dap").status() end,
             cond = function () return package.loaded["dap"] and require("dap").status() ~= "" end,
-            color = LazyVim.ui.fg("Debug"),
+            fg = Snacks.util.color("Debug")
+            -- color = LazyVim.ui.fg("Debug"),
           },
             { -- Shows which packages are not up to date
               require("lazy.status").updates,
               cond = require("lazy.status").has_updates,
-              color = LazyVim.ui.fg("Special"),
+              fg = Snacks.util.color("Special"),
+              -- color = LazyVim.ui.fg("Special"),
             },
           },
           lualine_z = {
@@ -251,22 +187,26 @@ return {
       preset = "helix",
       spec = {
         {
-          { "<leader>a", group = "[A]uto" },
-          { "<leader>b", group = "[B]uffer" },
-          { "<leader>c", group = "[C]ode" },
-          { "<leader>d", group = "[D]ebug" },
-          { "<leader>g", icon = { icon = "", color = "red" }, group = "[G]it" },
-          { "<leader>i", group = "A[I]" },
-          { "<leader>q", group = "[Q]uit or reload" },
-          { "<leader>r", group = "[R]ename" },
-          { "<leader>s", group = "[S]earch" },
-          { "<leader>sg", desc = "[G]it" },
-          { "<leader>t", group = "[T]rouble" },
-          { "<leader>u", group = "[U]i" },
-          { "<leader>w", group = "[W]rite" },
-          { "<leader>gr", icon = { icon = "", color = "red" }, group = "[G]it [R]esolve" },
+          { "<leader>a", group = "[A]i" },
         },
       },
     },
+  },
+  {
+    "folke/zen-mode.nvim",
+    cmd = "ZenMode",
+    opts = {
+      window = {
+        width = 180,
+      },
+      plugins = {
+        gitsigns = true,
+        tmux = true,
+        alacritty = {
+          enabled = true,
+        },
+      },
+    },
+    keys = { { "<leader>z", "<cmd>ZenMode<cr>", desc = "[Z]en Mode" } },
   },
 }

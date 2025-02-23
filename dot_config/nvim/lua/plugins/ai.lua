@@ -15,26 +15,24 @@ return {
   {
     "zbirenbaum/copilot.lua",
     lazy = true,
-    keys = function()
-      local copilot_enabled = vim.fn.system("Copilot status"):find("Copilot is enabled") ~= nil
-      return {
-        {
-          "<leader>ac",
-          function()
-            if copilot_enabled then
-              vim.cmd("Copilot disable")
-              print("Copilot disabled")
-              copilot_enabled = false
-            else
-              vim.cmd("Copilot enable")
-              print("Copilot enabled")
-              copilot_enabled = true
-            end
-          end,
-          desc = "[A]uto toggle [c]opilot",
-        },
-      }
-    end,
+    keys = {
+      {
+        "<leader>ac",
+        function()
+          local copilot_enabled = vim.fn.system("Copilot status"):find("Copilot is enabled") ~= nil
+          if copilot_enabled then
+            vim.cmd("Copilot disable")
+            print("Copilot disabled")
+            copilot_enabled = false
+          else
+            vim.cmd("Copilot enable")
+            print("Copilot enabled")
+            copilot_enabled = true
+          end
+        end,
+        desc = "[A]uto toggle [c]opilot",
+      },
+    },
   },
   {
     "jackMort/ChatGPT.nvim",
@@ -97,17 +95,39 @@ return {
           config_avante()
           require("avante.api").ask()
         end,
-        desc = "avante: ask",
+        desc = "avante: [a]sk",
         mode = { "n", "v" },
       },
       {
-        "<leader>ae",
+        "<leader>aE",
         function()
           config_avante()
           require("avante.api").edit()
         end,
-        desc = "avante: edit",
+        desc = "avante: [E]dit",
         mode = { "n", "v" },
+      },
+    },
+    opts = {
+      providers = {
+        avante_commands = {
+          name = "avante_commands",
+          module = "blink.compat.source",
+          score_offset = 90, -- show at a higher priority than lsp
+          opts = {},
+        },
+        avante_files = {
+          name = "avante_files",
+          module = "blink.compat.source",
+          score_offset = 100, -- show at a higher priority than lsp
+          opts = {},
+        },
+        avante_mentions = {
+          name = "avante_mentions",
+          module = "blink.compat.source",
+          score_offset = 1000, -- show at a higher priority than lsp
+          opts = {},
+        },
       },
     },
     dependencies = {
@@ -115,7 +135,8 @@ return {
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
       "nvim-tree/nvim-web-devicons",
-      "zbirenbaum/copilot.lua", -- for providers='copilot'
+      "ibhagwan/fzf-lua", -- for file_selector provider fzf
+
       {
         -- Make sure to set this up properly if you have lazy=true
         "MeanderingProgrammer/render-markdown.nvim",

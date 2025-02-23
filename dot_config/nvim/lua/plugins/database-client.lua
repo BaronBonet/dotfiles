@@ -1,44 +1,9 @@
+-- TODO: i shouldn't need this anymore since i can use the .lazy.lua file
 local sql_ft = { "sql", "mysql", "plsql" }
 
 return {
-  -- TODO: This may be partiallly replacable with
-  -- https://www.lazyvim.org/extras/lang/sql
-  {
-    "nvim-treesitter/nvim-treesitter",
-    optional = true,
-    opts = function(_, opts)
-      if type(opts.ensure_installed) == "table" then
-        vim.list_extend(opts.ensure_installed, { "sql" })
-      end
-    end,
-  },
-  {
-    "folke/edgy.nvim",
-    optional = true,
-    opts = function(_, opts)
-      table.insert(opts.right, {
-        title = "Database",
-        ft = "dbui",
-        pinned = true,
-        open = function()
-          vim.cmd("DBUI")
-        end,
-      })
-
-      table.insert(opts.bottom, {
-        title = "DB Query Result",
-        ft = "dbout",
-      })
-    end,
-  },
   {
     "tpope/vim-dadbod",
-    cmd = { "DBUI", "DBUIToggle", "DBUIAddConnection", "DBUIFindBuffer" },
-    dependencies = {
-      "kristijanhusak/vim-dadbod-ui",
-      { "kristijanhusak/vim-dadbod-completion", ft = sql_ft },
-      { "jsborjesson/vim-uppercase-sql", ft = sql_ft },
-    },
     keys = function()
       return {
         {
@@ -50,62 +15,30 @@ return {
             -- For example:
             -- DB_UI_DEV=postgres://uname:password@localhost:5435/db_name
             -- The name of the environment variable should be in the format: DB_UI_<name of connection in UI>
-            local cwd = vim.fn.getcwd()
-            local env_file = cwd .. "/.env"
-            vim.notify("Starting dadbod", vim.log.levels.DEBUG)
-
-            if vim.fn.filereadable(env_file) == 1 then
-              local lines = vim.fn.readfile(env_file)
-
-              for _, line in ipairs(lines) do
-                local equalIndex = line:find("=")
-                if not equalIndex then
-                  vim.notify("Invalid line: " .. line, vim.log.levels.DEBUG)
-                  goto continue
-                  ::continue::
-                end
-                local key = line:sub(1, equalIndex - 1)
-                local value = line:sub(equalIndex + 1)
-                -- vim.notify("key = " .. key, vim.log.levels.DEBUG)
-                -- vim.notify("value = " .. value, vim.log.levels.DEBUG)
-                vim.fn.setenv(key, value)
-              end
-            end
+            -- local cwd = vim.fn.getcwd()
+            -- local env_file = cwd .. "/.env"
+            -- -- vim.notify("Starting dadbod", vim.log.levels.DEBUG)
+            --
+            -- if vim.fn.filereadable(env_file) == 1 then
+            --   local lines = vim.fn.readfile(env_file)
+            --
+            --   for _, line in ipairs(lines) do
+            --     local equalIndex = line:find("=")
+            --     if not equalIndex then
+            --       vim.notify("Invalid line: " .. line, vim.log.levels.DEBUG)
+            --       goto continue
+            --       ::continue::
+            --     end
+            --     local key = line:sub(1, equalIndex - 1)
+            --     local value = line:sub(equalIndex + 1)
+            --     vim.fn.setenv(key, value)
+            --   end
+            -- end
             vim.cmd("DBUIToggle")
           end,
           desc = "[L]aunch Database Client",
         },
       }
-    end,
-    init = function()
-      vim.g.db_ui_save_location = vim.fn.stdpath("data") .. "/db_ui"
-      vim.g.db_ui_use_nerd_fonts = true
-      vim.g.db_ui_execute_on_save = false
-      vim.g.db_ui_use_nvim_notify = true
-
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = sql_ft,
-        callback = function()
-          ---@diagnostic disable-next-line: missing-fields
-          local cmp = require("cmp")
-          local global_sources = cmp.get_config().sources
-          local buffer_sources = {}
-
-          -- add globally defined sources (see separate nvim-cmp config)
-          -- this makes e.g. luasnip snippets available since luasnip is configured globally
-          if global_sources then
-            for _, source in ipairs(global_sources) do
-              table.insert(buffer_sources, { name = source.name })
-            end
-          end
-
-          -- add vim-dadbod-completion source
-          table.insert(buffer_sources, { name = "vim-dadbod-completion" })
-
-          -- update sources for the current buffer
-          cmp.setup.buffer({ sources = buffer_sources })
-        end,
-      })
     end,
   },
 }
