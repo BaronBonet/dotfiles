@@ -90,12 +90,12 @@ return {
     build = "make",
     keys = { -- See https://github.com/yetone/avante.nvim/wiki#keymaps for more info
       {
-        "<leader>aa",
+        "<leader>at",
         function()
           config_avante()
           require("avante.api").ask()
         end,
-        desc = "avante: [a]sk",
+        desc = "avante: [t]oggle ask",
         mode = { "n", "v" },
       },
       {

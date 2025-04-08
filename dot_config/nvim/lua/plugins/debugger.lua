@@ -63,15 +63,15 @@ return {
               },
             }
 
-            local languages_without_console = { "python" }
+            local languages_without_console = { "python", "go" }
             if not filetype.find(table.concat(languages_without_console, ","), filetype) then
               table.insert(elements, 2, {
                 id = "console",
                 size = 0.35,
               })
             else
-              elements[1].size = 0.55
-              elements[2].size = 0.45
+              elements[1].size = 0.50
+              elements[2].size = 0.50
             end
 
             return elements
@@ -149,12 +149,7 @@ return {
         {
           "<leader>dc",
           function()
-            local filetype = vim.bo.filetype
-            if filetype == "ruby" then
-              start_ruby_debugger()
-            else
-              require("dap").continue()
-            end
+            require("dap").continue()
           end,
           desc = "Start/Continue",
         },
@@ -195,8 +190,6 @@ return {
             elseif filetype == "python" then
               -- since i only use pytest don't need to use test_class
               require("dap-python").test_method()
-            elseif filetype == "ruby" then
-              start_rspec_debugger()
             else
               vim.notify("No test method for filetype: " .. filetype, vim.log.levels.WARN)
             end
