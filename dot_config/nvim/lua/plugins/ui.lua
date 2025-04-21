@@ -177,7 +177,6 @@ return {
             { "location", padding = { left = 0, right = 1 } },
           },
         },
-        extensions = { "neo-tree", "lazy" },
       }
     end,
   },
@@ -209,14 +208,26 @@ return {
     },
     keys = { { "<leader>z", "<cmd>ZenMode<cr>", desc = "[Z]en Mode" } },
   },
+  -- Snacks explorer
   {
     "folke/snacks.nvim",
-    ---@type snacks.Config
     opts = {
-      image = {
-        -- your image configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
+      picker = {
+        sources = {
+          explorer = {
+            auto_close = true,
+            layout = { preset = "dropdown", preview = false, auto_hide = { "input" } },
+          },
+        },
+      },
+    },
+    keys = {
+      {
+        "<leader>e",
+        function()
+          require("snacks").explorer.open()
+        end,
+        desc = "Toggle [E]xplorer",
       },
     },
   },

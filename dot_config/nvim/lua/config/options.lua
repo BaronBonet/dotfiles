@@ -29,3 +29,4 @@ vim.keymap.set("n", "#", "#zz")
 vim.keymap.set("n", "*", "*zz")
 
 vim.g.lazyvim_python_ruff = "ruff"
+vim.g.lazyvim_picker = "snacks"

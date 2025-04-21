@@ -30,10 +30,10 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.dap" },
     { import = "lazyvim.plugins.extras.editor.fzf" },
     { import = "lazyvim.plugins.extras.editor.illuminate" },
-    { import = "lazyvim.plugins.extras.ai.copilot" },
-    { import = "lazyvim.plugins.extras.ai.copilot-chat" },
+    -- { import = "lazyvim.plugins.extras.ai.copilot" },
+    -- { import = "lazyvim.plugins.extras.ai.copilot-chat" },
     -- NOTE: Please let me delete this soon...
-    { import = "lazyvim.plugins.extras.lang.ruby" },
+    { import = "lazyvim.plugins.extras.editor.snacks_explorer" },
     { import = "plugins" },
   },
   defaults = {
