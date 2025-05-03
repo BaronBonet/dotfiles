@@ -68,6 +68,7 @@ packages:
       - "zsh-vi-mode"
       - "pgformatter"
       - "markdownlint-cli2"
+      - spotify_player
     casks:
       - "whatsapp"
       - "alacritty"
