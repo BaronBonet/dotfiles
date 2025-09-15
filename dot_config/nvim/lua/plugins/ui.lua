@@ -33,151 +33,116 @@ return {
     end,
   },
   {
-    -- added this so we can get ride of the time at the bottom of the statusline
     "nvim-lualine/lualine.nvim",
-    opts = function()
-      -- PERF: we don't need this lualine require madness 🤷
-      local lualine_require = require("lualine_require")
-      lualine_require.require = require
-
+    opts = function(_, opts)
+      local LazyVim = require("lazyvim.util")
+      local highlight = require("lualine.highlight")
       local icons = require("lazyvim.config").icons
+      local lazy_status = require("lazy.status")
 
-      vim.o.laststatus = vim.g.lualine_laststatus
-      local colors = {
-        [""] = { fg = Snacks.util.color("Special") },
-        ["Normal"] = { fg = Snacks.util.color("Special") },
-        ["Warning"] = { fg = Snacks.util.color("DiagnosticError") },
-        ["InProgress"] = { fg = Snacks.util.color("DiagnosticWarn") },
-      }
+      local function lsp_client_names()
+        local clients = {}
+        local bufnr = vim.api.nvim_get_current_buf()
+        if vim.lsp.get_clients then
+          clients = vim.lsp.get_clients({ bufnr = bufnr }) or {}
+        else
+          return "No Active LSP"
+        end
 
-      return {
-        options = {
-          theme = "auto",
-          globalstatus = true,
-          disabled_filetypes = { statusline = { "dashboard", "alpha", "starter" } },
-        },
-        tabline = {}, -- Tabline is for the top of the window
-        sections = { -- Sections are for the bottom of the window
-          lualine_a = { "mode" },
-          lualine_b = {
-            "branch",
-            {
-              "diff",
-              symbols = {
-                added = icons.git.added,
-                modified = icons.git.modified,
-                removed = icons.git.removed,
-              },
-              source = function()
-                local gitsigns = vim.b.gitsigns_status_dict
-                if gitsigns then
-                  return {
-                    added = gitsigns.added,
-                    modified = gitsigns.changed,
-                    removed = gitsigns.removed,
-                  }
-                end
-              end,
-            },
-          },
+        local names = {}
+        for _, client in ipairs(clients) do
+          local name = client.name
+          if name and name ~= "" and not name:lower():find("copilot", 1, true) then
+            table.insert(names, name)
+          end
+        end
 
-          lualine_c = {
-            LazyVim.lualine.root_dir(),
-            {
-              "diagnostics",
-              symbols = {
-                error = icons.diagnostics.Error,
-                warn = icons.diagnostics.Warn,
-                info = icons.diagnostics.Info,
-                hint = icons.diagnostics.Hint,
-              },
-            },
-            { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-            { LazyVim.lualine.pretty_path() },
-          },
-          lualine_x = {
-            {
-              -- Lsp server name .
-              -- TODO: show multiple lsps if there are
-              function()
-                local msg = "No Active Lsp"
-                local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = 0 })
-                local clients = vim.lsp.get_clients()
-                if next(clients) == nil then
-                  return msg
-                end
-                for _, client in ipairs(clients) do
-                  local filetypes = client.config.filetypes
-                  if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-                    return client.name
-                  end
-                end
-                return msg
-              end,
-              icon = " ",
-              color = { fg = "#2ac3de", gui = "bold" },
-            },
-            -- TODO: i shoudlnt have to do all of this checkout how lua line is updated with copilot
-            -- https://www.lazyvim.org/extras/ai/copilot w
-            {
-              function()
-                local icon = require("lazyvim.config").icons.kinds.Copilot
-                local status = require("copilot.api").status.data
-                return icon .. (status.message or "")
-              end,
-              cond = function()
-                if not package.loaded["copilot"] then
-                  return
-                end
-                local ok, clients = pcall(LazyVim.lsp.get_clients, { name = "copilot", bufnr = 0 })
-                if not ok then
-                  return false
-                end
-                return ok and #clients > 0
-              end,
-              color = function()
-                if not package.loaded["copilot"] then
-                  return
-                end
-                local status = require("copilot.api").status.data
-                return colors[status.status] or colors[""]
-              end,
-            },
-          },
-          lualine_y = {
-          -- This show the last command executed in normal mode
-          -- {
-          --   function() return require("noice").api.status.command.get() end,
-          --   cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
-          --   color = LazyVim.ui.fg("Statement"),
-          -- },
-          -- stylua: ignore
+        if #names == 0 then
+          return "No Active LSP"
+        end
+
+        table.sort(names)
+        return table.concat(names, ", ")
+      end
+
+      local function diff_source()
+        local gitsigns = vim.b.gitsigns_status_dict
+        if gitsigns then
+          return {
+            added = gitsigns.added,
+            modified = gitsigns.changed,
+            removed = gitsigns.removed,
+          }
+        end
+      end
+
+      local function mode_colors()
+        local suffix = highlight.get_mode_suffix()
+        local hl = highlight.get_lualine_hl("lualine_a" .. suffix)
+        if hl then
+          return { fg = hl.fg, bg = hl.bg }
+        end
+      end
+
+      opts.sections = {
+        lualine_a = { "mode" },
+        lualine_b = {
+          "branch",
           {
-            function() return require("noice").api.status.mode.get() end,
-            cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
-            fg = Snacks.util.color("Constant")
-              -- color = LazyVim.ui.fg("Constant"),
-          },
-          -- stylua: ignore
-          {
-            function() return "  " .. require("dap").status() end,
-            cond = function () return package.loaded["dap"] and require("dap").status() ~= "" end,
-            fg = Snacks.util.color("Debug")
-            -- color = LazyVim.ui.fg("Debug"),
-          },
-            { -- Shows which packages are not up to date
-              require("lazy.status").updates,
-              cond = require("lazy.status").has_updates,
-              fg = Snacks.util.color("Special"),
-              -- color = LazyVim.ui.fg("Special"),
+            "diff",
+            symbols = {
+              added = icons.git.added,
+              modified = icons.git.modified,
+              removed = icons.git.removed,
             },
-          },
-          lualine_z = {
-            { "progress", separator = " ", padding = { left = 1, right = 0 } },
-            { "location", padding = { left = 0, right = 1 } },
+            source = diff_source,
           },
         },
+        lualine_c = {
+          {
+            "diagnostics",
+            symbols = {
+              error = icons.diagnostics.Error,
+              warn = icons.diagnostics.Warn,
+              info = icons.diagnostics.Info,
+              hint = icons.diagnostics.Hint,
+            },
+          },
+          { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+          { LazyVim.lualine.pretty_path() },
+        },
+        lualine_x = {
+          {
+            lsp_client_names,
+            icon = " ",
+            color = { fg = "#2ac3de", gui = "bold" },
+          },
+          {
+            function()
+              return "  " .. require("dap").status()
+            end,
+            cond = function()
+              return package.loaded["dap"] and require("dap").status() ~= ""
+            end,
+            color = { fg = Snacks.util.color("Debug") },
+          },
+          {
+            lazy_status.updates,
+            cond = lazy_status.has_updates,
+            color = { fg = Snacks.util.color("Special") },
+          },
+        },
+        lualine_y = {
+          {
+            "location",
+            padding = { left = 1, right = 0 },
+            color = mode_colors,
+          },
+        },
+        lualine_z = {},
       }
+
+      return opts
     end,
   },
   {
@@ -208,27 +173,67 @@ return {
     },
     keys = { { "<leader>z", "<cmd>ZenMode<cr>", desc = "[Z]en Mode" } },
   },
-  -- Snacks explorer
   {
     "folke/snacks.nvim",
     opts = {
-      picker = {
-        sources = {
-          explorer = {
-            auto_close = true,
-            layout = { preset = "dropdown", preview = false, auto_hide = { "input" } },
-            ignored = true,
-          },
-        },
+      explorer = {
+        enabled = false, -- This disables the explorer
       },
+      -- Other snacks options...
     },
+  },
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    opts = function(_, opts)
+      local api = require("pymple.api")
+      local config = require("pymple.config")
+
+      local function on_move(args)
+        print(args.source, args.destination)
+        print("api")
+        print(api)
+        api.update_imports(args.source, args.destination, config.user_config.update_imports)
+      end
+
+      local events = require("neo-tree.events")
+      opts.event_handlers = opts.event_handlers or {}
+      vim.list_extend(opts.event_handlers, {
+        { event = events.FILE_MOVED, handler = on_move },
+        { event = events.FILE_RENAMED, handler = on_move },
+      })
+
+      opts.window = opts.window or {}
+      opts.filesystem = opts.filesystem or {}
+      opts.window.position = "float"
+      opts.filesystem.filtered_items = {
+        visible = false,
+        hide_gitignored = true,
+        hide_dotfiles = false,
+        hide_by_pattern = { "*/.git" },
+      }
+      opts.filesystem.follow_current_file = {
+        enabled = true,
+        leave_dirs_open = true,
+      }
+    end,
     keys = {
       {
         "<leader>e",
         function()
-          require("snacks").explorer.open()
+          require("neo-tree.command").execute({
+            toggle = true,
+            reveal = true, -- auto expand current file
+            dir = require("lazyvim.util").root(),
+          })
         end,
-        desc = "Toggle [E]xplorer",
+        desc = "Explorer NeoTree (project root dir)",
+      },
+      {
+        "<leader>E",
+        function()
+          require("neo-tree.command").execute({ toggle = true, reveal = true, dir = vim.loop.cwd() })
+        end,
+        desc = "Explorer NeoTree (cwd, where you opened nvim)",
       },
     },
   },

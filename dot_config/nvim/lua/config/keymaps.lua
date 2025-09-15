@@ -41,7 +41,6 @@ end
 
 local normal_keymaps_to_del = {
   "<C-s>",
-  "aa", -- don't use the copilot chat since i use avante
 }
 delKeyMap(normal_keymaps_to_del)
 

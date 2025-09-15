@@ -22,7 +22,7 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.g.python3_host_prog = "/Users/ebon/.asdf/shims/python3"
 
 -- spell check
-vim.api.nvim_command("autocmd FileType markdown,text,tex,go,python,proto,ruby,d2,sql setlocal spell")
+vim.api.nvim_command("autocmd FileType markdown,text,tex,go,python,proto,d2,sql setlocal spell")
 
 -- Center cursor when searching with # or *
 vim.keymap.set("n", "#", "#zz")
