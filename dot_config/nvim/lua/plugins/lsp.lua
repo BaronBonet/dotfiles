@@ -2,10 +2,15 @@ return {
   {
     "mfussenegger/nvim-lint",
     optional = true,
+    dependencies = {
+      {
+        "mason-org/mason.nvim",
+        opts = { ensure_installed = { "golangci-lint" } },
+      },
+    },
     opts = {
       events = { "BufWritePost", "BufReadPost", "InsertLeave" },
       linters_by_ft = {
-        -- TODO: this seems to slow down nvim
         go = { "golangcilint" },
         markdown = { "markdownlint-cli2" }, -- configs live in ~/.markdownlintrc
         proto = { "buf_lint" },

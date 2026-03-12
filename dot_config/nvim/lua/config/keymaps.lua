@@ -7,8 +7,42 @@ local function map(mode, l, r, opts)
   vim.keymap.set(mode, l, r, opts)
 end
 
+local function get_git_root()
+  local ok, result = pcall(function()
+    return vim.fn.systemlist({ "git", "rev-parse", "--show-toplevel" })
+  end)
+  if not ok then
+    return nil
+  end
+  local exit_code = vim.v.shell_error
+  if exit_code ~= 0 or #result == 0 then
+    return nil
+  end
+  return vim.fn.trim(result[1])
+end
+
+local function open_repo_env_file()
+  local notify_title = ".env"
+  local git_root = get_git_root()
+  if not git_root or git_root == "" then
+    vim.notify("no .env file found", vim.log.levels.INFO, { title = notify_title })
+    return
+  end
+
+  local env_path = git_root .. "/.env"
+
+  if vim.fn.filereadable(env_path) == 0 then
+    vim.notify("no .env file found", vim.log.levels.INFO, { title = notify_title })
+    return
+  end
+
+  vim.cmd.edit(vim.fn.fnameescape(env_path))
+end
+
 map("n", "<leader>qq", "<cmd>q<cr>", { noremap = true, desc = "[Q]uit" })
 map("n", "<leader>qa", "<cmd>qa<cr>", { noremap = true, desc = "[Q]uit [A]ll" })
+
+map("n", "<leader>a", open_repo_env_file, { noremap = true, silent = true, desc = "Open .env" })
 
 -- TODO: how is this working when leader w now brings up the window opts?
 map({ "n", "v" }, "<leader>w", "<cmd>w<CR>", { noremap = true, silent = true, desc = "[W]rite" })

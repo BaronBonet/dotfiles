@@ -151,7 +151,7 @@ return {
       preset = "helix",
       spec = {
         {
-          { "<leader>a", group = "[A]i" },
+          { "<leader>a", desc = "Open .env" },
         },
       },
     },
@@ -173,67 +173,42 @@ return {
     },
     keys = { { "<leader>z", "<cmd>ZenMode<cr>", desc = "[Z]en Mode" } },
   },
+  -- Snacks explorer
   {
     "folke/snacks.nvim",
     opts = {
-      explorer = {
-        enabled = false, -- This disables the explorer
+      picker = {
+        win = {
+          input = {
+            keys = {
+              ["<c-h>"] = { "toggle_hidden", mode = { "i", "n" } },
+              ["<c-i>"] = { "toggle_ignored", mode = { "i", "n" } },
+              ["<Tab>"] = { "toggle_ignored", mode = { "i", "n" } },
+            },
+          },
+          list = {
+            keys = {
+              ["<c-h>"] = "toggle_hidden",
+              ["<c-i>"] = "toggle_ignored",
+              ["<Tab>"] = "toggle_ignored",
+            },
+          },
+        },
+        sources = {
+          explorer = {
+            auto_close = true,
+            layout = { preset = "dropdown", preview = false, auto_hide = { "input" } },
+          },
+        },
       },
-      -- Other snacks options...
     },
-  },
-  {
-    "nvim-neo-tree/neo-tree.nvim",
-    opts = function(_, opts)
-      local api = require("pymple.api")
-      local config = require("pymple.config")
-
-      local function on_move(args)
-        print(args.source, args.destination)
-        print("api")
-        print(api)
-        api.update_imports(args.source, args.destination, config.user_config.update_imports)
-      end
-
-      local events = require("neo-tree.events")
-      opts.event_handlers = opts.event_handlers or {}
-      vim.list_extend(opts.event_handlers, {
-        { event = events.FILE_MOVED, handler = on_move },
-        { event = events.FILE_RENAMED, handler = on_move },
-      })
-
-      opts.window = opts.window or {}
-      opts.filesystem = opts.filesystem or {}
-      opts.window.position = "float"
-      opts.filesystem.filtered_items = {
-        visible = false,
-        hide_gitignored = true,
-        hide_dotfiles = false,
-        hide_by_pattern = { "*/.git" },
-      }
-      opts.filesystem.follow_current_file = {
-        enabled = true,
-        leave_dirs_open = true,
-      }
-    end,
     keys = {
       {
         "<leader>e",
         function()
-          require("neo-tree.command").execute({
-            toggle = true,
-            reveal = true, -- auto expand current file
-            dir = require("lazyvim.util").root(),
-          })
+          require("snacks").explorer.open()
         end,
-        desc = "Explorer NeoTree (project root dir)",
-      },
-      {
-        "<leader>E",
-        function()
-          require("neo-tree.command").execute({ toggle = true, reveal = true, dir = vim.loop.cwd() })
-        end,
-        desc = "Explorer NeoTree (cwd, where you opened nvim)",
+        desc = "Toggle [E]xplorer",
       },
     },
   },

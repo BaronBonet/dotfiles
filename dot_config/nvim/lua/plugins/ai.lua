@@ -6,7 +6,7 @@ return {
       -- Get the API key from one password vault
       api_key_cmd = "op item get OpenAI_API_KEY --fields label=password --reveal",
       openai_params = {
-        model = "gpt-4o",
+        model = "gpt-5",
         -- max_completion_tokens = 4000,
         -- frequency_penalty = 0,
         -- presence_penalty = 0,
