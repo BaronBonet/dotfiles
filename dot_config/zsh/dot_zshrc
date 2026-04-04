@@ -64,7 +64,7 @@ complete -C '/opt/homebrew/bin/aws_completer' aws
 eval "$(zoxide init --cmd cd zsh)"
 # Onepassword shell completion
 eval "$(op completion zsh)"; compdef _op op
-source /Users/ebon/.config/op/plugins.sh
+[[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/op/plugins.sh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/op/plugins.sh"
 
 # GO stuff
 export GOBIN=$(go env GOPATH)/bin
