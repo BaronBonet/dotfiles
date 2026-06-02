@@ -152,6 +152,7 @@ return {
       spec = {
         {
           { "<leader>a", desc = "Open .env" },
+          { "<leader>x", group = "trouble" },
         },
       },
     },

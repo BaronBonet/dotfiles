@@ -1,3 +1,43 @@
+local function has_project_golangci_lint()
+  if vim.fn.executable("go") ~= 1 then
+    return false
+  end
+
+  vim.fn.system({ "go", "tool", "golangci-lint", "version" })
+  return vim.v.shell_error == 0
+end
+
+local function golangci_lint()
+  local linter = vim.deepcopy(require("lint.linters.golangcilint"))
+
+  if has_project_golangci_lint() then
+    linter.cmd = "go"
+    linter.args = vim.list_extend({ "tool", "golangci-lint" }, linter.args or {})
+  end
+
+  return linter
+end
+
+local function has_project_buf()
+  if vim.fn.executable("go") ~= 1 then
+    return false
+  end
+
+  vim.fn.system({ "go", "tool", "buf", "--version" })
+  return vim.v.shell_error == 0
+end
+
+local function buf_lint()
+  local linter = vim.deepcopy(require("lint.linters.buf_lint"))
+
+  if has_project_buf() then
+    linter.cmd = "go"
+    linter.args = vim.list_extend({ "tool", "buf" }, linter.args or {})
+  end
+
+  return linter
+end
+
 return {
   {
     "mfussenegger/nvim-lint",
@@ -17,6 +57,8 @@ return {
         sql = { "sqlfluff" },
       },
       linters = {
+        buf_lint = buf_lint,
+        golangcilint = golangci_lint,
         sqlfluff = {
           args = {
             "lint",
@@ -46,7 +88,7 @@ return {
         --   args = { "tool", "goimports" },
         -- },
         ["golines"] = {
-          args = { "--base-formatter=gofmt", "--ignore-generated", "--no-reformat-tags", "--chain-split-dots", "-m" },
+          args = { "--base-formatter=gofmt", "--ignore-generated", "--no-reformat-tags", "--chain-split-dots", "--max-len=120" },
         },
         ["markdown-toc"] = {
           condition = function(_, ctx)

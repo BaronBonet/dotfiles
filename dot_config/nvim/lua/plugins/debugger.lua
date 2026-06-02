@@ -1,5 +1,9 @@
 return {
   {
+    "nvim-neotest/nvim-nio",
+    lazy = false,
+  },
+  {
     "mfussenegger/nvim-dap",
     dependencies = {
       "mfussenegger/nvim-dap-python",
@@ -8,20 +12,13 @@ return {
         config = true,
       },
       {
-        "mason-org/mason.nvim",
-        opts = function(_, opts)
-          opts.ensure_installed = opts.ensure_installed or {}
-          vim.list_extend(opts.ensure_installed, { "delve" })
-        end,
-      },
-      {
         "jay-babu/mason-nvim-dap.nvim",
         dependencies = "mason.nvim",
         opts = {
           -- Makes a best effort to setup the various debuggers with
           -- reasonable debug configurations
           automatic_setup = true,
-          automatic_installation = true,
+          automatic_installation = { exclude = { "delve", "python" } },
 
           handlers = {},
 
@@ -34,12 +31,14 @@ return {
       {
         "rcarriga/nvim-dap-ui",
         lazy = true,
+        dependencies = { "nvim-neotest/nvim-nio" },
         -- disable default keybindings
         keys = function()
           return {}
         end,
         opts = {},
         config = function(_)
+          require("lazy").load({ plugins = { "nvim-nio" } })
           local dap = require("dap")
           dap.set_log_level("DEBUG")
           local dapui = require("dapui")
