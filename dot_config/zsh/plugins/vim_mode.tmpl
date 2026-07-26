@@ -1,0 +1,5 @@
+{{ if eq .chezmoi.os "darwin" -}}
+source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+{{ else -}}
+source "$ZDOTDIR/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
+{{ end -}}

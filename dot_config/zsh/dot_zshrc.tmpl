@@ -1,3 +1,9 @@
+{{ if eq .chezmoi.os "darwin" -}}
+# for the forum computer after an update ghoosty is using a different temp dir
+if [ -n "$GHOSTTY_RESOURCES_DIR" ]; then
+  export TMPDIR="$(/usr/bin/getconf DARWIN_USER_TEMP_DIR)"
+fi
+{{ end -}}
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -5,11 +11,15 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+{{ if eq .chezmoi.os "darwin" -}}
 export PATH=/opt/homebrew/bin:$PATH
 
 # AWS Completer to allow for tab completions
 export PATH=/opt/homebrew/bin/aws_completer:$PATH
-
+{{ else -}}
+# Binaries installed by chezmoi externals (nvim, lsd, delta, zoxide, tms, gh, fzf...)
+export PATH="$HOME/.local/bin:$HOME/.local/nvim/bin:$PATH"
+{{ end }}
 source "$XDG_CONFIG_HOME/.aliases/.aliases"
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 
@@ -38,12 +48,13 @@ bindkey '^ ' autosuggest-accept # Remap the right arrow key to Ctrl-space
 # Syntax highliting in the shell
 source "$ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
-# For managing python versions, needs to be installed 
+{{ if eq .chezmoi.os "darwin" -}}
+# For managing python versions, needs to be installed
 # https://asdf-vm.com/guide/getting-started.html
 # . "$HOME/.asdf/asdf.sh"
-ASDF_DATA_DIR=/Users/ebon/.asdf
+ASDF_DATA_DIR="$HOME/.asdf"
 export PATH="$ASDF_DATA_DIR/shims:$PATH"
-
+{{ end }}
 
 export PATH="$PATH:$HOME/.local/bin"
 
@@ -55,23 +66,25 @@ export PIP_INDEX_URL=https://pypi.org/simple
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
+{{ if eq .chezmoi.os "darwin" -}}
 # Autoload aws completer
 autoload bashcompinit && bashcompinit
 autoload -Uz compinit && compinit
 complete -C '/opt/homebrew/bin/aws_completer' aws
-
+{{ end }}
 # better cd with history, for completions to work add after compinit
 eval "$(zoxide init --cmd cd zsh)"
+{{ if eq .chezmoi.os "darwin" -}}
 # Onepassword shell completion
 eval "$(op completion zsh)"; compdef _op op
-source /Users/ebon/.config/op/plugins.sh
+source "$HOME/.config/op/plugins.sh"
 
 # GO stuff
 export GOBIN=$(go env GOPATH)/bin
 export PATH=$PATH:$GOBIN
 
 export PATH=~/.cargo/bin/:$PATH
-
+{{ end }}
 # History
 HISTSIZE=10000
 HISTFILE="$ZDOTDIR/.zsh_history"
@@ -101,6 +114,24 @@ eval "$(fzf --zsh)"
 . "$HOME/.atuin/bin/env"
 
 eval "$(atuin init zsh)"
-
+{{ if eq .chezmoi.os "darwin" }}
 # FOR JAVA 17 delete when doing using scala
 export PATH="/opt/homebrew/opt/openjdk@23/bin:$PATH"
+{{ end -}}
+
+[ -f "$HOME/.config/.local/share/../bin/env" ] && . "$HOME/.config/.local/share/../bin/env"
+
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+{{ if eq .chezmoi.os "darwin" -}}
+# Latex
+export PATH=/Library/TeX/texbin:$PATH
+{{ end -}}
+
+# codex
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
+export NODE_EXTRA_CA_CERTS=$HOME/ca-cert.pem

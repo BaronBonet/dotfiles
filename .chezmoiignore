@@ -1,3 +1,13 @@
+README.md
+{{ if ne .chezmoi.os "darwin" }}
+# macOS-only targets
+Library
+.ideavimrc
+.markdownlintrc
+.config/alacritty
+.config/ghostty
+.config/rubocop
+{{ end }}
 .asdf/downloads
 .asdf/installs
 .asdf/plugins

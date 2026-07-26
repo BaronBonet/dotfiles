@@ -1,3 +1,4 @@
+{{ if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
 
 set -eufo pipefail
@@ -8,3 +9,4 @@ defaults write com.apple.dock tilesize -int 64
 defaults write com.apple.dock autohide -int 1
 
 killall Dock
+{{ end -}}

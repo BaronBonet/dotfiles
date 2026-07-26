@@ -1,3 +1,4 @@
+{{ if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
 
 # NOTE: Can use  $(chezmoi source-path) to go to chemozi root
@@ -119,3 +120,4 @@ manage_tool_version() {
 
 conditionally_install_language python || echo "Conditionally installing Python failed"
 conditionally_install_language ruby || echo "Conditionally installing Ruby failed"
+{{ end -}}

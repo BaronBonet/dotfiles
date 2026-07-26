@@ -1,10 +1,13 @@
 Host *
   AddKeysToAgent yes
+{{- if eq .chezmoi.os "darwin" }}
   UseKeychain yes
+{{- end }}
   IdentityFile ~/.ssh/id_ed25519
 
 Include config.d/*
-
+{{ if eq .chezmoi.os "darwin" }}
 # Use 1password for git
 Host github.com
   IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+{{ end -}}

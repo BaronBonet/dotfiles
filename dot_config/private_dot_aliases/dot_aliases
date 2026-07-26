@@ -125,4 +125,7 @@ s3pc(){
     fi
     }
 
-
+# for a network enabled codex session
+codexnet() {
+  codex --sandbox workspace-write -c 'sandbox_permissions=["network-access"]' "$@"
+}
