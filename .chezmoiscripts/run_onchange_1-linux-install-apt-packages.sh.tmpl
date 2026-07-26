@@ -1,0 +1,21 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+
+set -eufo pipefail
+
+sudo apt-get update
+sudo apt-get install -y \
+{{ range .packages.linux.apt }}  {{ . | quote }} \
+{{ end }}
+
+# Ubuntu names these binaries batcat/fdfind; give them their real names
+mkdir -p "$HOME/.local/bin"
+ln -sf "$(command -v batcat)" "$HOME/.local/bin/bat"
+ln -sf "$(command -v fdfind)" "$HOME/.local/bin/fd"
+
+# Make zsh the login shell
+user="$(id -un)"
+if [ "$(getent passwd "$user" | cut -d: -f7)" != "$(command -v zsh)" ]; then
+	sudo chsh -s "$(command -v zsh)" "$user"
+fi
+{{ end -}}

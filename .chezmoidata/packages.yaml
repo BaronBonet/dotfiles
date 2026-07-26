@@ -12,7 +12,6 @@ packages:
       - "grpc"
       - "bash"
       - "bat"
-      - "coreutils"
       - "curl"
       - "d2"
       - "diff-so-fancy"
@@ -59,7 +58,6 @@ packages:
       - "watchman" # For sorbet lsp in nvim
       - "markdown-toc"
       - "stylua"
-      - "codespell"
       - "rubyfmt"
       - "chezmoi"
       - "ast-grep"
@@ -69,6 +67,7 @@ packages:
       - "pgformatter"
       - "markdownlint-cli2"
       - spotify_player
+      - "tmux-sessionizer" # tms, was previously cargo-installed
     casks:
       - "whatsapp"
       - "alacritty"
@@ -76,3 +75,30 @@ packages:
       - "font-jetbrains-mono-nerd-font"
       - "rectangle"
       - "raycast"
+  linux:
+    # Server shell environment only — no dev toolchain (see .plans/2026-07-17-linux-support.md)
+    apt:
+      - "git"
+      - "zsh"
+      - "tmux"
+      - "ripgrep"
+      - "fd-find" # binary is fdfind; symlinked to fd by the apt install script
+      - "bat" # binary is batcat; symlinked to bat by the apt install script
+      - "jq"
+      - "htop"
+      - "curl"
+      - "wget"
+      - "unzip"
+      - "build-essential" # nvim treesitter compiles grammars
+      - "imagemagick"
+    # Tools where apt is too old or missing; installed as chezmoi externals
+    # into ~/.local (see .chezmoiexternal.toml). Bump versions here.
+    external_versions:
+      neovim: "0.12.4"
+      lsd: "1.2.0"
+      delta: "0.19.2"
+      zoxide: "0.10.0"
+      tmux_sessionizer: "0.6.1"
+      fastfetch: "2.66.0"
+      gh: "2.96.0"
+      fzf: "0.74.0" # apt's fzf is too old for `fzf --zsh` in .zshrc

@@ -3,3 +3,9 @@
 .git
 .DS_Store
 .tool-versions
+.op # Used when one password create plugings, e.g. the .op directory lives in all folders that i use my personal aws in.
+.lazy.lua
+node_modules
+.aider.*
+.claude/
+CLAUDE.md

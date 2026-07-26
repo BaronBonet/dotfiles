@@ -1,6 +1,6 @@
 # Eric's dotfiles
 
-Managed using [chezmoi](https://www.chezmoi.io/). Attempting to keep my dotfiles synced across my personal and work machines.
+Managed using [chezmoi](https://www.chezmoi.io/). Attempting to keep my dotfiles synced across my personal and work machines (macOS) and my home server (Ubuntu).
 
 I wouldn't suggest anyone other than myself use these dot files as is, I've littered my configs (e.g. `.gitconfig`) with personal information. Feel free to browse these files and copy what you like.
 
@@ -19,6 +19,26 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply BaronBonet
 ```
 
 This should copy all my dotfiles to their respective locations, and run the [install script](https://www.chezmoi.io/user-guide/use-scripts-to-perform-actions/) found here. This script installs brew, all of my brew packages as well as the interpreted languages I'm currently using (Python and Ruby) managed by [asdf](https://asdf-vm.com/).
+
+## Ubuntu home server
+
+The same one-liner works on Ubuntu (tested against 24.04):
+
+```bash
+export XDG_CONFIG_HOME="$HOME/.config"
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply BaronBonet
+```
+
+What happens differently on linux (see `.plans/2026-07-17-linux-support.md` for the design):
+
+- Base packages come from apt (`sudo` password is prompted once); tools apt ships too old
+  (neovim, lsd, delta, zoxide, tms, fastfetch, gh, fzf) are downloaded as pinned release
+  binaries into `~/.local/bin` by chezmoi externals. Bump versions in `.chezmoidata/packages.yaml`.
+- No dev toolchain: brew, asdf, 1Password, and the macOS defaults scripts are darwin-only.
+- The login shell is switched to zsh (`chsh` prompts for your password).
+- SSH/git auth uses agent forwarding from the Mac — no keys live on the server. Add
+  `ForwardAgent yes` to the server's entry in the Mac's `~/.ssh/config.d/`.
+- Git commit signing is disabled on linux (1Password's `op-ssh-sign` is mac-only).
 
 ### Further setup
 

@@ -13,6 +13,7 @@
 	pager = delta
 	editor = nvim
 	excludesFile = ~/.gitignore_global
+	ignorecase = false
 [interactive]
 	diffFilter = delta --color-only
 
@@ -26,8 +27,10 @@
 [diff]
   colorMoved = default
 
+{{ if eq .chezmoi.os "darwin" -}}
 [url "ssh://git@github.com/"]
     insteadOf = https://github.com/
+{{ end -}}
 [push]
 	autoSetupRemote = true
 
@@ -52,6 +55,7 @@
 [rebase]
   updateRefs = true
 
+{{ if eq .chezmoi.os "darwin" -}}
 # Use 1Password to sign commits
 [gpg]
 	format = ssh
@@ -59,7 +63,12 @@
 	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
 [commit]
 	gpgsign = true
+{{ end -}}
 [user]
+{{- if eq .chezmoi.os "darwin" }}
   signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICqtBs+WKw9QiPZVGKV2x181P5UHXSiM/qk/XlQmB21s
+{{- end }}
 	name = Eric Bonet
 	email = ericcbonet@gmail.com
+[credential "https://git.heroku.com"]
+	helper = !heroku git:credentials

@@ -2,3 +2,9 @@ export BASH_SILENCE_DEPRECATION_WARNING=1
 
 
 . "$HOME/.atuin/bin/env"
+
+# >>> coursier install directory >>>
+export PATH="$PATH:/Users/ebon/Library/Application Support/Coursier/bin"
+# <<< coursier install directory <<<
+
+. "$HOME/.config/.local/share/../bin/env"
