@@ -1,0 +1,10 @@
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh)"
+
+{{ if eq .chezmoi.os "linux" -}}
+# Let Ctrl-S reach tmux instead of pausing terminal output.
+if [[ -o interactive ]] && [[ -t 0 ]]; then
+  stty -ixon
+fi
+{{ end -}}
