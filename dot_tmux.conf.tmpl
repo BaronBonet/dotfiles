@@ -47,6 +47,11 @@ set -g @plugin 'tmux-plugins/tmux-yank'
 # Change the look of the curser
 set -g -a terminal-overrides ',*:Ss=\E[%p1%d q:Se=\E[2 q'
 
+# Copy tmux selections to the terminal clipboard using OSC 52. The
+# tmux-256color rule makes this work through an SSH-nested tmux session.
+set -g set-clipboard on
+set -as terminal-features ',xterm-ghostty:clipboard,tmux-256color:clipboard'
+
 # Using Ctrl + (one of the four basic vim motions) to move between panes.
 # Treat SSH like Vim so the outer tmux forwards these keys into nested tmux.
 is_vim_or_ssh="ps -o state= -o comm= -t '#{pane_tty}' \
