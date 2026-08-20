@@ -10,6 +10,9 @@ vim.opt.guicursor = {
 
 vim.g.snacks_animate = false
 
+-- Don't warn about untrusted code since i get that everytime i use my .lazy.lua
+vim.opt.exrc = false
+
 vim.o.clipboard = "" -- Don't use system clipboard
 
 -- Customize current line highlight color
