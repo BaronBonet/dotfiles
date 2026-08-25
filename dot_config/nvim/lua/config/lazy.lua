@@ -33,7 +33,27 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.editor.illuminate" },
     { import = "lazyvim.plugins.extras.lang.tex" },
     { import = "plugins" },
+    -- project-local `.lazy.lua` (same as lazy.nvim's `local_spec`, but loaded
+    -- directly instead of through `vim.secure.read`, so it never prompts for `:trust`)
+    {
+      name = ".lazy.lua",
+      import = function()
+        local file = vim.fs.find(".lazy.lua", { upward = true, path = vim.uv.cwd(), type = "file" })[1]
+        if not file then
+          return {}
+        end
+        local ok, spec = pcall(function()
+          return assert(loadfile(file))()
+        end)
+        if not ok then
+          vim.notify("Failed to load " .. file .. "\n" .. tostring(spec), vim.log.levels.WARN)
+          return {}
+        end
+        return spec or {}
+      end,
+    },
   },
+  local_spec = false, -- handled above, without the trust prompt
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
     -- If you know what you're doing, you can set this to `true` to have all your custom plugins lazy-loaded by default.
